@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Polyglotte</string>
+
+    <string-array name="languageList">
+        <item>English</item>
+        <item>Français</item>
+        <item>Italiano</item>
+    </string-array>
+</resources>

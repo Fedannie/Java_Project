@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:text="EXERCISES"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textAlignment="center" />
+
+    <TextView
+        android:text="LANGUAGE"
+        android:layout_width="193dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedLang"
+        android:layout_weight="0.03" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:text="Translation by Word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/transByWord" />
+
+            <Button
+                android:text="Word by translation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wordByTrans" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:text="Choose translation by word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chooseTransByWord"
+                android:textSize="11sp" />
+
+            <Button
+                android:text="choose word by translation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chooseWordByTrans"
+                android:textSize="11sp" />
+
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button9" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:text="Choose picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/choosePic" />
+
+            <Button
+                android:text="translate by picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/transByPicture" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:text="Connect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/connect" />
+
+            <Button
+                android:text="correct the mistake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/correctTheMistake" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:text="Whole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/wholeExercise" />
+</LinearLayout>
