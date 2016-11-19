@@ -7,29 +7,23 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
-    private boolean mVisible;
-    private Button btnExercise;
-    private Button btnPref;
-    private Button btnDict;
-    private Button btnPhrase;
-    private Button btnTheme;
-    private Button btnTrans;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Button btnExercise;
+        Button btnPref;
+        Button btnDict;
+        Button btnPhrase;
+        Button btnTrans;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        mVisible = true;
         btnExercise = (Button) findViewById(R.id.exerciseButton);
         btnExercise.setOnClickListener(this);
         btnPref = (Button) findViewById(R.id.preferencesButton);
         btnPref.setOnClickListener(this);
         btnDict = (Button) findViewById(R.id.dictionaryButton);
         btnDict.setOnClickListener(this);
-        btnTheme = (Button) findViewById(R.id.themesButton);
-        btnTheme.setOnClickListener(this);
         btnPhrase = (Button) findViewById(R.id.phrasebookButton);
         btnPhrase.setOnClickListener(this);
         btnTrans = (Button) findViewById(R.id.translatorButton);
@@ -50,10 +44,6 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             case (R.id.dictionaryButton):
                 Intent intentD = new Intent(this, DictActivity.class);
                 startActivity(intentD);
-                break;
-            case (R.id.themesButton):
-                Intent intentT = new Intent(this, ThemeActivity.class);
-                startActivity(intentT);
                 break;
             case (R.id.phrasebookButton):
                 Intent intentPh = new Intent(this, PhraseActivity.class);

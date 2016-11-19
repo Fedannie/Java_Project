@@ -21,10 +21,6 @@
         </activity>
 
         <activity
-            android:name=".ThemeActivity">
-        </activity>
-
-        <activity
             android:name=".DictActivity">
         </activity>
 
@@ -42,6 +38,10 @@
 
         <activity
             android:name=".PrefActivity">
+        </activity>
+
+        <activity
+            android:name=".AddWordActivity">
         </activity>
     </application>
 
