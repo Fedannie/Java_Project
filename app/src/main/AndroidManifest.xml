@@ -43,6 +43,10 @@
         <activity
             android:name=".AddWordActivity">
         </activity>
+
+        <activity
+            android:name=".PopUpFilterThemes">
+        </activity>
     </application>
 
 </manifest>
