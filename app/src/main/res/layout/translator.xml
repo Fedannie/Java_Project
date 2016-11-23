@@ -31,13 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Your text"
+        android:hint="Your text"
         android:ems="10"
         android:id="@+id/textToTrans"
         android:layout_weight="0.28" />
 
-    <TextView
-        android:text="Translation"
+    <EditText
+        android:hint="Translation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/transResult"
