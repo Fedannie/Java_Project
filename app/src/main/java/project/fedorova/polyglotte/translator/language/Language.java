@@ -6,8 +6,8 @@ import project.fedorova.polyglotte.translator.translate.Translate;
 
 public enum Language {
 
+    DEFAULT(Translate.DEFAULT_LANG.toString()),
     ALBANIAN("sq"),
-//    DEFAULT(Translate.DEFAULT_LANG.toString()),
     ARMENIAN("hy"),
     AZERBAIJANI("az"),
     ARABIC("ar"),
@@ -56,6 +56,47 @@ public enum Language {
             }
         }
         return null;
+    }
+
+    public static String getLanguageCode(String lang) throws Exception{
+        switch (lang) {
+            case "Albanian": return Language.ALBANIAN.toString();
+            case "Armenian": return Language.ARMENIAN.toString();
+            case "Azerbaijani": return Language.AZERBAIJANI.toString();
+            case "Arabic": return Language.ARABIC.toString();
+            case "Belarusian": return Language.BELARUSIAN.toString();
+            case "Bulgarian": return Language.BULGARIAN.toString();
+            case "Catalan": return Language.CATALAN.toString();
+            case "Croatian": return Language.CROATIAN.toString();
+            case "Czech": return Language.CZECH.toString();
+            case "Danish": return Language.DANISH.toString();
+            case "Dutch": return Language.DUTCH.toString();
+            case "English": return Language.ENGLISH.toString();
+            case "Estonian": return Language.ESTONIAN.toString();
+            case "Finnish": return Language.FINNISH.toString();
+            case "French": return Language.FRENCH.toString();
+            case "German": return Language.GERMAN.toString();
+            case "Georgian": return Language.GEORGIAN.toString();
+            case "Greek": return Language.GREEK.toString();
+            case "Hungarian": return Language.HUNGARIAN.toString();
+            case "Italian": return Language.ITALIAN.toString();
+            case "Latvian": return Language.LATVIAN.toString();
+            case "Lithuanian": return Language.LITHUANIAN.toString();
+            case "Macedonian": return Language.MACEDONIAN.toString();
+            case "Norwegian": return Language.NORWEGIAN.toString();
+            case "Polish": return Language.POLISH.toString();
+            case "Portuguese": return Language.PORTUGUESE.toString();
+            case "Romanian": return Language.ROMANIAN.toString();
+            case "Russian": return Language.RUSSIAN.toString();
+            case "Serbian": return Language.SERBIAN.toString();
+            case "Slovak": return Language.SLOVAK.toString();
+            case "Slovenian": return Language.SLOVENIAN.toString();
+            case "Spanish": return Language.SPANISH.toString();
+            case "Swedish": return Language.SWEDISH.toString();
+            case "Turkish": return Language.TURKISH.toString();
+            case "Ukrainian": return Language.UKRAINIAN.toString();
+            default: throw new Exception();
+        }
     }
 
     @Override

@@ -1,4 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,16 +28,24 @@
         android:id="@+id/menuLayout">
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:baselineAligned="false">
 
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/languageSpinner"
                 android:layout_weight="1"
-                android:entries="@array/languageList"
+                android:entries="@array/personalLanguageList"
             />
+
+            <Button
+                android:text="Add dictionary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/addDictButton"
+                android:gravity="right|center_vertical|center_horizontal" />
         </TableRow>
 
         <TableRow

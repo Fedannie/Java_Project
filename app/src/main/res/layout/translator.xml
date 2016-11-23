@@ -18,28 +18,30 @@
         android:id="@+id/langFrom"
         android:layout_width="match_parent"
         android:layout_weight="0.09"
-        android:entries="@array/languageList" />
+        android:entries="@array/wholeLanguageList" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:id="@+id/langTo"
         android:layout_weight="0.03"
-        android:entries="@array/languageList" />
+        android:entries="@array/wholeLanguageList" />
 
     <EditText
+        android:inputType="textMultiLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:hint="Your text"
         android:ems="10"
         android:id="@+id/textToTrans"
         android:layout_weight="0.28" />
 
     <EditText
+        android:inputType="textMultiLine"
         android:hint="Translation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/transResult"
         android:layout_weight="0.47" />
+
 </LinearLayout>

@@ -1,9 +1,46 @@
 <resources>
     <string name="app_name">Polyglotte</string>
 
-    <string-array name="languageList">
+    <string-array name="wholeLanguageList">
+        <item>Albanian</item>
+        <item>Armenian</item>
+        <item>Azerbaijani</item>
+        <item>Arabic</item>
+        <item>Belarusian</item>
+        <item>Bulgarian</item>
+        <item>Catalan</item>
+        <item>Croatian</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>Dutch</item>
         <item>English</item>
-        <item>Français</item>
-        <item>Italiano</item>
+        <item>Estonian</item>
+        <item>Finnish</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Georgian</item>
+        <item>Greek</item>
+        <item>Hungarian</item>
+        <item>Italian</item>
+        <item>Latvian</item>
+        <item>Lithuanian</item>
+        <item>Macedonian</item>
+        <item>Norwegian</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Romanian</item>
+        <item>Russian</item>
+        <item>Serbian</item>
+        <item>Slovak</item>
+        <item>Slovenian</item>
+        <item>Spanish</item>
+        <item>Swedish</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
+    </string-array>
+
+    <string-array name="personalLanguageList">
+        <item>English</item>
+        <item>French</item>
     </string-array>
 </resources>
