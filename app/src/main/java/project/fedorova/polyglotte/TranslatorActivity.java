@@ -23,6 +23,7 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.translator);
+        Translate.fillMap();
         fromET = (EditText) findViewById(R.id.textToTrans);
         fromET.addTextChangedListener(new TextWatcher(){
             @Override
@@ -75,10 +76,10 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
 
     private Language getLang(Spinner sLang) {
         try {
-            String pLang = Language.getLanguageCode(sLang.getSelectedItem().toString());
+            String pLang = Translate.getLanguageCode(sLang.getSelectedItem().toString());
             return Language.fromString(pLang);
         } catch (Exception e) {
-            return Language.DEFAULT;
+            return Translate.DEFAULT_LANG;
         }
     }
 }

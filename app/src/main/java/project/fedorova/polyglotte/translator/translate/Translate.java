@@ -2,6 +2,9 @@ package project.fedorova.polyglotte.translator.translate;
 
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 import project.fedorova.polyglotte.translator.ApiKey;
 import project.fedorova.polyglotte.translator.YandexTranslatorApi;
@@ -11,8 +14,8 @@ public class Translate extends YandexTranslatorApi {
 
     private static final String SERVICE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
     private static final String TRANSLATION_LABEL = "text";
-    public static String DEFAULT_LANG = "en";
-
+    public static Language DEFAULT_LANG = Language.ENGLISH;
+    private static Map<String, String> langsCodes;
     private Translate(){};
 
     /**
@@ -21,7 +24,7 @@ public class Translate extends YandexTranslatorApi {
      * @param def new default language
      */
     public void changeDefaultLang(String def) {
-        DEFAULT_LANG = def;
+        DEFAULT_LANG = Language.fromString(def);
     }
 
     /**
@@ -55,5 +58,52 @@ public class Translate extends YandexTranslatorApi {
             throw new RuntimeException("TEXT_TOO_LARGE");
         }
         validServiceState();
+    }
+
+    public static void fillMap() {
+        langsCodes = new HashMap<String, String>();
+        langsCodes.put("Albanian", Language.ALBANIAN.toString());
+        langsCodes.put("Armenian", Language.ARMENIAN.toString());
+        langsCodes.put("Azerbaijani", Language.AZERBAIJANI.toString());
+        langsCodes.put("Arabic", Language.ARABIC.toString());
+        langsCodes.put("Belarusian", Language.BELARUSIAN.toString());
+        langsCodes.put("Bulgarian", Language.BULGARIAN.toString());
+        langsCodes.put("Catalan", Language.CATALAN.toString());
+        langsCodes.put("Croatian", Language.CROATIAN.toString());
+        langsCodes.put("Czech", Language.CZECH.toString());
+        langsCodes.put("Danish", Language.DANISH.toString());
+        langsCodes.put("Dutch", Language.DUTCH.toString());
+        langsCodes.put("English", Language.ENGLISH.toString());
+        langsCodes.put("Estonian", Language.ESTONIAN.toString());
+        langsCodes.put("Finnish", Language.FINNISH.toString());
+        langsCodes.put("French", Language.FRENCH.toString());
+        langsCodes.put("German", Language.GERMAN.toString());
+        langsCodes.put("Georgian", Language.GEORGIAN.toString());
+        langsCodes.put("Greek", Language.GREEK.toString());
+        langsCodes.put("Hungarian", Language.HUNGARIAN.toString());
+        langsCodes.put("Italian", Language.ITALIAN.toString());
+        langsCodes.put("Latvian", Language.LATVIAN.toString());
+        langsCodes.put("Lithuanian", Language.LITHUANIAN.toString());
+        langsCodes.put("Macedonian", Language.MACEDONIAN.toString());
+        langsCodes.put("Norwegian", Language.NORWEGIAN.toString());
+        langsCodes.put("Polish", Language.POLISH.toString());
+        langsCodes.put("Portuguese", Language.PORTUGUESE.toString());
+        langsCodes.put("Romanian", Language.ROMANIAN.toString());
+        langsCodes.put("Russian", Language.RUSSIAN.toString());
+        langsCodes.put("Serbian", Language.SERBIAN.toString());
+        langsCodes.put("Slovak", Language.SLOVAK.toString());
+        langsCodes.put("Slovenian", Language.SLOVENIAN.toString());
+        langsCodes.put("Spanish", Language.SPANISH.toString());
+        langsCodes.put("Swedish", Language.SWEDISH.toString());
+        langsCodes.put("Turkish", Language.TURKISH.toString());
+        langsCodes.put("Ukrainian", Language.UKRAINIAN.toString());
+    }
+
+    public static String getLanguageCode(String lang) throws NoSuchElementException {
+        String res =  langsCodes.get(lang);
+        if (res == null){
+            throw new NoSuchElementException();
+        }
+        return res;
     }
 }
