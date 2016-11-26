@@ -25,7 +25,7 @@
         android:layout_height="54dp"
         android:id="@+id/langTo"
         android:layout_weight="0.03"
-        android:entries="@array/wholeLanguageList" />
+        android:entries="@array/wholeLanguageList"/>
 
     <EditText
         android:inputType="textMultiLine"
@@ -40,8 +40,7 @@
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/translateProgressBar"
-        android:theme="@style/CircularProgress"/>
+        android:id="@+id/translateProgressBar" />
 
     <EditText
         android:inputType="textMultiLine"
