@@ -36,6 +36,13 @@
         android:id="@+id/textToTrans"
         android:layout_weight="0.28" />
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/translateProgressBar"
+        android:theme="@style/CircularProgress"/>
+
     <EditText
         android:inputType="textMultiLine"
         android:hint="Translation"

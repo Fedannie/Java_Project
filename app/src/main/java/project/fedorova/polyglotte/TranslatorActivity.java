@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,11 +20,13 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
     TextView transTV;
     Spinner langFrom;
     Spinner langTo;
+    ProgressBar translatePB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.translator);
         Translate.fillMap();
+        translatePB = (ProgressBar) findViewById(R.id.translateProgressBar);
         fromET = (EditText) findViewById(R.id.textToTrans);
         fromET.addTextChangedListener(new TextWatcher(){
             @Override
@@ -66,11 +69,14 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
     }
 
     public void callTranslate() {
+        translatePB.setVisibility(View.VISIBLE);
         try {
             String translation = Translate.execute(fromET.getText().toString(), getLang(langFrom), getLang(langTo));
             transTV.setText(translation);
         } catch (Exception e) {
             Toast.makeText(TranslatorActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        } finally {
+            translatePB.setVisibility(View.INVISIBLE);
         }
     }
 

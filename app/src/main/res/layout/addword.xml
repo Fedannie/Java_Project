@@ -41,6 +41,13 @@
                 android:layout_width="195dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/addThemeButton" />
+
+            <Button
+                android:text="OK"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:id="@+id/okButton" />
         </LinearLayout>
     </ScrollView>
 
