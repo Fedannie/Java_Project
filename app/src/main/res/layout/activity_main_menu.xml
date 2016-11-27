@@ -35,10 +35,8 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/languageSpinner"
-                android:layout_weight="1"
-                android:entries="@array/personalLanguageList"
-            />
+                android:id="@+id/dictSpinner"
+                android:layout_weight="1" />
 
             <Button
                 android:text="Add dictionary"

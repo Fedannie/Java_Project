@@ -38,8 +38,5 @@
         <item>Turkish</item>
         <item>Ukrainian</item>
     </string-array>
-    <string-array name="personalLanguageList">
-        <item>English</item>
-        <item>French</item>
-    </string-array>
+
 </resources>
