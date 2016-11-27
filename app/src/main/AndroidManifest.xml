@@ -47,6 +47,11 @@
         <activity
             android:name=".PopUpFilterThemes">
         </activity>
+
+        <activity
+            android:theme="@android:style/Theme.Dialog"
+            android:name=".PopUpAddDict">
+        </activity>
     </application>
 
 </manifest>

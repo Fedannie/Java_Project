@@ -6,8 +6,12 @@ import java.util.Set;
 public class DictList {
     private static Set<String> dictList = new HashSet<String>();
 
-    public static void addDict(String language) {
-        dictList.add(language);
+    public static boolean addDict(String language) {
+        if (!dictList.contains(language)) {
+            dictList.add(language);
+            return true;
+        }
+        return false;
     }
 
     public static String[] getDictList() {

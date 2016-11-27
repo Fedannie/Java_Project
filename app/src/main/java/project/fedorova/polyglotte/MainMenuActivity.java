@@ -17,14 +17,15 @@ import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
     SharedPreferences sPref;
+    Button btnExercise;
+    Button btnPref;
+    Button btnDict;
+    Button btnPhrase;
+    Button btnTrans;
+    Button addDictBtn;
+    Spinner selectDict;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final Button btnExercise;
-        final Button btnPref;
-        final Button btnDict;
-        final Button btnPhrase;
-        final Button btnTrans;
-        final Spinner selectDict;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
@@ -44,24 +45,25 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         btnTrans = (Button) findViewById(R.id.translatorButton);
         btnTrans.setOnClickListener(this);
 
+        addDictBtn = (Button) findViewById(R.id.addDictButton);
+        addDictBtn.setOnClickListener(this);
+
         selectDict = (Spinner) findViewById(R.id.dictSpinner);
         selectDict.setPrompt("Your dictionaries");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, DictList.getDictList());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        selectDict.setAdapter(adapter);
-        if (!DictList.empty()){
-            selectDict.setSelection(getLastDict());
-        }
-        selectDict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
-                sPref = getPreferences(MODE_PRIVATE);
-                SharedPreferences.Editor editor = sPref.edit();
-                editor.putString(PreferenceVars.dictLanguage, (String) selectDict.getSelectedItem());
-                editor.commit();
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        setSpinner();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setSpinner();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setSpinner();
     }
 
     @Override
@@ -87,6 +89,9 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 Intent intentTr = new Intent(this, TranslatorActivity.class);
                 startActivity(intentTr);
                 break;
+            case (R.id.addDictButton):
+                showPopupAddDict();
+                break;
             default:
                 break;
         }
@@ -102,5 +107,29 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             }
         }
         return 0;
+    }
+
+    private void showPopupAddDict() {
+        Intent intentTr = new Intent(this, PopUpAddDict.class);
+        startActivity(intentTr);
+    }
+
+    private void setSpinner() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, DictList.getDictList());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectDict.setAdapter(adapter);
+        if (!DictList.empty()){
+            selectDict.setSelection(getLastDict());
+        }
+        selectDict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
+                sPref = getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor = sPref.edit();
+                editor.putString(PreferenceVars.dictLanguage, (String) selectDict.getSelectedItem());
+                editor.commit();
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 }
