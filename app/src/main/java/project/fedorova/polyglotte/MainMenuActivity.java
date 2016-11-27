@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.NoSuchElementException;
 
@@ -50,24 +51,36 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
         selectDict = (Spinner) findViewById(R.id.dictSpinner);
         selectDict.setPrompt("Your dictionaries");
-        setSpinner();
-
+        loadDict();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        setSpinner();
+        loadDict();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setSpinner();
+        loadDict();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        safeDict();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        safeDict();
     }
 
     @Override
     public void onClick(View view) {
+        safeDict();
         switch(view.getId()) {
             case (R.id.exerciseButton):
                 Intent intentE = new Intent(this, ExerciseActivity.class);
@@ -90,7 +103,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 startActivity(intentTr);
                 break;
             case (R.id.addDictButton):
-                showPopupAddDict();
+                Intent intentAD = new Intent(this, PopUpAddDict.class);
+                startActivity(intentAD);
                 break;
             default:
                 break;
@@ -99,7 +113,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private int getLastDict() throws NoSuchElementException{
         sPref = getPreferences(MODE_PRIVATE);
-        String language = sPref.getString(PreferenceVars.dictLanguage, "");
+        String language = sPref.getString(PreferenceVars.DICT_LANGUAGE, "");
         String[] dictionaries = DictList.getDictList();
         for (int i = 0; i < dictionaries.length; i++) {
             if (dictionaries[i].equals(language)) {
@@ -109,12 +123,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         return 0;
     }
 
-    private void showPopupAddDict() {
-        Intent intentTr = new Intent(this, PopUpAddDict.class);
-        startActivity(intentTr);
-    }
-
-    private void setSpinner() {
+    private void loadDict() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, DictList.getDictList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectDict.setAdapter(adapter);
@@ -123,13 +132,17 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         }
         selectDict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
-                sPref = getPreferences(MODE_PRIVATE);
-                SharedPreferences.Editor editor = sPref.edit();
-                editor.putString(PreferenceVars.dictLanguage, (String) selectDict.getSelectedItem());
-                editor.commit();
+                safeDict();
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void safeDict() {
+        sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sPref.edit();
+        editor.putString(PreferenceVars.DICT_LANGUAGE, (String) selectDict.getSelectedItem());
+        editor.apply();
     }
 }
