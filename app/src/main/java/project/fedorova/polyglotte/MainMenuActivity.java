@@ -27,6 +27,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     Button btnPhrase;
     Button btnTrans;
     Button addDictBtn;
+    Button deleteDictBtn;
     Spinner selectDict;
     //@RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -52,6 +53,9 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
         addDictBtn = (Button) findViewById(R.id.addDictButton);
         addDictBtn.setOnClickListener(this);
+
+        deleteDictBtn = (Button) findViewById(R.id.deleteDict);
+        deleteDictBtn.setOnClickListener(this);
 
         selectDict = (Spinner) findViewById(R.id.dictSpinner);
         selectDict.setPrompt("Your dictionaries");
@@ -114,6 +118,21 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 Intent intentTr = new Intent(this, TranslatorActivity.class);
                 startActivity(intentTr);
                 break;
+            case (R.id.deleteDict):
+                try {
+                    int item = selectDict.getSelectedItemPosition();
+                    DictList.deleteDict((String) selectDict.getSelectedItem());
+                    if (item > 0) {
+                        selectDict.setSelection(item - 1);
+                    } else if (!DictList.empty()) {
+                        selectDict.setSelection(item);
+                    }
+                    loadSettings();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Error with deleting this dictionary", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
             case (R.id.addDictButton):
                 Intent intentAD = new Intent(this, PopUpAddDict.class);
                 startActivity(intentAD);
@@ -165,7 +184,6 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         loadDict();
     }
 
-    //@RequiresApi(api = Build.VERSION_CODES.N)
     private void loadDictList() {
         String[] dicts = FileManager.readArray(this, FileManager.DICT_LIST);
         if (dicts != null) {
@@ -174,6 +192,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             }
         }
     }
+
     private void safeSettings() {
         FileManager.write(this, FileManager.DICT_LIST, DictList.getDictList());
     }

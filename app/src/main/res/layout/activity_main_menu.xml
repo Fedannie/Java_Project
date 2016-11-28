@@ -44,6 +44,13 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/addDictButton"
                 android:gravity="right|center_vertical|center_horizontal" />
+
+            <Button
+                android:text="Delete This Dictionary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deleteDict"
+                android:textSize="9sp" />
         </TableRow>
 
         <TableRow

@@ -38,7 +38,6 @@ public class FileManager {
         }
     }
 
-    //@RequiresApi(api = Build.VERSION_CODES.N)
     public static String[] readArray(Context cntx, String file) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(cntx.openFileInput(file)));
