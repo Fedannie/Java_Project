@@ -3,7 +3,9 @@ package project.fedorova.polyglotte;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import java.util.NoSuchElementException;
 
 import project.fedorova.polyglotte.data.DictList;
+import project.fedorova.polyglotte.data.FileManager;
 import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
@@ -25,6 +28,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     Button btnTrans;
     Button addDictBtn;
     Spinner selectDict;
+    //@RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,19 +55,21 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
         selectDict = (Spinner) findViewById(R.id.dictSpinner);
         selectDict.setPrompt("Your dictionaries");
-        loadDict();
+
+        loadSettings();
+        loadDictList();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        loadDict();
+        loadSettings();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadDict();
+        loadSettings();
     }
 
     @Override
@@ -76,6 +82,12 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
         safeDict();
+    }
+
+    protected void onDestroy() {
+        super.onPause();
+        safeDict();
+        safeSettings();
     }
 
     @Override
@@ -144,5 +156,25 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         SharedPreferences.Editor editor = sPref.edit();
         editor.putString(PreferenceVars.DICT_LANGUAGE, (String) selectDict.getSelectedItem());
         editor.apply();
+    }
+
+    private void loadSettings() {
+        sPref = getPreferences(MODE_PRIVATE);
+        PreferenceVars.nativeLang = sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG);
+
+        loadDict();
+    }
+
+    //@RequiresApi(api = Build.VERSION_CODES.N)
+    private void loadDictList() {
+        String[] dicts = FileManager.readArray(this, FileManager.DICT_LIST);
+        if (dicts != null) {
+            for (String s : dicts) {
+                DictList.addDict(s);
+            }
+        }
+    }
+    private void safeSettings() {
+        FileManager.write(this, FileManager.DICT_LIST, DictList.getDictList());
     }
 }
