@@ -11,6 +11,7 @@ import project.fedorova.polyglotte.translator.YandexTranslatorApi;
 import project.fedorova.polyglotte.translator.language.Language;
 
 public class Translate extends YandexTranslatorApi {
+    private static Translate instance;
 
     private static final String SERVICE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
     private static final String TRANSLATION_LABEL = "text";
@@ -36,23 +37,23 @@ public class Translate extends YandexTranslatorApi {
      * @return The translated String.
      * @throws Exception on error.
      */
-    public static String execute(final String text, final Language from, final Language to) throws Exception {
+    public String execute(final String text, final Language from, final Language to) throws Exception {
         setApiKey();
         validServiceState(text);
         final String params = PARAM_KEY
-                            + URLEncoder.encode(apiKey,ENCODING)
+                            + URLEncoder.encode(getApiKey(), ENCODING)
                             + PARAM_LANGS
-                            + URLEncoder.encode(from.toString(),ENCODING)
-                            + URLEncoder.encode("-",ENCODING)
-                            + URLEncoder.encode(to.toString(),ENCODING)
+                            + URLEncoder.encode(from.toString(), ENCODING)
+                            + URLEncoder.encode("-", ENCODING)
+                            + URLEncoder.encode(to.toString(), ENCODING)
                             + PARAM_TEXT
-                            + URLEncoder.encode(text,ENCODING);
+                            + URLEncoder.encode(text, ENCODING);
         final URL url = new URL(SERVICE_URL + params);
         String res = getPropArrString(url, TRANSLATION_LABEL).trim();
         return res.substring(2, res.length() - 2);
     }
 
-    private static void validServiceState(final String text) throws Exception {
+    private void validServiceState(final String text) throws Exception {
         final int byteLength = text.getBytes(ENCODING).length;
         if (byteLength > 10240) {
             throw new RuntimeException("TEXT_TOO_LARGE");
@@ -105,5 +106,18 @@ public class Translate extends YandexTranslatorApi {
             throw new NoSuchElementException();
         }
         return res;
+    }
+
+    public static Translate getInstance() {
+        Translate localInstance = instance;
+        if (localInstance == null) {
+            synchronized (Translate.class){
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new Translate();
+                }
+            }
+        }
+        return localInstance;
     }
 }

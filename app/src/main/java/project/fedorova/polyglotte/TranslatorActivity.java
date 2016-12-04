@@ -71,7 +71,8 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
     public void callTranslate() {
         translatePB.setVisibility(View.VISIBLE);
         try {
-            String translation = Translate.execute(fromET.getText().toString(), getLang(langFrom), getLang(langTo));
+            Translate translate = Translate.getInstance();
+            String translation = translate.execute(fromET.getText().toString(), getLang(langFrom), getLang(langTo));
             transTV.setText(translation);
         } catch (Exception e) {
             Toast.makeText(TranslatorActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();

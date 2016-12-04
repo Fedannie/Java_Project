@@ -24,7 +24,8 @@ public class PopUpAddDict extends Activity implements View.OnClickListener{
         lvMain.setAdapter(adapter);
         lvMain.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               if (DictList.addDict(langs[(int) id])) {
+                DictList dictList = DictList.getInstance();
+                if (dictList.addDict(langs[(int) id])) {
                     Toast.makeText(PopUpAddDict.this, langs[(int) id] + " dictionary was created.", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(PopUpAddDict.this, langs[(int) id] + " dictionary does already exist.", Toast.LENGTH_LONG).show();

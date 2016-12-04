@@ -3,9 +3,7 @@ package project.fedorova.polyglotte;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -96,6 +94,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        DictList dictList = DictList.getInstance();
         safeDict();
         switch(view.getId()) {
             case (R.id.exerciseButton):
@@ -121,10 +120,10 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             case (R.id.deleteDict):
                 try {
                     int item = selectDict.getSelectedItemPosition();
-                    DictList.deleteDict((String) selectDict.getSelectedItem());
+                    dictList.deleteDict((String) selectDict.getSelectedItem());
                     if (item > 0) {
                         selectDict.setSelection(item - 1);
-                    } else if (!DictList.empty()) {
+                    } else if (!dictList.empty()) {
                         selectDict.setSelection(item);
                     }
                     loadSettings();
@@ -143,9 +142,10 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     }
 
     private int getLastDict() throws NoSuchElementException{
+        DictList dictList = DictList.getInstance();
         sPref = getPreferences(MODE_PRIVATE);
         String language = sPref.getString(PreferenceVars.DICT_LANGUAGE, "");
-        String[] dictionaries = DictList.getDictList();
+        String[] dictionaries = dictList.getDictList();
         for (int i = 0; i < dictionaries.length; i++) {
             if (dictionaries[i].equals(language)) {
                 return i;
@@ -155,10 +155,11 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     }
 
     private void loadDict() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, DictList.getDictList());
+        DictList dictList = DictList.getInstance();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dictList.getDictList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectDict.setAdapter(adapter);
-        if (!DictList.empty()){
+        if (!dictList.empty()){
             selectDict.setSelection(getLastDict());
         }
         selectDict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -179,21 +180,24 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private void loadSettings() {
         sPref = getPreferences(MODE_PRIVATE);
-        PreferenceVars.nativeLang = sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG);
+        PreferenceVars prefVars = PreferenceVars.getInstance();
+        prefVars.setNativeLang(sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG));
 
         loadDict();
     }
 
     private void loadDictList() {
         String[] dicts = FileManager.readArray(this, FileManager.DICT_LIST);
+        DictList dictList = DictList.getInstance();
         if (dicts != null) {
             for (String s : dicts) {
-                DictList.addDict(s);
+                dictList.addDict(s);
             }
         }
     }
 
     private void safeSettings() {
-        FileManager.write(this, FileManager.DICT_LIST, DictList.getDictList());
+        DictList dictList = DictList.getInstance();
+        FileManager.write(this, FileManager.DICT_LIST, dictList.getDictList());
     }
 }

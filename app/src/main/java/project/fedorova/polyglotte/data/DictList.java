@@ -4,9 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DictList {
-    private static Set<String> dictList = new HashSet<String>();
+    private static volatile DictList instance;
 
-    public static boolean addDict(String language) {
+    private Set<String> dictList = new HashSet<String>();
+
+    public boolean addDict(String language) {
         if (!dictList.contains(language)) {
             dictList.add(language);
             return true;
@@ -14,15 +16,30 @@ public class DictList {
         return false;
     }
 
-    public static String[] getDictList() {
+    public String[] getDictList() {
         return dictList.toArray(new String[dictList.size()]);
     }
 
-    public static void deleteDict(String language){
+    public void deleteDict(String language){
         dictList.remove(language);
     }
 
-    public static boolean empty() {
+    public boolean empty() {
         return dictList.size() > 0;
+    }
+
+    private DictList(){}
+
+    public static DictList getInstance() {
+        DictList localInstance = instance;
+        if (localInstance == null) {
+            synchronized (DictList.class){
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new DictList();
+                }
+            }
+        }
+        return localInstance;
     }
 }

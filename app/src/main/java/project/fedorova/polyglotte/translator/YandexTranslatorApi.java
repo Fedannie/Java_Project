@@ -16,17 +16,17 @@ import static android.content.ContentValues.TAG;
 
 public class YandexTranslatorApi {
     public static final String ENCODING = "UTF-8";
-    public static String apiKey;
-    public static String referrer;
+    private String apiKey;
+    private String referrer;
     public static final String PARAM_KEY = "key=";
     public static final String PARAM_LANGS = "&lang=";
     public static final String PARAM_TEXT = "&text=";
 
-    public static void setApiKey() {
+    public void setApiKey() {
         apiKey = ApiKey.YANDEX_API_KEY;
     }
 
-    public static void setReferrer(final String pReferrer) {
+    public void setReferrer(final String pReferrer) {
         referrer = pReferrer;
     }
 
@@ -37,7 +37,7 @@ public class YandexTranslatorApi {
      * @return The translated String.
      * @throws Exception on error.
      */
-    private static String getResponse(final URL url) throws Exception {
+    private  String getResponse(final URL url) throws Exception {
         final HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
         if (referrer != null) {
             uc.setRequestProperty("referrer", referrer);
@@ -88,7 +88,7 @@ public class YandexTranslatorApi {
      * Forms a request, sends it using the GET method and returns the contents of the array of strings
      * with the given label, with multiple strings concatenated.
      */
-    public static String getPropArrString(final URL url, final String jsonValProperty) throws Exception {
+    public String getPropArrString(final URL url, final String jsonValProperty) throws Exception {
         final String[] combinedTranslations = {"", ""};
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -137,9 +137,18 @@ public class YandexTranslatorApi {
         return values;
     }
 
-    public static  void validServiceState() throws Exception {
+    public void validServiceState() throws Exception {
         if (apiKey == null || apiKey.length() < 27) {
             throw new RuntimeException("INVALID_API_KEY - Please set the API Key with your Yandex API Key");
         }
+    }
+
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public String getReferrer() {
+        return referrer;
     }
 }
