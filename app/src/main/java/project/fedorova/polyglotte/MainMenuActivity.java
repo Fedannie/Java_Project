@@ -14,7 +14,7 @@ import android.widget.Toast;
 import java.util.NoSuchElementException;
 
 import project.fedorova.polyglotte.data.DictList;
-import project.fedorova.polyglotte.data.FileManager;
+import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
@@ -27,7 +27,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     Button addDictBtn;
     Button deleteDictBtn;
     Spinner selectDict;
-    //@RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -187,7 +187,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     }
 
     private void loadDictList() {
-        String[] dicts = FileManager.readArray(this, FileManager.DICT_LIST);
+        ReadWriteManager rwManager = ReadWriteManager.getInstance();
+        String[] dicts = rwManager.convertStringToArray(rwManager.readFromFile(this, ReadWriteManager.DICT_LIST));
         DictList dictList = DictList.getInstance();
         if (dicts != null) {
             for (String s : dicts) {
@@ -198,6 +199,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private void safeSettings() {
         DictList dictList = DictList.getInstance();
-        FileManager.write(this, FileManager.DICT_LIST, dictList.getDictList());
+        ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
+        readWriteManager.writeToFile(this, ReadWriteManager.DICT_LIST, readWriteManager.convertArrayToString(dictList.getDictList()));
     }
 }
