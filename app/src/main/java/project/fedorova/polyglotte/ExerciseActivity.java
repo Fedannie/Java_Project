@@ -20,30 +20,8 @@ public class ExerciseActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise);
-        wholeBtn = (Button) findViewById(R.id.startExercise);
-        wholeBtn.setOnClickListener(this);
-        prevExerciseBtn = (Button) findViewById(R.id.prev);
-        wholeBtn.setOnClickListener(this);
-        nextExerciseBtn = (Button) findViewById(R.id.next);
-        wholeBtn.setOnClickListener(this);
-        exerciseScrollView = (CenterLockHorizontalScrollview) findViewById(R.id.scrollView);
-        ExerciseListAdapter exerciseLA = new ExerciseListAdapter(this);
-        exerciseScrollView.setAdapter(this, exerciseLA);
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.prev) {
-            if (currIndex != 0) {
-                currIndex--;
-                exerciseScrollView.setCenter(currIndex);
-            }
-        } else if (v.getId() == R.id.next) {
-
-            if (currIndex < ExerciseListAdapter.SIZE) {
-                exerciseScrollView.setCenter(currIndex);
-                currIndex++;
-            }
-        }
-    }
+    public void onClick(View v) {}
 }

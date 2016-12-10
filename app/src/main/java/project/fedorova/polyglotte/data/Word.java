@@ -8,9 +8,9 @@ import java.util.Set;
 
 public class Word implements Serializable{
     private long ID = -1;
-    private Set<String> themes;
+    private Set<String> themes = null;
     private String word;
-    private Set<String> translations;
+    private Set<String> translations = null;
 
     public Word(long id, String newWord, String... newTranslations) {
         word = newWord;
@@ -61,11 +61,11 @@ public class Word implements Serializable{
     }
 
     public String[] getTranslations() {
-        return (String[]) translations.toArray();
+        return translations.toArray(new String[]{});
     }
 
     public String[] getThemes() {
-        return (String[]) themes.toArray();
+        return themes.toArray(new String[]{});
     }
 
     public String getWord() {
