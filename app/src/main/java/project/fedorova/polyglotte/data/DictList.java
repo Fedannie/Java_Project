@@ -16,8 +16,8 @@ public class DictList {
         return false;
     }
 
-    public String[] getDictList() {
-        return dictList.toArray(new String[dictList.size()]);
+    public Set<String> getDictList() {
+        return dictList;
     }
 
     public void deleteDict(String language){

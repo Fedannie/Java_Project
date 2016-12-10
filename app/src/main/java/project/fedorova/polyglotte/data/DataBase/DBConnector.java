@@ -122,8 +122,8 @@ public class DBConnector {
             ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
             cursor.moveToFirst();
             String word = cursor.getString(NUM_WORD_TITLE);
-            Set<String> translations = readWriteManager.convertStringToArray(cursor.getString(NUM_WORD_TRANSLATIONS));
-            Set<String> themes = readWriteManager.convertStringToArray(cursor.getString(NUM_WORD_THEMES));
+            Set<String> translations = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_TRANSLATIONS));
+            Set<String> themes = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_THEMES));
             cursor.close();
             database.setTransactionSuccessful();
             database.endTransaction();

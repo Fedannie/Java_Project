@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.ReadWriteManager;
@@ -145,7 +146,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         DictList dictList = DictList.getInstance();
         sPref = getPreferences(MODE_PRIVATE);
         String language = sPref.getString(PreferenceVars.DICT_LANGUAGE, "");
-        String[] dictionaries = dictList.getDictList();
+        String[] dictionaries = dictList.getDictList().toArray(new String[]{});
         for (int i = 0; i < dictionaries.length; i++) {
             if (dictionaries[i].equals(language)) {
                 return i;
@@ -156,7 +157,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private void loadDict() {
         DictList dictList = DictList.getInstance();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dictList.getDictList());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dictList.getDictList().toArray(new String[]{}));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectDict.setAdapter(adapter);
         if (!dictList.empty()){
@@ -188,7 +189,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private void loadDictList() {
         ReadWriteManager rwManager = ReadWriteManager.getInstance();
-        String[] dicts = rwManager.convertStringToArray(rwManager.readFromFile(this, ReadWriteManager.DICT_LIST));
+        Set<String> dicts = rwManager.convertStringToSet(rwManager.readFromFile(this, ReadWriteManager.DICT_LIST));
         DictList dictList = DictList.getInstance();
         if (dicts != null) {
             for (String s : dicts) {
@@ -200,6 +201,6 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     private void safeSettings() {
         DictList dictList = DictList.getInstance();
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
-        readWriteManager.writeToFile(this, ReadWriteManager.DICT_LIST, readWriteManager.convertArrayToString(dictList.getDictList()));
+        readWriteManager.writeToFile(this, ReadWriteManager.DICT_LIST, readWriteManager.convertSetToString(dictList.getDictList()));
     }
 }

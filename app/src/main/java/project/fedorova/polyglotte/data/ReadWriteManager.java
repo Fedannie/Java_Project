@@ -65,7 +65,7 @@ public class ReadWriteManager {
         return Arrays.toString(content.toArray()).replace("[", "").replace("]", "");
     }
 
-    public Set<String> convertStringToArray(String content) {
+    public Set<String> convertStringToSet(String content) {
         Set<String> res = new HashSet<>();
         res.addAll(Arrays.asList(content.split(", ")));
         return res;
