@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,10 +54,10 @@ public class DBConnector {
             cv.put(WORD_ID, word.getID());
             cv.put(WORD_TITLE, word.getWord());
             if (word.getTranslations() != null) {
-                cv.put(WORD_TRANSLATIONS, readWriteManager.convertArrayToString(word.getTranslations()));
+                cv.put(WORD_TRANSLATIONS, readWriteManager.convertSetToString(word.getTranslations()));
             }
             if (word.getThemes() != null) {
-                cv.put(WORD_THEMES, readWriteManager.convertArrayToString(word.getThemes()));
+                cv.put(WORD_THEMES, readWriteManager.convertSetToString(word.getThemes()));
             }
             database.insertOrThrow(WORDS_TABLE_NAME, null, cv);
             if (word.getThemes() != null) {
@@ -83,10 +82,10 @@ public class DBConnector {
             ContentValues cv = new ContentValues();
             cv.put(WORD_TITLE, word.getWord());
             if (word.getTranslations() != null) {
-                cv.put(WORD_TRANSLATIONS, readWriteManager.convertArrayToString(word.getTranslations()));
+                cv.put(WORD_TRANSLATIONS, readWriteManager.convertSetToString(word.getTranslations()));
             }
             if (word.getThemes() != null) {
-                cv.put(WORD_THEMES, readWriteManager.convertArrayToString(word.getThemes()));
+                cv.put(WORD_THEMES, readWriteManager.convertSetToString(word.getThemes()));
             }
             database.update(WORDS_TABLE_NAME, cv, WORD_ID + " = ?", new String[]{String.valueOf(word.getID())});
             database.delete(THEMES_TABLE_NAME, THEME_ID + " = ?", new String[]{String.valueOf(word.getID())});
@@ -122,14 +121,12 @@ public class DBConnector {
             ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
             cursor.moveToFirst();
             String word = cursor.getString(NUM_WORD_TITLE);
-            String translations = cursor.getString(NUM_WORD_TRANSLATIONS);
-            String themes = cursor.getString(NUM_WORD_THEMES);
-            int size = readWriteManager.convertStringToArray(translations).length;
-            String[] all = readWriteManager.convertStringToArray(translations + "," + themes);
+            Set<String> translations = readWriteManager.convertStringToArray(cursor.getString(NUM_WORD_TRANSLATIONS));
+            Set<String> themes = readWriteManager.convertStringToArray(cursor.getString(NUM_WORD_THEMES));
             cursor.close();
             database.setTransactionSuccessful();
             database.endTransaction();
-            return new Word(id, word, size, all);
+            return new Word(id, word, translations, themes);
         } else {
             return null;
         }

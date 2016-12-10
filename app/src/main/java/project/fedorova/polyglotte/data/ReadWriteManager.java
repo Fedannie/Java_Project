@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ReadWriteManager {
 
@@ -59,13 +61,14 @@ public class ReadWriteManager {
         return null;
     }
 
-    public String convertArrayToString(String... content) {
-        return Arrays.toString(content).replace("[", "").replace("]", "");
+    public String convertSetToString(Set<String> content) {
+        return Arrays.toString(content.toArray()).replace("[", "").replace("]", "");
     }
 
-    public String[] convertStringToArray(String content) {
-        List<String> res = Arrays.asList(content.split(", "));
-        return Arrays.copyOf(res.toArray(), res.size(), String[].class);
+    public Set<String> convertStringToArray(String content) {
+        Set<String> res = new HashSet<>();
+        res.addAll(Arrays.asList(content.split(", ")));
+        return res;
     }
 
     public static ReadWriteManager getInstance() {

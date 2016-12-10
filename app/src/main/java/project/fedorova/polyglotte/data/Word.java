@@ -12,29 +12,18 @@ public class Word implements Serializable{
     private String word;
     private Set<String> translations = null;
 
-    public Word(long id, String newWord, String... newTranslations) {
+    public Word(long id, String newWord, Set<String> newTranslations, Set<String> newThemes) {
         word = newWord;
         ID = id;
-        translations = new HashSet<String>();
-        themes = new HashSet<String>();
-        for (String s : newTranslations) {
-            translations.add(s);
+        if (newTranslations == null) {
+            translations = new HashSet<String>();
+        } else {
+            translations = newTranslations;
         }
-    }
-
-    public Word(long id, String newWord, int length, String... newTranslations) {
-        word = newWord;
-        ID = id;
-        translations = new HashSet<String>();
-        themes = new HashSet<String>();
-        int i = 0;
-        for (String s : newTranslations){
-            if (i < length){
-                translations.add(s);
-            } else {
-                themes.add(s);
-            }
-            i++;
+        if (newThemes == null) {
+            themes = new HashSet<String>();
+        } else {
+            themes = newThemes;
         }
     }
 
@@ -42,17 +31,17 @@ public class Word implements Serializable{
         word = newWord;
     }
 
-    public void changeThemes(String... newThemes) {
+    public void changeThemes(Set<String> newThemes) {
         themes.clear();
-        themes.addAll(Arrays.asList(newThemes));
+        themes = newThemes;
     }
 
-    public void changeTranslations(String... newTranslations) {
+    public void changeTranslations(Set<String> newTranslations) {
         translations.clear();
-        translations.addAll(Arrays.asList(newTranslations));
+        translations = newTranslations;
     }
 
-    public boolean checkTheme(String theme) {
+    public boolean hasTheme(String theme) {
         return themes.contains(theme);
     }
 
@@ -60,12 +49,12 @@ public class Word implements Serializable{
         return translations.contains(translation);
     }
 
-    public String[] getTranslations() {
-        return translations.toArray(new String[]{});
+    public Set<String> getTranslations() {
+        return translations;
     }
 
-    public String[] getThemes() {
-        return themes.toArray(new String[]{});
+    public Set<String> getThemes() {
+        return themes;
     }
 
     public String getWord() {
