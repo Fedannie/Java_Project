@@ -182,8 +182,15 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     private void loadSettings() {
         sPref = getPreferences(MODE_PRIVATE);
         PreferenceVars prefVars = PreferenceVars.getInstance();
-        prefVars.setNativeLang(sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG));
-
+        if (PreferenceVars.YES.equals(sPref.getString(PreferenceVars.FIRST_TIME, PreferenceVars.YES))) {
+            Intent intentNL = new Intent(this, PopUpSelectNativeLanguage.class);
+            startActivity(intentNL);
+            SharedPreferences.Editor editor = sPref.edit();
+            editor.putString(PreferenceVars.FIRST_TIME, PreferenceVars.NO);
+            editor.apply();
+        } else {
+            prefVars.setNativeLang(sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG));
+        }
         loadDict();
     }
 

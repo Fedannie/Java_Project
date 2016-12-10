@@ -52,6 +52,11 @@
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpAddDict">
         </activity>
+
+        <activity
+            android:theme="@android:style/Theme.Dialog"
+            android:name=".PopUpSelectNativeLanguage">
+        </activity>
     </application>
 
 </manifest>

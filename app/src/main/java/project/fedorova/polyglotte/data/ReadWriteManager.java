@@ -1,6 +1,7 @@
 package project.fedorova.polyglotte.data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -16,8 +17,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ReadWriteManager {
+import static android.content.Context.MODE_PRIVATE;
 
+public class ReadWriteManager {
+    private SharedPreferences sPref;
     public static volatile ReadWriteManager instance;
 
     public static final String DICT_LIST = "dictlist";
@@ -83,4 +86,5 @@ public class ReadWriteManager {
         }
         return localInstance;
     }
+
 }
