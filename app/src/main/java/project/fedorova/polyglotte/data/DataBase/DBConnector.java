@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
@@ -133,32 +135,12 @@ public class DBConnector {
         }
     }
 
-    public ArrayList<Word> getAllWords() {
+    public Cursor getAllWords() {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query(WORDS_TABLE_NAME, WORDS_COLUMNS, null, null, null, null, WORD_TITLE);
-
-        ArrayList<Word> words = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            if (!cursor.isAfterLast()) {
-                do {
-                    ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
-                    long id = cursor.getLong(NUM_WORD_ID);
-                    String word = cursor.getString(NUM_WORD_TITLE);
-                    String translations = cursor.getString(NUM_WORD_TRANSLATIONS);
-                    String themes = cursor.getString(NUM_WORD_THEMES);
-                    int size = readWriteManager.convertStringToArray(translations).length;
-                    String[] all = readWriteManager.convertStringToArray(translations + "," + themes);
-                    words.add(new Word(id, word, size, all));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-            return words;
-        } else {
-            return null;
-        }
+        return database.query(WORDS_TABLE_NAME, WORDS_COLUMNS, null, null, null, null, WORD_TITLE);
     }
 
-    public ArrayList<Word> getWordsByTheme(ArrayList<String> themes) {
+    public Cursor getWordsByTheme(Set<String> themes) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         StringBuilder selectionBuilder = null;
         String[] selectionArgs = themes.toArray(new String[]{});
@@ -169,39 +151,20 @@ public class DBConnector {
             selectionBuilder.append(THEMES_TABLE_NAME + "." + THEME_TITLE + " = ?");
         }
         String selection = selectionBuilder == null ? null : selectionBuilder.toString();
-        Cursor cursor = database.query(WORDS_TABLE_NAME + "inner join " +
+        return database.query(WORDS_TABLE_NAME + "inner join " +
                                        THEMES_TABLE_NAME + " on " +
                                        WORDS_TABLE_NAME + "." + " = " +
                                        THEMES_TABLE_NAME + "." + THEME_ID,
                                        WORDS_COLUMNS, selection, selectionArgs, WORD_ID,
                                        "count(" + THEMES_TABLE_NAME + "." + THEME_TITLE + ") = " +
                                         String.valueOf(themes.size()), null);
-        ArrayList<Word> words = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            if (!cursor.isAfterLast()) {
-                do {
-                    ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
-                    long id = cursor.getLong(NUM_WORD_ID);
-                    String word = cursor.getString(NUM_WORD_TITLE);
-                    String translations = cursor.getString(NUM_WORD_TRANSLATIONS);
-                    String thms = cursor.getString(NUM_WORD_THEMES);
-                    int size = readWriteManager.convertStringToArray(translations).length;
-                    String[] all = readWriteManager.convertStringToArray(translations + "," + thms);
-                    words.add(new Word(id, word, size, all));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-            return words;
-        } else {
-            return null;
-        }
     }
 
-    public ArrayList<String> getThemesByWord(long id) {
+    public Set<String> getThemesByWord(long id) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(THEMES_TABLE_NAME, new String[]{THEME_TITLE}, THEME_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
-        ArrayList<String> themes = new ArrayList<>();
+        Set<String> themes = new HashSet<>();
         while (cursor.moveToNext()) {
             themes.add(cursor.getString(NUM_THEME_TITLE));
         }
