@@ -22,9 +22,23 @@
         android:id="@+id/selectedLang"
         android:layout_weight="0.03" />
 
+    <Button
+        android:text="Whole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/wholeExercise"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="120dp" />
+
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TableRow
             android:layout_width="match_parent"
@@ -102,15 +116,5 @@
                 android:id="@+id/correctTheMistake" />
         </TableRow>
     </TableLayout>
-
-    <Button
-        android:text="Whole"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/wholeExercise"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="120dp" />
 
 </RelativeLayout>
