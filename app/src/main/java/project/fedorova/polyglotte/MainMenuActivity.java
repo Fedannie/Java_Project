@@ -19,15 +19,16 @@ import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
-    SharedPreferences sPref;
-    Button btnExercise;
-    Button btnPref;
-    Button btnDict;
-    Button btnPhrase;
-    Button btnTrans;
-    Button addDictBtn;
-    Button deleteDictBtn;
-    Spinner selectDict;
+    private SharedPreferences sPref;
+    private Button btnExercise;
+    private Button btnPref;
+    private Button btnDict;
+    private Button btnPhrase;
+    private Button btnTrans;
+    private Button addDictBtn;
+    private Button deleteDictBtn;
+    private Button clearPrefBtn;
+    private Spinner selectDict;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,9 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
         deleteDictBtn = (Button) findViewById(R.id.deleteDict);
         deleteDictBtn.setOnClickListener(this);
+
+        clearPrefBtn = (Button) findViewById(R.id.clearPreferences);
+        clearPrefBtn.setOnClickListener(this);
 
         selectDict = (Spinner) findViewById(R.id.dictSpinner);
         selectDict.setPrompt("Your dictionaries");
@@ -117,6 +121,12 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             case (R.id.translatorButton):
                 Intent intentTr = new Intent(this, TranslatorActivity.class);
                 startActivity(intentTr);
+                break;
+            case (R.id.clearPreferences):
+                sPref = getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor = sPref.edit();
+                editor.clear();
+                editor.apply();
                 break;
             case (R.id.deleteDict):
                 try {
