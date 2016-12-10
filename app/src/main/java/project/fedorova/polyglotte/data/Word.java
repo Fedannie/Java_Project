@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class Word implements Serializable{
-    private long ID = -1;
+    private UUID ID;
     private Set<String> themes = null;
     private String word;
     private Set<String> translations = null;
 
-    public Word(long id, String newWord, Set<String> newTranslations, Set<String> newThemes) {
+    public Word(UUID id, String newWord, Set<String> newTranslations, Set<String> newThemes) {
         word = newWord;
         ID = id;
         if (newTranslations == null) {
@@ -49,6 +50,10 @@ public class Word implements Serializable{
         return translations.contains(translation);
     }
 
+    public static Word createCurrentWord() {
+        return new Word(UUID.randomUUID(), "", null, null);
+    }
+
     public Set<String> getTranslations() {
         return translations;
     }
@@ -61,7 +66,7 @@ public class Word implements Serializable{
         return word;
     }
 
-    public long getID() {
+    public UUID getID() {
         return ID;
     }
 }

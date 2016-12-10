@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
@@ -51,7 +52,7 @@ public class DBConnector {
             database.beginTransaction();
             ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
             ContentValues cv = new ContentValues();
-            cv.put(WORD_ID, word.getID());
+            cv.put(WORD_ID, word.getID().toString());
             cv.put(WORD_TITLE, word.getWord());
             if (word.getTranslations() != null) {
                 cv.put(WORD_TRANSLATIONS, readWriteManager.convertSetToString(word.getTranslations()));
@@ -63,7 +64,7 @@ public class DBConnector {
             if (word.getThemes() != null) {
                 for (String theme : word.getThemes()) {
                     ContentValues cvTheme = new ContentValues();
-                    cvTheme.put(THEME_ID, word.getID());
+                    cvTheme.put(THEME_ID, word.getID().toString());
                     cvTheme.put(THEME_TITLE, theme);
                     database.insertOrThrow(THEMES_TABLE_NAME, null, cvTheme);
                 }
@@ -92,7 +93,7 @@ public class DBConnector {
             if (word.getThemes() != null) {
                 for (String theme : word.getThemes()) {
                     ContentValues cvThemes = new ContentValues();
-                    cvThemes.put(THEME_ID, word.getID());
+                    cvThemes.put(THEME_ID, word.getID().toString());
                     cvThemes.put(THEME_TITLE, theme);
                     database.insertOrThrow(THEMES_TABLE_NAME, null, cvThemes);
                 }
@@ -108,12 +109,12 @@ public class DBConnector {
         return database.delete(WORDS_TABLE_NAME, null, null);
     }
 
-    public void delete(long id) {
+    public void delete(UUID id) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         database.delete(WORDS_TABLE_NAME, WORD_ID + " = ?", new String[] {String.valueOf(id)});
     }
 
-    public Word getWord(long id) {
+    public Word getWord(UUID id) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         database.beginTransaction();
         Cursor cursor = database.query(WORDS_TABLE_NAME, WORDS_COLUMNS, WORD_ID + " = ?", new String[] {String.valueOf(id)}, null, null, null);
@@ -178,14 +179,14 @@ public class DBConnector {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String wordsQuery = "CREATE TABLE " + WORDS_TABLE_NAME + " (" +
-                    WORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    WORD_ID + " TEXT NOT NULL, " +
                     WORD_TITLE + " TEXT NOT NULL, " +
                     WORD_TRANSLATIONS + " TEXT, " +
                     WORD_THEMES + " TEXT);";
             db.execSQL(wordsQuery);
 
             String themeQuery = "CREATE TABLE " + THEMES_TABLE_NAME + " (" +
-                    THEME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    THEME_ID + " TEXT NOT NULL, " +
                     THEME_TITLE + " TEXT NOT NULL);";
             db.execSQL(themeQuery);
         }
