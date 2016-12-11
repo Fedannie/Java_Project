@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/wordinput"
+        android:animateLayoutChanges="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Your word" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:id="@+id/translationinput"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wordinput"
+        android:animateLayoutChanges="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Main translation" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/translationinput"
+        android:id="@+id/extratranslationsinput"
+        android:animateLayoutChanges="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Extra translations" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:text="+ Theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addThemeToWord"
+        android:layout_below="@+id/extratranslationsinput"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="18dp"
+        android:layout_marginEnd="18dp" />
+
+    <Button
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/saveWord" />
+
+
+</RelativeLayout>

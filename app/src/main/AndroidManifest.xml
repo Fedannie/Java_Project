@@ -41,10 +41,6 @@
         </activity>
 
         <activity
-            android:name=".AddWordActivity">
-        </activity>
-
-        <activity
             android:name=".PopUpFilterThemes">
         </activity>
 
@@ -56,6 +52,11 @@
         <activity
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpSelectNativeLanguage">
+        </activity>
+
+        <activity
+            android:theme="@android:style/Theme.Dialog"
+            android:name=".PopUpAddNewWord">
         </activity>
     </application>
 
