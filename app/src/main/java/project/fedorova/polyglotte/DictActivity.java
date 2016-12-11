@@ -71,7 +71,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case (R.id.addWordFAB):
-                Intent intentAWA = new Intent(this, AddWordActivity.class);
+                Intent intentAWA = new Intent(this, PopUpAddNewWord.class);
                 startActivity(intentAWA);
                 break;
             case (R.id.filterButton):
