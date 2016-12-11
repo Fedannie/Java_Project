@@ -22,15 +22,17 @@ public class DBConnector {
 
     private static final String WORD_ID = "_id";
     private static final String WORD_TITLE = "title";
+    private static final String WORD_MAIN_TRANSLATION = "mainTranslation";
     private static final String WORD_TRANSLATIONS = "translations";
     private static final String WORD_THEMES = "theme";
 
     public static final int NUM_WORD_ID = 0;
     public static final int NUM_WORD_TITLE = 1;
-    public static final int NUM_WORD_TRANSLATIONS = 2;
-    public static final int NUM_WORD_THEMES = 3;
+    public static final int NUM_WORD_MAIN_TRANSLATION = 2;
+    public static final int NUM_WORD_TRANSLATIONS = 3;
+    public static final int NUM_WORD_THEMES = 4;
 
-    private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_TITLE, WORD_TRANSLATIONS, WORD_THEMES};
+    private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_MAIN_TRANSLATION, WORD_TITLE, WORD_TRANSLATIONS, WORD_THEMES};
 
     private static final String THEMES_TABLE_NAME = "themes";
 
@@ -54,6 +56,7 @@ public class DBConnector {
             ContentValues cv = new ContentValues();
             cv.put(WORD_ID, word.getID().toString());
             cv.put(WORD_TITLE, word.getWord());
+            cv.put(WORD_MAIN_TRANSLATION, word.getMainTranslation());
             if (word.getTranslations() != null) {
                 cv.put(WORD_TRANSLATIONS, readWriteManager.convertSetToString(word.getTranslations()));
             }
@@ -82,6 +85,7 @@ public class DBConnector {
             ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
             ContentValues cv = new ContentValues();
             cv.put(WORD_TITLE, word.getWord());
+            cv.put(WORD_MAIN_TRANSLATION, word.getMainTranslation());
             if (word.getTranslations() != null) {
                 cv.put(WORD_TRANSLATIONS, readWriteManager.convertSetToString(word.getTranslations()));
             }
@@ -122,12 +126,13 @@ public class DBConnector {
             ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
             cursor.moveToFirst();
             String word = cursor.getString(NUM_WORD_TITLE);
+            String mainTranslation = cursor.getString(NUM_WORD_MAIN_TRANSLATION);
             Set<String> translations = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_TRANSLATIONS));
             Set<String> themes = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_THEMES));
             cursor.close();
             database.setTransactionSuccessful();
             database.endTransaction();
-            return new Word(id, word, translations, themes);
+            return new Word(id, word, mainTranslation, translations, themes);
         } else {
             return null;
         }
@@ -158,10 +163,10 @@ public class DBConnector {
                                         String.valueOf(themes.size()), null);
     }
 
-    public Set<String> getThemesByWord(long id) {
+    public Set<String> getThemesByWord(UUID id) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(THEMES_TABLE_NAME, new String[]{THEME_TITLE}, THEME_ID + " = ?",
-                new String[]{String.valueOf(id)}, null, null, null);
+                new String[]{id.toString()}, null, null, null);
         Set<String> themes = new HashSet<>();
         while (cursor.moveToNext()) {
             themes.add(cursor.getString(NUM_THEME_TITLE));
@@ -181,6 +186,7 @@ public class DBConnector {
             String wordsQuery = "CREATE TABLE " + WORDS_TABLE_NAME + " (" +
                     WORD_ID + " TEXT NOT NULL, " +
                     WORD_TITLE + " TEXT NOT NULL, " +
+                    WORD_MAIN_TRANSLATION + " TEXT NOT NULL, " +
                     WORD_TRANSLATIONS + " TEXT, " +
                     WORD_THEMES + " TEXT);";
             db.execSQL(wordsQuery);

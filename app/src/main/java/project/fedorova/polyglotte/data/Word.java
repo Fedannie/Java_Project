@@ -11,10 +11,12 @@ public class Word implements Serializable{
     private UUID ID;
     private Set<String> themes = null;
     private String word;
+    private String mainTranslation;
     private Set<String> translations = null;
 
-    public Word(UUID id, String newWord, Set<String> newTranslations, Set<String> newThemes) {
+    public Word(UUID id, String newWord, String newMainTranslation, Set<String> newTranslations, Set<String> newThemes) {
         word = newWord;
+        mainTranslation = newMainTranslation;
         ID = id;
         if (newTranslations == null) {
             translations = new HashSet<String>();
@@ -30,6 +32,10 @@ public class Word implements Serializable{
 
     public void changeWord(String newWord) {
         word = newWord;
+    }
+
+    public void changeMainTranslation(String translation) {
+        mainTranslation = translation;
     }
 
     public void changeThemes(Set<String> newThemes) {
@@ -50,12 +56,12 @@ public class Word implements Serializable{
         return translations.contains(translation);
     }
 
-    public static Word createCurrentWord() {
-        return new Word(UUID.randomUUID(), "", null, null);
-    }
-
     public Set<String> getTranslations() {
         return translations;
+    }
+
+    public String getMainTranslation() {
+        return mainTranslation;
     }
 
     public Set<String> getThemes() {

@@ -48,11 +48,6 @@ public class DictActivity extends Activity implements View.OnClickListener {
         repeatAllBtn = (Button) findViewById(R.id.repeatButton);
         repeatAllBtn.setOnClickListener(this);
 
-        Set<String> hs = new HashSet<>();
-        hs.add("ap");
-        hs.add("ple");
-        wordManager = new DBConnector(this);
-        wordManager.insertWord(new Word(UUID.randomUUID(), "Apple", hs, null));
         cursor = wordManager.getAllWords();
         startManagingCursor(cursor);
 
