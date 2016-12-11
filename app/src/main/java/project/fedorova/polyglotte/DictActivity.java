@@ -1,30 +1,62 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.app.ListActivity;
+import android.database.Cursor;
+import android.os.StrictMode;
 import android.view.ViewGroup.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.Word;
 
 public class DictActivity extends Activity implements View.OnClickListener {
+    private Button repeatAllBtn;
     private Button filterBtn;
+    private DBConnector wordManager;
+    private WordListAdapter wordListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dictionary);
 
-        FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
+                FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
         addWordBtn.setOnClickListener(this);
         filterBtn = (Button) findViewById(R.id.filterButton);
         filterBtn.setOnClickListener(this);
+
+        repeatAllBtn = (Button) findViewById(R.id.repeatButton);
+        repeatAllBtn.setOnClickListener(this);
+
+        ListView wordList = (ListView) findViewById(R.id.wordList);
+        wordListAdapter = new WordListAdapter(this, null, 0);
+        wordList.setAdapter(wordListAdapter);
+        wordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(DictActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        wordManager = new DBConnector(this);
+
     }
     @Override
     public void onClick(View view) {
@@ -36,9 +68,15 @@ public class DictActivity extends Activity implements View.OnClickListener {
             case (R.id.filterButton):
                 showPopup();
                 break;
+            case (R.id.repeatButton):
+                break;
             default:
                 break;
         }
+    }
+
+    public void onListItemClick (ListView parent, View v, int position, long id) {
+        //Toast.makeText (getApplicationContext(), mSign[position], Toast.LENGTH_SHORT).show();
     }
 
     private PopupWindow pw;
@@ -53,5 +91,43 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 LayoutParams.WRAP_CONTENT,
                 false);
         popupWindow.showAsDropDown(filterBtn, 50, -30);
+    }
+
+    private static class WordListAdapter extends CursorAdapter {
+        public WordListAdapter (Context context, Cursor cursor, int flags) {
+            super(context, cursor, flags);
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            View view = LayoutInflater.from(context).inflate(R.layout.wordlistitem, parent, false);
+            ViewHolder viewHolder = new ViewHolder((TextView) view.findViewById(R.id.wordTV), (TextView) view.findViewById(R.id.translationsTV));
+            view.setTag(viewHolder);
+            return view;
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            ViewHolder viewHolder = (ViewHolder) view.getTag();
+
+            TextView wordTV = viewHolder.wordTV;
+            String word = cursor.getString(DBConnector.NUM_WORD_TITLE);
+            wordTV.setText(word);
+
+            TextView translationsTV = viewHolder.translationsTV;
+            String translations = cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
+            translationsTV.setText(translations);
+        }
+
+        private static class ViewHolder {
+            public final TextView wordTV;
+            public final TextView translationsTV;
+
+            public ViewHolder(TextView word, TextView translations) {
+                wordTV = word;
+                translationsTV= translations;
+            }
+
+        }
     }
 }

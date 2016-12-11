@@ -8,11 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import project.fedorova.polyglotte.R;
-import project.fedorova.polyglotte.excercise.Exercise;
+import project.fedorova.polyglotte.exercise.Exercise;
 
 public class ExerciseListAdapter extends BaseAdapter {
     private ArrayList<Exercise> exerciseList;

@@ -25,10 +25,10 @@ public class DBConnector {
     private static final String WORD_TRANSLATIONS = "translations";
     private static final String WORD_THEMES = "theme";
 
-    private static final int NUM_WORD_ID = 0;
-    private static final int NUM_WORD_TITLE = 1;
-    private static final int NUM_WORD_TRANSLATIONS = 2;
-    private static final int NUM_WORD_THEMES = 3;
+    public static final int NUM_WORD_ID = 0;
+    public static final int NUM_WORD_TITLE = 1;
+    public static final int NUM_WORD_TRANSLATIONS = 2;
+    public static final int NUM_WORD_THEMES = 3;
 
     private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_TITLE, WORD_TRANSLATIONS, WORD_THEMES};
 
@@ -37,8 +37,8 @@ public class DBConnector {
     private static final String THEME_ID = "_id";
     private static final String THEME_TITLE = "title";
 
-    private static final int NUM_THEME_ID = 0;
-    private static final int NUM_THEME_TITLE = 1;
+    public static final int NUM_THEME_ID = 0;
+    public static final int NUM_THEME_TITLE = 1;
 
     private OpenHelper dbHelper;
 

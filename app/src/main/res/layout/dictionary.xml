@@ -49,12 +49,21 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="0.69"
             android:layout_below="@+id/repeatButton"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_height="482dp">
+
+            <Button
+                android:text="Repeat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/repeatButton"
+                android:layout_weight="0.00"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
             <Button
                 android:text="Filter Themes"
@@ -65,15 +74,13 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
-            <Button
-                android:text="Repeat"
+            <ListView
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/repeatButton"
-                android:layout_weight="0.00"
-                android:layout_below="@+id/textView4"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_below="@+id/filterButton"
+                android:layout_height="386dp"
+                android:id="@+id/wordList">
+            </ListView>
 
         </RelativeLayout>
     </ScrollView>
