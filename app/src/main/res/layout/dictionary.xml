@@ -21,9 +21,8 @@
         android:id="@+id/selectedLang" />
 
     <android.support.design.widget.FloatingActionButton
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
         android:clickable="true"
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_input_add"

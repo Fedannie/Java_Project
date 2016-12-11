@@ -2,6 +2,7 @@ package project.fedorova.polyglotte;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.StrictMode;
 import android.view.ViewGroup.LayoutParams;
@@ -28,10 +29,12 @@ import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.Word;
 
 public class DictActivity extends Activity implements View.OnClickListener {
+    private static final int LOADER_ID = 0;
     private Button repeatAllBtn;
     private Button filterBtn;
     private DBConnector wordManager;
     private WordListAdapter wordListAdapter;
+    Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +48,16 @@ public class DictActivity extends Activity implements View.OnClickListener {
         repeatAllBtn = (Button) findViewById(R.id.repeatButton);
         repeatAllBtn.setOnClickListener(this);
 
+        Set<String> hs = new HashSet<>();
+        hs.add("ap");
+        hs.add("ple");
+        wordManager = new DBConnector(this);
+        wordManager.insertWord(new Word(UUID.randomUUID(), "Apple", hs, null));
+        cursor = wordManager.getAllWords();
+        startManagingCursor(cursor);
+
         ListView wordList = (ListView) findViewById(R.id.wordList);
-        wordListAdapter = new WordListAdapter(this, null, 0);
+        wordListAdapter = new WordListAdapter(this, cursor, 0);
         wordList.setAdapter(wordListAdapter);
         wordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -54,10 +65,8 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 Toast.makeText(DictActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
             }
         });
-
-        wordManager = new DBConnector(this);
-
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
