@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private static final String ONLY_LETTERS = "Sorry, only letters and numbers.";
     private Button addThemeBtn;
     private Button saveWordBtn;
+    private Button backBtn;
     private DBConnector wordBase;
     private TextInputLayout wordTIL;
     private TextInputLayout mainTranslationTIL;
@@ -41,6 +43,9 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
 
         saveWordBtn = (Button) findViewById(R.id.saveWord);
         saveWordBtn.setOnClickListener(this);
+
+        backBtn = (Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(this);
 
         wordTIL = (TextInputLayout) findViewById(R.id.wordinput);
         wordTIL.getEditText().addTextChangedListener(new TextWatcher() {
@@ -113,6 +118,10 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
             case (R.id.addThemeToWord):
                 break;
             case (R.id.saveWord):
+                if (!readyToSave()) {
+                    Toast.makeText(PopUpAddNewWord.this, "Your word is not completed", Toast.LENGTH_SHORT);
+                    break;
+                }
                 ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
                 wordBase.insertWord(new Word(UUID.randomUUID(), wordTIL.getEditText().getText().toString(),
                         mainTranslationTIL.getEditText().getText().toString(),
@@ -120,9 +129,17 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                         null));
                 finish();
                 break;
+            case (R.id.backBtn):
+                finish();
+                break;
             default:
                 break;
         }
+    }
+
+    private boolean readyToSave() {
+        return !wordTIL.getEditText().getText().toString().equals("") &&
+                !mainTranslationTIL.getEditText().getText().toString().equals("");
     }
 
     private boolean containsPunctExceptComma (String text) {
