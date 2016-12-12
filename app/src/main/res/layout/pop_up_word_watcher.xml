@@ -1,5 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@+id/wordTVWatcher"
+        android:id="@+id/mainTranslationTVWatcher"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:id="@+id/extraTranslationsTVWatcher"
+        android:layout_below="@+id/mainTranslationTVWatcher"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center" />
+
+    <Button
+        android:text="Back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backBtnWatcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/wordTVWatcher"
+        android:layout_marginTop="75dp"
+        android:textAlignment="center"
+        android:layout_height="72dp"
+        android:textSize="26sp"
+        android:text="Text"
+        android:textColor="@android:color/holo_blue_dark"
+        android:fontFamily="sans-serif"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:layout_marginRight="42dp"
+        android:layout_marginEnd="42dp"
+        android:id="@+id/editWordFAB"
+        android:layout_marginBottom="46dp"
+        app:elevation="6dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        app:backgroundTint="?attr/actionModeSplitBackground"
+        app:rippleColor="@android:color/holo_blue_bright" />
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ public class PreferenceVars {
     public static final String FIRST_TIME = "first time";
     public static final String YES = "yes";
     public static final String NO = "no";
+    public static final String WORD_INDEX = "word index";
 
     public String getNativeLang() {
         return nativeLang;

@@ -1,10 +1,7 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.content.Loader;
 import android.database.Cursor;
-import android.os.StrictMode;
 import android.view.ViewGroup.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
@@ -13,23 +10,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
-import project.fedorova.polyglotte.data.Word;
+import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class DictActivity extends Activity implements View.OnClickListener {
-    private static final int LOADER_ID = 0;
     private Button repeatAllBtn;
     private Button filterBtn;
     private DBConnector wordManager;
@@ -104,7 +94,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             View view = LayoutInflater.from(context).inflate(R.layout.wordlistitem, parent, false);
-            ViewHolder viewHolder = new ViewHolder((TextView) view.findViewById(R.id.wordTV), (TextView) view.findViewById(R.id.translationsTV));
+            ViewHolder viewHolder = new ViewHolder((TextView) view.findViewById(R.id.wordTVWatcher), (TextView) view.findViewById(R.id.translationsTV));
             view.setTag(viewHolder);
             return view;
         }
@@ -138,7 +128,8 @@ public class DictActivity extends Activity implements View.OnClickListener {
         wordListAdapter = new WordListAdapter(this, cursor, 0);
         wordList.setAdapter(wordListAdapter);
         wordList.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intentWordWatcher = new Intent(this, PopUpAddNewWord.class);
+            Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
+            intentWordWatcher.putExtra(PreferenceVars.WORD_INDEX, position);
             startActivity(intentWordWatcher);
         });
     }
