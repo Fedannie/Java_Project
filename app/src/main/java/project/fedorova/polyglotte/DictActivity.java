@@ -34,13 +34,14 @@ public class DictActivity extends Activity implements View.OnClickListener {
     private Button filterBtn;
     private DBConnector wordManager;
     private WordListAdapter wordListAdapter;
+    private ListView wordList;
     Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dictionary);
 
-                FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
+        FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
         addWordBtn.setOnClickListener(this);
         filterBtn = (Button) findViewById(R.id.filterButton);
         filterBtn.setOnClickListener(this);
@@ -50,12 +51,15 @@ public class DictActivity extends Activity implements View.OnClickListener {
 
         wordManager = new DBConnector(this);
         cursor = wordManager.getAllWords();
-        //startManagingCursor(cursor);
 
-        ListView wordList = (ListView) findViewById(R.id.wordList);
-        wordListAdapter = new WordListAdapter(this, cursor, 0);
-        wordList.setAdapter(wordListAdapter);
-        wordList.setOnItemClickListener((parent, view, position, id) -> Toast.makeText(DictActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show());
+        wordList = (ListView) findViewById(R.id.wordList);
+        setWordList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setWordList();
     }
 
     @Override
@@ -69,16 +73,13 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 showPopup();
                 break;
             case (R.id.repeatButton):
+                wordManager.deleteAll();
                 break;
             default:
                 break;
 
 
         }
-    }
-
-    public void onListItemClick (ListView parent, View v, int position, long id) {
-        //Toast.makeText (getApplicationContext(), mSign[position], Toast.LENGTH_SHORT).show();
     }
 
     private PopupWindow pw;
@@ -117,7 +118,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
             wordTV.setText(word);
 
             TextView translationsTV = viewHolder.translationsTV;
-            String translations = cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
+            String translations = cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION) + ", " + cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
             translationsTV.setText(translations);
         }
 
@@ -131,5 +132,14 @@ public class DictActivity extends Activity implements View.OnClickListener {
             }
 
         }
+    }
+
+    private void setWordList() {
+        wordListAdapter = new WordListAdapter(this, cursor, 0);
+        wordList.setAdapter(wordListAdapter);
+        wordList.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intentWordWatcher = new Intent(this, PopUpAddNewWord.class);
+            startActivity(intentWordWatcher);
+        });
     }
 }

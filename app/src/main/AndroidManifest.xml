@@ -58,6 +58,11 @@
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpAddNewWord">
         </activity>
+
+        <activity
+            android:theme="@android:style/Theme.Dialog"
+            android:name=".PopUpWordWatcher">
+        </activity>
     </application>
 
 </manifest>
