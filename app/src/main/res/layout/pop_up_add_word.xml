@@ -6,11 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/wordinput"
+        android:theme="@style/Theme.AppCompat"
         android:animateLayoutChanges="true">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/wordET"
             android:hint="Your word" />
     </android.support.design.widget.TextInputLayout>
 
@@ -19,11 +21,13 @@
         android:id="@+id/translationinput"
         android:layout_height="wrap_content"
         android:layout_below="@+id/wordinput"
+        android:theme="@style/Theme.AppCompat"
         android:animateLayoutChanges="true">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/translationET"
             android:hint="Main translation" />
     </android.support.design.widget.TextInputLayout>
 
@@ -32,11 +36,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/translationinput"
         android:id="@+id/extratranslationsinput"
+        android:theme="@style/Theme.AppCompat"
         android:animateLayoutChanges="true">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/extratranslationsET"
             android:hint="Extra translations" />
     </android.support.design.widget.TextInputLayout>
 

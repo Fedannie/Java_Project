@@ -19,9 +19,9 @@ import project.fedorova.polyglotte.data.Word;
 
 public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private Button addThemeBtn;
-    private EditText wordInput;
-    private EditText mainTranslationInput;
-    private EditText extraTranslationsInput;
+    private EditText wordET;
+    private EditText mainTranslationET;
+    private EditText extraTranslationsET;
     private Button saveWordBtn;
     private DBConnector wordBase;
     @Override
@@ -37,8 +37,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         saveWordBtn = (Button) findViewById(R.id.saveWord);
         saveWordBtn.setOnClickListener(this);
 
-        wordInput = (EditText) findViewById(R.id.wordinput);
-        wordInput.addTextChangedListener(new TextWatcher(){
+        wordET = (EditText) findViewById(R.id.wordET);
+        wordET.addTextChangedListener(new TextWatcher(){
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -52,8 +52,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
             }
         });
 
-        mainTranslationInput = (EditText) findViewById(R.id.translationinput);
-        mainTranslationInput.addTextChangedListener(new TextWatcher(){
+        mainTranslationET = (EditText) findViewById(R.id.translationET);
+        mainTranslationET.addTextChangedListener(new TextWatcher(){
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -67,8 +67,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
             }
         });
 
-        extraTranslationsInput = (EditText) findViewById(R.id.extratranslationsinput);
-        extraTranslationsInput.addTextChangedListener(new TextWatcher(){
+        extraTranslationsET = (EditText) findViewById(R.id.extratranslationsET);
+        extraTranslationsET.addTextChangedListener(new TextWatcher(){
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -92,10 +92,11 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                 break;
             case (R.id.saveWord):
                 ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
-                wordBase.insertWord(new Word(UUID.randomUUID(), wordInput.getText().toString(),
-                        mainTranslationInput.getText().toString(),
-                        readWriteManager.convertStringToSet(extraTranslationsInput.getText().toString()),
+                wordBase.insertWord(new Word(UUID.randomUUID(), wordET.getText().toString(),
+                        mainTranslationET.getText().toString(),
+                        readWriteManager.convertStringToSet(extraTranslationsET.getText().toString()),
                         null));
+                super.onDestroy();
                 break;
             default:
                 break;

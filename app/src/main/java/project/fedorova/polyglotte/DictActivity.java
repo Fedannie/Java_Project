@@ -48,18 +48,14 @@ public class DictActivity extends Activity implements View.OnClickListener {
         repeatAllBtn = (Button) findViewById(R.id.repeatButton);
         repeatAllBtn.setOnClickListener(this);
 
+        wordManager = new DBConnector(this);
         cursor = wordManager.getAllWords();
-        startManagingCursor(cursor);
+        //startManagingCursor(cursor);
 
         ListView wordList = (ListView) findViewById(R.id.wordList);
         wordListAdapter = new WordListAdapter(this, cursor, 0);
         wordList.setAdapter(wordListAdapter);
-        wordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DictActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
-            }
-        });
+        wordList.setOnItemClickListener((parent, view, position, id) -> Toast.makeText(DictActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show());
     }
 
     @Override
@@ -76,6 +72,8 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 break;
             default:
                 break;
+
+
         }
     }
 

@@ -15,7 +15,7 @@ import project.fedorova.polyglotte.data.Word;
 
 public class DBConnector {
 
-    private static final String DATABASE_NAME = "polyglotte.db";
+    private static final String DATABASE_NAME = "polyglotte.database";
     private static final int DATABASE_VERSION = 1;
     
     private static final String WORDS_TABLE_NAME = "words";
@@ -140,7 +140,15 @@ public class DBConnector {
 
     public Cursor getAllWords() {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
-        return database.query(WORDS_TABLE_NAME, WORDS_COLUMNS, null, null, null, null, WORD_TITLE);
+        database.beginTransaction();
+        try {
+            return database.query(WORDS_TABLE_NAME, WORDS_COLUMNS, null, null, null, null, WORD_TITLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            database.endTransaction();
+        }
     }
 
     public Cursor getWordsByTheme(Set<String> themes) {
