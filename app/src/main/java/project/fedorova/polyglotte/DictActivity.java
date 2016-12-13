@@ -21,18 +21,32 @@ import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class DictActivity extends Activity implements View.OnClickListener {
+    public static final int REQUEST_TO_REFRESH = 1;
     private Button repeatAllBtn;
     private Button filterBtn;
     private DBConnector wordManager;
     private WordListAdapter wordListAdapter;
     private ListView wordList;
+    private Button refreshBtn;
     Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dictionary);
-
         init();
+        setWordList();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setWordList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setWordList();
     }
 
     @Override
@@ -46,7 +60,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
         switch (view.getId()) {
             case (R.id.addWordFAB):
                 Intent intentAWA = new Intent(this, PopUpAddNewWord.class);
-                startActivity(intentAWA);
+                startActivityForResult(intentAWA, REQUEST_TO_REFRESH);
                 break;
             case (R.id.filterButton):
                 showPopup();
@@ -54,11 +68,26 @@ public class DictActivity extends Activity implements View.OnClickListener {
             case (R.id.repeatButton):
                 wordManager.deleteAll();
                 break;
+            case (R.id.refreshBtn):
+                refresh();
+                break;
             default:
                 break;
-
-
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RESULT_OK) {
+            refresh();
+        }
+    }
+
+    private void refresh() {
+        Intent intent = getIntent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(intent);
     }
 
     private void init() {
@@ -74,8 +103,10 @@ public class DictActivity extends Activity implements View.OnClickListener {
         wordManager = new DBConnector(this);
         cursor = wordManager.getAllWords();
 
+        refreshBtn = (Button) findViewById(R.id.refreshBtn);
+        refreshBtn.setOnClickListener(this);
+
         wordList = (ListView) findViewById(R.id.wordList);
-        setWordList();
     }
 
     private void showPopup() {
@@ -113,14 +144,16 @@ public class DictActivity extends Activity implements View.OnClickListener {
             wordTV.setText(word);
 
             TextView translationsTV = viewHolder.translationsTV;
-            String translations = cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION) + ", " + cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
+            String translations = cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION);
+            if (!cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS).equals("")) {
+                translations += ", " + cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
+            }
             translationsTV.setText(translations);
         }
 
         private static class ViewHolder {
             public final TextView wordTV;
             public final TextView translationsTV;
-
             public ViewHolder(TextView word, TextView translations) {
                 wordTV = word;
                 translationsTV= translations;

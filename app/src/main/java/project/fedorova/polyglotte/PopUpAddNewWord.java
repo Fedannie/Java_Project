@@ -19,6 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.PreferenceVars;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
@@ -39,7 +40,6 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_add_word);
-
         init();
 
         setDataToEdit();
@@ -59,6 +59,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                     wordBase.delete(wordID);
                 }
                 saveNewWord();
+                setResult(RESULT_OK);
                 finish();
                 break;
             case (R.id.backBtn):
