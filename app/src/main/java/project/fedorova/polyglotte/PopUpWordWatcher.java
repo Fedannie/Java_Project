@@ -1,6 +1,8 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private TextView extraTransTV;
     private Button backBtn;
     private ImageButton editWordIB;
+    private ImageButton deleteWordIB;
     private int wordPos;
     private Intent intent;
 
@@ -44,6 +47,23 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
                 intentEditor.putExtra(PreferenceVars.WORD_INDEX, wordPos);
                 intentEditor.putExtra(PreferenceVars.IF_EDIT, PreferenceVars.YES);
                 startActivity(intentEditor);
+                break;
+            case (R.id.deleteWordIB):
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Delete word?")
+                        .setMessage("Are you sure you want to delete this word?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                wordManager.delete(cursor.getString(DBConnector.NUM_WORD_ID));
+                                Intent intent = getIntent();
+                                setResult(RESULT_OK, intent);
+                                PopUpWordWatcher.this.finish();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
                 break;
             default:
                 break;
@@ -72,5 +92,8 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
 
         editWordIB = (ImageButton) findViewById(R.id.editWordIB);
         editWordIB.setOnClickListener(this);
+
+        deleteWordIB = (ImageButton) findViewById(R.id.deleteWordIB);
+        deleteWordIB.setOnClickListener(this);
     }
 }

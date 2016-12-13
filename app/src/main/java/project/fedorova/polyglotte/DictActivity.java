@@ -167,7 +167,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
         wordList.setOnItemClickListener((parent, view, position, id) -> {
             Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
             intentWordWatcher.putExtra(PreferenceVars.WORD_INDEX, position);
-            startActivity(intentWordWatcher);
+            startActivityForResult(intentWordWatcher, REQUEST_TO_REFRESH);
         });
     }
 }

@@ -70,5 +70,19 @@
         android:background="@color/colorPrimaryDark">
     </ImageButton>
 
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_delete"
+        android:layout_marginLeft="42dp"
+        android:layout_marginStart="42dp"
+        android:id="@+id/deleteWordIB"
+        android:layout_marginBottom="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorPrimaryDark">
+    </ImageButton>
 
 </RelativeLayout>
