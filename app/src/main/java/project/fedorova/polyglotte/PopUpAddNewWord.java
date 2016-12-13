@@ -139,16 +139,19 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
 
     private boolean readyToSave() {
         return !wordTIL.getEditText().getText().toString().equals("") &&
-                !mainTranslationTIL.getEditText().getText().toString().equals("");
+                !mainTranslationTIL.getEditText().getText().toString().equals("") &&
+                !wordTIL.isErrorEnabled() &&
+                !mainTranslationTIL.isErrorEnabled() &&
+                !translationTIL.isErrorEnabled();
     }
 
     private boolean containsPunctExceptComma (String text) {
         String check = text.replace(",", "").replace(" ", "");
-        return check.equals(check.replaceAll("[\\p{Punct}]", ""));
+        return !check.equals(check.replaceAll("[\\p{Punct}]", ""));
     }
 
     private boolean containsPunct(String text) {
         String check = text.replace(" ", "");
-        return check.equals(check.replaceAll("[\\p{Punct}]", ""));
+        return !check.equals(check.replaceAll("[\\p{Punct}]", ""));
     }
 }

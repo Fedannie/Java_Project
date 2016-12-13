@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.PreferenceVars;
@@ -20,7 +21,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private TextView mainTransTV;
     private TextView extraTransTV;
     private Button backBtn;
-    private FloatingActionButton editWordFAB;
+    private ImageButton editWordIB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,9 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
 
         Intent intent = getIntent();
         int wordPos = intent.getIntExtra(PreferenceVars.WORD_INDEX, 0);
-
         wordManager = new DBConnector(this);
         cursor = wordManager.getAllWords();
-        cursor.move(wordPos);
+        cursor.move(wordPos + 1);
 
         wordTV = (TextView) findViewById(R.id.wordTVWatcher);
         wordTV.setText(cursor.getString(DBConnector.NUM_WORD_TITLE));
@@ -46,8 +46,8 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
         backBtn = (Button) findViewById(R.id.backBtnWatcher);
         backBtn.setOnClickListener(this);
 
-        editWordFAB = (FloatingActionButton) findViewById(R.id.editWordFAB);
-        editWordFAB.setOnClickListener(this);
+        editWordIB = (ImageButton) findViewById(R.id.editWordIB);
+        editWordIB.setOnClickListener(this);
     }
 
     @Override

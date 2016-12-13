@@ -15,6 +15,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.PreferenceVars;
@@ -33,6 +34,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
 
         FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
         addWordBtn.setOnClickListener(this);
+
         filterBtn = (Button) findViewById(R.id.filterButton);
         filterBtn.setOnClickListener(this);
 
@@ -129,6 +131,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
         wordList.setAdapter(wordListAdapter);
         wordList.setOnItemClickListener((parent, view, position, id) -> {
             Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
+            Toast.makeText(this, String.valueOf(position) + "   " + String.valueOf(id), Toast.LENGTH_SHORT).show();
             intentWordWatcher.putExtra(PreferenceVars.WORD_INDEX, position);
             startActivity(intentWordWatcher);
         });
