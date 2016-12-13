@@ -19,12 +19,12 @@ public class Word implements Serializable{
         mainTranslation = newMainTranslation;
         ID = id;
         if (newTranslations == null) {
-            translations = new HashSet<String>();
+            translations = new HashSet<>();
         } else {
             translations = newTranslations;
         }
         if (newThemes == null) {
-            themes = new HashSet<String>();
+            themes = new HashSet<>();
         } else {
             themes = newThemes;
         }

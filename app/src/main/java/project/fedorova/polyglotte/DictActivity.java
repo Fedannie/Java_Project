@@ -32,20 +32,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dictionary);
 
-        FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
-        addWordBtn.setOnClickListener(this);
-
-        filterBtn = (Button) findViewById(R.id.filterButton);
-        filterBtn.setOnClickListener(this);
-
-        repeatAllBtn = (Button) findViewById(R.id.repeatButton);
-        repeatAllBtn.setOnClickListener(this);
-
-        wordManager = new DBConnector(this);
-        cursor = wordManager.getAllWords();
-
-        wordList = (ListView) findViewById(R.id.wordList);
-        setWordList();
+        init();
     }
 
     @Override
@@ -74,7 +61,23 @@ public class DictActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private PopupWindow pw;
+    private void init() {
+        FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
+        addWordBtn.setOnClickListener(this);
+
+        filterBtn = (Button) findViewById(R.id.filterButton);
+        filterBtn.setOnClickListener(this);
+
+        repeatAllBtn = (Button) findViewById(R.id.repeatButton);
+        repeatAllBtn.setOnClickListener(this);
+
+        wordManager = new DBConnector(this);
+        cursor = wordManager.getAllWords();
+
+        wordList = (ListView) findViewById(R.id.wordList);
+        setWordList();
+    }
+
     private void showPopup() {
         LayoutInflater layoutInflater
                 = (LayoutInflater)getBaseContext()
@@ -131,7 +134,6 @@ public class DictActivity extends Activity implements View.OnClickListener {
         wordList.setAdapter(wordListAdapter);
         wordList.setOnItemClickListener((parent, view, position, id) -> {
             Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
-            Toast.makeText(this, String.valueOf(position) + "   " + String.valueOf(id), Toast.LENGTH_SHORT).show();
             intentWordWatcher.putExtra(PreferenceVars.WORD_INDEX, position);
             startActivity(intentWordWatcher);
         });

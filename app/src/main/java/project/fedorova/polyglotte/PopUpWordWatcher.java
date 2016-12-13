@@ -22,15 +22,39 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private TextView extraTransTV;
     private Button backBtn;
     private ImageButton editWordIB;
+    private int wordPos;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_word_watcher);
 
-        Intent intent = getIntent();
-        int wordPos = intent.getIntExtra(PreferenceVars.WORD_INDEX, 0);
+        init();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case (R.id.backBtnWatcher):
+                finish();
+                break;
+            case (R.id.editWordIB):
+                Intent intentEditor = new Intent(this, PopUpAddNewWord.class);
+                intentEditor.putExtra(PreferenceVars.WORD_INDEX, wordPos);
+                intentEditor.putExtra(PreferenceVars.IF_EDIT, PreferenceVars.YES);
+                startActivity(intentEditor);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void init() {
+        intent = getIntent();
+        wordPos = intent.getIntExtra(PreferenceVars.WORD_INDEX, 0);
         wordManager = new DBConnector(this);
+
         cursor = wordManager.getAllWords();
         cursor.move(wordPos + 1);
 
@@ -48,19 +72,5 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
 
         editWordIB = (ImageButton) findViewById(R.id.editWordIB);
         editWordIB.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case (R.id.backBtnWatcher):
-                finish();
-                break;
-            case (R.id.editWordFAB):
-                //TODO EDIT SCREEN
-                break;
-            default:
-                break;
-        }
     }
 }

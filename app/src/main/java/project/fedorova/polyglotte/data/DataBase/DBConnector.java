@@ -118,6 +118,12 @@ public class DBConnector {
         database.delete(WORDS_TABLE_NAME, WORD_ID + " = ?", new String[] {String.valueOf(id)});
     }
 
+    public void delete(String id) {
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        database.delete(WORDS_TABLE_NAME, WORD_ID + " = ?", new String[] {id});
+    }
+
+
     public Word getWord(UUID id) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         database.beginTransaction();
