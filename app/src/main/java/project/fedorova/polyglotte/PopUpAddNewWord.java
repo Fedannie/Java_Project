@@ -59,7 +59,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                     wordBase.delete(wordID);
                 }
                 saveNewWord();
-                setResult(RESULT_OK);
+                Intent intent = getIntent();
+                setResult(RESULT_OK, intent);
                 finish();
                 break;
             case (R.id.backBtn):

@@ -27,7 +27,6 @@ public class DictActivity extends Activity implements View.OnClickListener {
     private DBConnector wordManager;
     private WordListAdapter wordListAdapter;
     private ListView wordList;
-    private Button refreshBtn;
     Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,8 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 startActivityForResult(intentAWA, REQUEST_TO_REFRESH);
                 break;
             case (R.id.filterButton):
-                showPopup();
+                Intent intentFT = new Intent(this, PopUpFilterThemes.class);
+                startActivity(intentFT);
                 break;
             case (R.id.repeatButton):
                 wordManager.deleteAll();
@@ -78,12 +78,14 @@ public class DictActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            Toast.makeText(this, "Your word was added", Toast.LENGTH_SHORT).show();
             refresh();
         }
     }
 
     private void refresh() {
+        setWordList();
         Intent intent = getIntent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         finish();
@@ -102,9 +104,6 @@ public class DictActivity extends Activity implements View.OnClickListener {
 
         wordManager = new DBConnector(this);
         cursor = wordManager.getAllWords();
-
-        refreshBtn = (Button) findViewById(R.id.refreshBtn);
-        refreshBtn.setOnClickListener(this);
 
         wordList = (ListView) findViewById(R.id.wordList);
     }

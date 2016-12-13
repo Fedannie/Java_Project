@@ -20,22 +20,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/selectedLang" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="normal"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:id="@+id/addWordFAB"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        app:backgroundTint="@android:color/holo_blue_dark"
-        app:rippleColor="@android:color/holo_purple"
-        android:layout_marginBottom="30dp" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="412dp"
@@ -84,14 +68,20 @@
         </RelativeLayout>
     </ScrollView>
 
-    <Button
-        android:text="refresh"
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/refreshBtn"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:id="@+id/addWordFAB"
+        android:layout_marginRight="33dp"
+        android:layout_marginEnd="33dp"
+        app:backgroundTint="@android:color/holo_blue_dark"
+        app:rippleColor="@android:color/holo_purple"
+        android:layout_marginBottom="24dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/scrollView"
-        android:textSize="10sp" />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

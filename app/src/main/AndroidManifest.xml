@@ -41,6 +41,7 @@
         </activity>
 
         <activity
+            android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpFilterThemes">
         </activity>
 
