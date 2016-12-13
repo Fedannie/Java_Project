@@ -1,6 +1,8 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.PreferenceVars;
@@ -98,19 +101,29 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 editor.commit();
                 break;
             case (R.id.deleteDict):
-                try {
-                    int item = selectDict.getSelectedItemPosition();
-                    dictList.deleteDict((String) selectDict.getSelectedItem());
-                    if (item > 0) {
-                        selectDict.setSelection(item - 1);
-                    } else if (!dictList.empty()) {
-                        selectDict.setSelection(item);
-                    }
-                    loadSettings();
-                } catch (Exception e) {
-                    Toast.makeText(this, "Error with deleting this dictionary", Toast.LENGTH_SHORT).show();
-                }
-
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Delete word?")
+                        .setMessage("Are you sure you want to delete this word?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    int item = selectDict.getSelectedItemPosition();
+                                    dictList.deleteDict((String) selectDict.getSelectedItem());
+                                    if (item > 0) {
+                                        selectDict.setSelection(item - 1);
+                                    } else if (!dictList.empty()) {
+                                        selectDict.setSelection(item);
+                                    }
+                                    loadSettings();
+                                } catch (Exception e) {
+                                    Toast.makeText(MainMenuActivity.this, "Error with deleting this dictionary", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
                 break;
             case (R.id.addDictButton):
                 Intent intentAD = new Intent(this, PopUpAddDict.class);
