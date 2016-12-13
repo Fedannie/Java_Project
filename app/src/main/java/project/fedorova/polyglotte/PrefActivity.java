@@ -31,7 +31,7 @@ public class PrefActivity extends PreferenceActivity {
         sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString(PreferenceVars.NATIVE_LANGUAGE, nativeLanguage.getValue());
-        ed.apply();
+        ed.commit();
         Toast.makeText(this, "Your native language changed", Toast.LENGTH_SHORT).show();
     }
 }

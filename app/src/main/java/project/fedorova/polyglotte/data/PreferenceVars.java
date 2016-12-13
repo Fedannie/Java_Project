@@ -4,9 +4,9 @@ public class PreferenceVars {
     private static volatile PreferenceVars instance;
 
     public static final String NATIVE_LANGUAGE = "NATIVE_LANG";
-    private String nativeLang;
+    private String nativeLang = null;
     public static final String DICT_LANGUAGE = "DICT_LANG";
-    private String dictLang;
+    private String dictLang = null;
     public static final String DEFAULT_LANG = "English";
     public static final String FIRST_TIME = "first time";
     public static final String YES = "yes";
@@ -15,11 +15,19 @@ public class PreferenceVars {
     public static final String IF_EDIT = "if edit";
 
     public String getNativeLang() {
-        return nativeLang;
+        if (nativeLang == null) {
+            return DEFAULT_LANG;
+        } else {
+            return nativeLang;
+        }
     }
 
     public String getDictLang() {
-        return dictLang;
+        if (dictLang == null) {
+            return DEFAULT_LANG;
+        } else {
+            return dictLang;
+        }
     }
 
     public void setNativeLang(String newNativeLang) {

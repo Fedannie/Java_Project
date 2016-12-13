@@ -6,12 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.PreferenceVars;
@@ -27,6 +25,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private ImageButton deleteWordIB;
     private int wordPos;
     private Intent intent;
+    private PreferenceVars prefVars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +72,10 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private void init() {
         intent = getIntent();
         wordPos = intent.getIntExtra(PreferenceVars.WORD_INDEX, 0);
-        wordManager = new DBConnector(this);
+
+        wordManager = new DBConnector(this,
+                prefVars.getDictLang(),
+                prefVars.getNativeLang());
 
         cursor = wordManager.getAllWords();
         cursor.move(wordPos + 1);

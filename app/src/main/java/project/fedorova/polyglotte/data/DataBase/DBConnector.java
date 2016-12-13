@@ -44,8 +44,8 @@ public class DBConnector {
 
     private OpenHelper dbHelper;
 
-    public DBConnector(Context context) {
-        dbHelper = new OpenHelper(context);
+    public DBConnector(Context context, String langFrom, String langTo) {
+        dbHelper = new OpenHelper(context, langFrom, langTo);
     }
 
     public void insertWord(Word word) {
@@ -191,8 +191,8 @@ public class DBConnector {
 
     private static class OpenHelper extends SQLiteOpenHelper {
 
-        OpenHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        OpenHelper(Context context, String langFrom, String langTo) {
+            super(context, DATABASE_NAME + langFrom + langTo, null, DATABASE_VERSION);
         }
 
         @Override

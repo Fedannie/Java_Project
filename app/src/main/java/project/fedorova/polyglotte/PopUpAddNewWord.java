@@ -7,19 +7,13 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
-import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.PreferenceVars;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
@@ -35,6 +29,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private TextInputLayout mainTranslationTIL;
     private TextInputLayout translationTIL;
     private Intent intent;
+    private PreferenceVars prefVars = PreferenceVars.getInstance();
     private String wordID = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +83,10 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     }
 
     private void init() {
-        wordBase = new DBConnector(this);
+
+        wordBase = new DBConnector(this,
+                prefVars.getDictLang(),
+                prefVars.getNativeLang());
 
         addThemeBtn = (Button) findViewById(R.id.addThemeToWord);
         addThemeBtn.setOnClickListener(this);

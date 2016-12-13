@@ -11,9 +11,9 @@ public class WordsLoader extends AsyncTaskLoader<Cursor>{
     private Cursor data;
     private Set<String> themes;
 
-    public WordsLoader(Context context, Set<String> newThemes) {
+    public WordsLoader(Context context, String langFrom, String langTo, Set<String> newThemes) {
         super(context);
-        wordsManager = new DBConnector(context);
+        wordsManager = new DBConnector(context, langFrom, langTo);
         themes = newThemes;
     }
 

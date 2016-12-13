@@ -2,7 +2,6 @@ package project.fedorova.polyglotte;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.view.ViewGroup.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +25,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
     private DBConnector wordManager;
     private WordListAdapter wordListAdapter;
     private ListView wordList;
+    private PreferenceVars prefVars = PreferenceVars.getInstance();
     Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +67,6 @@ public class DictActivity extends Activity implements View.OnClickListener {
             case (R.id.repeatButton):
                 wordManager.deleteAll();
                 break;
-            case (R.id.refreshBtn):
-                refresh();
-                break;
             default:
                 break;
         }
@@ -102,23 +98,12 @@ public class DictActivity extends Activity implements View.OnClickListener {
         repeatAllBtn = (Button) findViewById(R.id.repeatButton);
         repeatAllBtn.setOnClickListener(this);
 
-        wordManager = new DBConnector(this);
+        wordManager = new DBConnector(this,
+                prefVars.getDictLang(),
+                prefVars.getNativeLang());
         cursor = wordManager.getAllWords();
 
         wordList = (ListView) findViewById(R.id.wordList);
-    }
-
-    private void showPopup() {
-        LayoutInflater layoutInflater
-                = (LayoutInflater)getBaseContext()
-                .getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = layoutInflater.inflate(R.layout.popupfilterthemes, null);
-        final PopupWindow popupWindow = new PopupWindow(
-                popupView,
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT,
-                false);
-        popupWindow.showAsDropDown(filterBtn, 50, -30);
     }
 
     private static class WordListAdapter extends CursorAdapter {

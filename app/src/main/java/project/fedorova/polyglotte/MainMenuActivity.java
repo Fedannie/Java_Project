@@ -19,16 +19,8 @@ import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
-    private SharedPreferences sPref;
-    private Button btnExercise;
-    private Button btnPref;
-    private Button btnDict;
-    private Button btnPhrase;
-    private Button btnTrans;
-    private Button addDictBtn;
-    private Button deleteDictBtn;
-    private Button clearPrefBtn;
     private Spinner selectDict;
+    private PreferenceVars prefVars = PreferenceVars.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,32 +28,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        btnExercise = (Button) findViewById(R.id.exerciseButton);
-        btnExercise.setOnClickListener(this);
-
-        btnPref = (Button) findViewById(R.id.preferencesButton);
-        btnPref.setOnClickListener(this);
-
-        btnDict = (Button) findViewById(R.id.dictionaryButton);
-        btnDict.setOnClickListener(this);
-
-        btnPhrase = (Button) findViewById(R.id.phrasebookButton);
-        btnPhrase.setOnClickListener(this);
-
-        btnTrans = (Button) findViewById(R.id.translatorButton);
-        btnTrans.setOnClickListener(this);
-
-        addDictBtn = (Button) findViewById(R.id.addDictButton);
-        addDictBtn.setOnClickListener(this);
-
-        deleteDictBtn = (Button) findViewById(R.id.deleteDict);
-        deleteDictBtn.setOnClickListener(this);
-
-        clearPrefBtn = (Button) findViewById(R.id.clearPreferences);
-        clearPrefBtn.setOnClickListener(this);
-
-        selectDict = (Spinner) findViewById(R.id.dictSpinner);
-        selectDict.setPrompt("Your dictionaries");
+        init();
 
         loadSettings();
         loadDictList();
@@ -112,6 +79,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 break;
             case (R.id.dictionaryButton):
                 Intent intentD = new Intent(this, DictActivity.class);
+                prefVars.setDictLang((String) selectDict.getSelectedItem());
                 startActivity(intentD);
                 break;
             case (R.id.phrasebookButton):
@@ -123,10 +91,11 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 startActivity(intentTr);
                 break;
             case (R.id.clearPreferences):
-                sPref = getPreferences(MODE_PRIVATE);
+                prefVars.setNativeLang(null);
+                SharedPreferences sPref = getPreferences(MODE_PRIVATE);
                 SharedPreferences.Editor editor = sPref.edit();
                 editor.clear();
-                editor.apply();
+                editor.commit();
                 break;
             case (R.id.deleteDict):
                 try {
@@ -154,8 +123,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private int getLastDict() throws NoSuchElementException{
         DictList dictList = DictList.getInstance();
-        sPref = getPreferences(MODE_PRIVATE);
-        String language = sPref.getString(PreferenceVars.DICT_LANGUAGE, "");
+        String language = prefVars.getDictLang();
         String[] dictionaries = dictList.getDictList().toArray(new String[]{});
         for (int i = 0; i < dictionaries.length; i++) {
             if (dictionaries[i].equals(language)) {
@@ -167,7 +135,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private void loadDict() {
         DictList dictList = DictList.getInstance();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dictList.getDictList().toArray(new String[]{}));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dictList.getDictList().toArray(new String[]{}));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectDict.setAdapter(adapter);
         if (!dictList.empty()){
@@ -183,21 +151,17 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     }
 
     private void safeDict() {
-        sPref = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sPref.edit();
-        editor.putString(PreferenceVars.DICT_LANGUAGE, (String) selectDict.getSelectedItem());
-        editor.apply();
+        prefVars.setDictLang((String) selectDict.getSelectedItem());
     }
 
     private void loadSettings() {
-        sPref = getPreferences(MODE_PRIVATE);
-        PreferenceVars prefVars = PreferenceVars.getInstance();
+        SharedPreferences sPref = getPreferences(MODE_PRIVATE);
         if (PreferenceVars.YES.equals(sPref.getString(PreferenceVars.FIRST_TIME, PreferenceVars.YES))) {
+            SharedPreferences.Editor editor = sPref.edit();
             Intent intentNL = new Intent(this, PopUpSelectNativeLanguage.class);
             startActivity(intentNL);
-            SharedPreferences.Editor editor = sPref.edit();
             editor.putString(PreferenceVars.FIRST_TIME, PreferenceVars.NO);
-            editor.apply();
+            editor.commit();
         } else {
             prefVars.setNativeLang(sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG));
         }
@@ -219,5 +183,48 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         DictList dictList = DictList.getInstance();
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
         readWriteManager.writeToFile(this, ReadWriteManager.DICT_LIST, readWriteManager.convertSetToString(dictList.getDictList()));
+        SharedPreferences sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sPref.edit();
+        editor.putString(PreferenceVars.DICT_LANGUAGE, (String) selectDict.getSelectedItem());
+        editor.putString(PreferenceVars.NATIVE_LANGUAGE, prefVars.getNativeLang());
+        editor.commit();
+    }
+
+    private void init() {
+        Button btnExercise;
+        Button btnPref;
+        Button btnDict;
+        Button btnPhrase;
+        Button btnTrans;
+        Button addDictBtn;
+        Button deleteDictBtn;
+        Button clearPrefBtn;
+
+        btnExercise = (Button) findViewById(R.id.exerciseButton);
+        btnExercise.setOnClickListener(this);
+
+        btnPref = (Button) findViewById(R.id.preferencesButton);
+        btnPref.setOnClickListener(this);
+
+        btnDict = (Button) findViewById(R.id.dictionaryButton);
+        btnDict.setOnClickListener(this);
+
+        btnPhrase = (Button) findViewById(R.id.phrasebookButton);
+        btnPhrase.setOnClickListener(this);
+
+        btnTrans = (Button) findViewById(R.id.translatorButton);
+        btnTrans.setOnClickListener(this);
+
+        addDictBtn = (Button) findViewById(R.id.addDictButton);
+        addDictBtn.setOnClickListener(this);
+
+        deleteDictBtn = (Button) findViewById(R.id.deleteDict);
+        deleteDictBtn.setOnClickListener(this);
+
+        clearPrefBtn = (Button) findViewById(R.id.clearPreferences);
+        clearPrefBtn.setOnClickListener(this);
+
+        selectDict = (Spinner) findViewById(R.id.dictSpinner);
+        selectDict.setPrompt("Your dictionaries");
     }
 }
