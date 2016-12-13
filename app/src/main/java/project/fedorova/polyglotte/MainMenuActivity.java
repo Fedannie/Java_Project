@@ -104,7 +104,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Delete word?")
-                        .setMessage("Are you sure you want to delete this word?")
+                        .setMessage("Are you sure you want to delete this dictionary?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
