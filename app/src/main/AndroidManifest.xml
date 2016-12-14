@@ -64,6 +64,11 @@
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpWordWatcher">
         </activity>
+
+        <activity
+            android:name=".RepeatWordActivity">
+        </activity>
+
     </application>
 
 </manifest>

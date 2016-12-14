@@ -65,7 +65,8 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 startActivity(intentFT);
                 break;
             case (R.id.repeatButton):
-                wordManager.deleteAll();
+                Intent intentR = new Intent(this, RepeatWordActivity.class);
+                startActivity(intentR);
                 break;
             default:
                 break;
