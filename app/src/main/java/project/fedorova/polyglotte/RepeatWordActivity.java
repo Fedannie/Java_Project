@@ -1,19 +1,35 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.UUID;
+
+import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.PreferenceVars;
+import project.fedorova.polyglotte.data.ReadWriteManager;
+import project.fedorova.polyglotte.data.Word;
+
 public class RepeatWordActivity extends Activity implements View.OnClickListener {
     private ImageButton left;
     private ImageButton right;
     private Button stop;
-    TextView wordTV;
-    TextView mainTrans;
-    TextView extraTrans;
+    private TextView wordTV;
+    private TextView mainTrans;
+    private TextView extraTrans;
+    private ArrayList<Word> order;
+    private PreferenceVars prefVars = PreferenceVars.getInstance();
+
+    public RepeatWordActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +48,7 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
                 //TODO previous word
                 break;
             case (R.id.stopBtn):
-                //TODO exit activity
+                finish();
                 break;
             default:
                 //TODO show translation
@@ -55,5 +71,24 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
         mainTrans = (TextView) findViewById(R.id.mainTranslationTVRepeat);
 
         extraTrans = (TextView) findViewById(R.id.extraTranslationsTVRepeat);
+
+        order = new ArrayList<>();
+
+        DBConnector database = new DBConnector(this,
+                prefVars.getDictLang(),
+                prefVars.getNativeLang());
+        Cursor cursor = database.getAllWords();
+        cursor.moveToFirst();
+
+        ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
+
+        while (cursor.moveToNext()) {
+            order.add(new Word(UUID.fromString(cursor.getString(DBConnector.NUM_WORD_ID)),
+                    cursor.getString(DBConnector.NUM_WORD_TITLE),
+                    cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION),
+                    readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS)),
+                    readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_THEMES))));
+        }
+        Collections.shuffle(order);
     }
 }

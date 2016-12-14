@@ -141,7 +141,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
             public final TextView translationsTV;
             public ViewHolder(TextView word, TextView translations) {
                 wordTV = word;
-                translationsTV= translations;
+                translationsTV = translations;
             }
 
         }
