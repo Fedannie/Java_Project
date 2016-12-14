@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.UUID;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
@@ -21,14 +25,13 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
     private ImageButton left;
     private ImageButton right;
     private Button stop;
+    private RelativeLayout background;
     private TextView wordTV;
     private TextView mainTrans;
     private TextView extraTrans;
     private ArrayList<Word> order;
     private PreferenceVars prefVars = PreferenceVars.getInstance();
-
-    public RepeatWordActivity() {
-    }
+    private int currentWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,27 +39,49 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.repeat_word);
 
         init();
+        showWord();
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
             case (R.id.leftBtnRepeat):
-                //TODO next word
+                if (currentWord > 0){
+                    currentWord--;
+                    showWord();
+                }
                 break;
             case (R.id.rightBtnRepeat):
-                //TODO previous word
+                if (currentWord < order.size() - 1) {
+                    currentWord++;
+                    showWord();
+                }
                 break;
             case (R.id.stopBtn):
                 finish();
                 break;
             default:
-                //TODO show translation
+                showTrans();
                 break;
         }
     }
 
+    private void showWord() {
+        wordTV.setText(order.get(currentWord).getWord());
+        mainTrans.setText("");
+        extraTrans.setText("");
+    }
+
+    private void showTrans() {
+        ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
+        mainTrans.setText(order.get(currentWord).getMainTranslation());
+        extraTrans.setText(readWriteManager.convertSetToString(order.get(currentWord).getTranslations()));
+    }
+
     private void init() {
+        background = (RelativeLayout) findViewById(R.id.relativeRepeat);
+        background.setOnClickListener(this);
+
         left = (ImageButton) findViewById(R.id.leftBtnRepeat);
         left.setOnClickListener(this);
 
@@ -67,10 +92,13 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
         stop.setOnClickListener(this);
 
         wordTV = (TextView) findViewById(R.id.wordTVRepeat);
+        wordTV.setOnClickListener(this);
 
         mainTrans = (TextView) findViewById(R.id.mainTranslationTVRepeat);
+        mainTrans.setOnClickListener(this);
 
         extraTrans = (TextView) findViewById(R.id.extraTranslationsTVRepeat);
+        extraTrans.setOnClickListener(this);
 
         order = new ArrayList<>();
 
@@ -90,5 +118,6 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_THEMES))));
         }
         Collections.shuffle(order);
+        currentWord = 0;
     }
 }

@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class PopUpWordWatcher extends Activity implements View.OnClickListener {
@@ -25,7 +27,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private ImageButton deleteWordIB;
     private int wordPos;
     private Intent intent;
-    private PreferenceVars prefVars;
+    private PreferenceVars prefVars = PreferenceVars.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,27 +47,33 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
                 Intent intentEditor = new Intent(this, PopUpAddNewWord.class);
                 intentEditor.putExtra(PreferenceVars.WORD_INDEX, wordPos);
                 intentEditor.putExtra(PreferenceVars.IF_EDIT, PreferenceVars.YES);
-                startActivity(intentEditor);
+                startActivityForResult(intentEditor, DictActivity.REQUEST_TO_REFRESH);
                 break;
             case (R.id.deleteWordIB):
                 new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Delete word?")
                         .setMessage("Are you sure you want to delete this word?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                wordManager.delete(cursor.getString(DBConnector.NUM_WORD_ID));
-                                Intent intent = getIntent();
-                                setResult(RESULT_OK, intent);
-                                PopUpWordWatcher.this.finish();
-                            }
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            wordManager.delete(cursor.getString(DBConnector.NUM_WORD_ID));
+                            Intent intent1 = getIntent();
+                            setResult(RESULT_OK, intent1);
+                            PopUpWordWatcher.this.finish();
                         })
                         .setNegativeButton("No", null)
                         .show();
+                setResult(RESULT_OK, getIntent());
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Toast.makeText(this, "Word was edited", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK, getIntent());
         }
     }
 
