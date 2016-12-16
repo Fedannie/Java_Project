@@ -20,6 +20,7 @@ import project.fedorova.polyglotte.data.Word;
 
 public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private static final String ONLY_COMMAS = "Sorry, only commas to divide words";
+    private static final String ONLY_COMMAS_AP = "Sorry, only apostrophe and commas to divide words";
     private static final String ONLY_LETTERS = "Sorry, only letters and numbers.";
     private Button addThemeBtn;
     private Button saveWordBtn;
@@ -28,6 +29,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private TextInputLayout wordTIL;
     private TextInputLayout mainTranslationTIL;
     private TextInputLayout translationTIL;
+    private TextInputLayout examplesTIL;
     private Intent intent;
     private PreferenceVars prefVars = PreferenceVars.getInstance();
     private String wordID = "";
@@ -36,7 +38,6 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_add_word);
         init();
-
         setDataToEdit();
     }
 
@@ -51,7 +52,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                     break;
                 }
                 if (!wordID.equals("")) {
-                    wordBase.delete(wordID);
+                    wordBase.delete(UUID.fromString(wordID));
                 }
                 saveNewWord();
                 setResult(RESULT_OK, getIntent());
@@ -70,19 +71,21 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         String title = "";
         String mainTrans = "";
         String extraTrans = "";
+        String examples = "";
         try {
             title = wordTIL.getEditText().getText().toString();
             mainTrans = mainTranslationTIL.getEditText().getText().toString();
             extraTrans = translationTIL.getEditText().getText().toString();
+            examples = examplesTIL.getEditText().getText().toString();
         } catch (Exception e) {}
         wordBase.insertWord(new Word(UUID.randomUUID(), title,
                 mainTrans,
                 readWriteManager.convertStringToSet(extraTrans),
-                null));
+                null,
+                readWriteManager.convertStringToSet(examples)));
     }
 
     private void init() {
-
         wordBase = new DBConnector(this,
                 prefVars.getDictLang(),
                 prefVars.getNativeLang());
@@ -162,6 +165,28 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         });
         translationTIL.setErrorEnabled(false);
 
+        examplesTIL = (TextInputLayout) findViewById(R.id.examplesLIT);
+        examplesTIL.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null && containsPunctExceptComma(examplesTIL.getEditText().getText().toString().replace("'", ""))) {
+                    examplesTIL.setErrorEnabled(true);
+                    examplesTIL.setError(ONLY_COMMAS_AP);
+                } else {
+                    examplesTIL.setErrorEnabled(false);
+                }
+            }
+        });
+        examplesTIL.setErrorEnabled(false);
+
         intent = getIntent();
     }
 
@@ -177,6 +202,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                 wordTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_TITLE));
                 mainTranslationTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION));
                 translationTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS));
+                examplesTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_EXAMPLES));
             } catch (Exception e) {}
         }
     }
@@ -189,7 +215,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                     !mainTranslationTIL.getEditText().getText().toString().equals("") &&
                     !wordTIL.isErrorEnabled() &&
                     !mainTranslationTIL.isErrorEnabled() &&
-                    !translationTIL.isErrorEnabled();
+                    !translationTIL.isErrorEnabled() &&
+                    !examplesTIL.isErrorEnabled();
         } catch (Exception e) {
             return false;
         }

@@ -15,24 +15,26 @@ import project.fedorova.polyglotte.data.Word;
 
 public class DBConnector {
 
-    private static final String DATABASE_NAME = "polyglotte_database";
+    private static final String DATABASE_NAME = "polyglotte_new_database_";
     private static final int DATABASE_VERSION = 1;
     
-    private static final String WORDS_TABLE_NAME = "words";
+    private static final String WORDS_TABLE_NAME = "all_words_";
 
     private static final String WORD_ID = "_id";
     private static final String WORD_TITLE = "title";
     private static final String WORD_MAIN_TRANSLATION = "mainTranslation";
     private static final String WORD_TRANSLATIONS = "translations";
     private static final String WORD_THEMES = "theme";
+    private static final String WORD_EXAMPLES = "examples";
 
     public static final int NUM_WORD_ID = 0;
     public static final int NUM_WORD_TITLE = 1;
     public static final int NUM_WORD_MAIN_TRANSLATION = 2;
     public static final int NUM_WORD_TRANSLATIONS = 3;
     public static final int NUM_WORD_THEMES = 4;
+    public static final int NUM_WORD_EXAMPLES = 5;
 
-    private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_TITLE, WORD_MAIN_TRANSLATION, WORD_TRANSLATIONS, WORD_THEMES};
+    private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_TITLE, WORD_MAIN_TRANSLATION, WORD_TRANSLATIONS, WORD_THEMES, WORD_EXAMPLES};
 
     private static final String THEMES_TABLE_NAME = "themes";
 
@@ -63,6 +65,9 @@ public class DBConnector {
             if (word.getThemes() != null) {
                 cv.put(WORD_THEMES, readWriteManager.convertSetToString(word.getThemes()));
             }
+            if (word.getExamples() != null) {
+                cv.put(WORD_EXAMPLES, readWriteManager.convertSetToString(word.getExamples()));
+            }
             database.insertOrThrow(WORDS_TABLE_NAME, null, cv);
             if (word.getThemes() != null) {
                 for (String theme : word.getThemes()) {
@@ -92,6 +97,9 @@ public class DBConnector {
             if (word.getThemes() != null) {
                 cv.put(WORD_THEMES, readWriteManager.convertSetToString(word.getThemes()));
             }
+            if (word.getExamples() != null) {
+                cv.put(WORD_EXAMPLES, readWriteManager.convertSetToString(word.getExamples()));
+            }
             database.update(WORDS_TABLE_NAME, cv, WORD_ID + " = ?", new String[]{String.valueOf(word.getID())});
             database.delete(THEMES_TABLE_NAME, THEME_ID + " = ?", new String[]{String.valueOf(word.getID())});
             if (word.getThemes() != null) {
@@ -118,10 +126,10 @@ public class DBConnector {
         database.delete(WORDS_TABLE_NAME, WORD_ID + " = ?", new String[] {String.valueOf(id)});
     }
 
-    public void delete(String id) {
+    /*public void delete(String id) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         database.delete(WORDS_TABLE_NAME, WORD_ID + " = ?", new String[] {id});
-    }
+    }*/
 
 
     public Word getWord(UUID id) {
@@ -135,10 +143,11 @@ public class DBConnector {
             String mainTranslation = cursor.getString(NUM_WORD_MAIN_TRANSLATION);
             Set<String> translations = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_TRANSLATIONS));
             Set<String> themes = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_THEMES));
+            Set<String> examples = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_EXAMPLES));
             cursor.close();
             database.setTransactionSuccessful();
             database.endTransaction();
-            return new Word(id, word, mainTranslation, translations, themes);
+            return new Word(id, word, mainTranslation, translations, themes, examples);
         } else {
             return null;
         }
@@ -202,7 +211,8 @@ public class DBConnector {
                     WORD_TITLE + " TEXT NOT NULL, " +
                     WORD_MAIN_TRANSLATION + " TEXT NOT NULL, " +
                     WORD_TRANSLATIONS + " TEXT, " +
-                    WORD_THEMES + " TEXT);";
+                    WORD_THEMES + " TEXT, " +
+                    WORD_EXAMPLES + " TEXT);";
             db.execSQL(wordsQuery);
 
             String themeQuery = "CREATE TABLE " + THEMES_TABLE_NAME + " (" +

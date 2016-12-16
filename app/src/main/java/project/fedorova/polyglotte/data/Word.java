@@ -1,32 +1,30 @@
 package project.fedorova.polyglotte.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 public class Word implements Serializable{
     private UUID ID;
-    private Set<String> themes = null;
+    private Set<String> themes = new HashSet<>();
     private String word;
     private String mainTranslation;
-    private Set<String> translations = null;
+    private Set<String> translations = new HashSet<>();
+    private Set<String> examples = new HashSet<>();
 
-    public Word(UUID id, String newWord, String newMainTranslation, Set<String> newTranslations, Set<String> newThemes) {
+    public Word(UUID id, String newWord, String newMainTranslation, Set<String> newTranslations, Set<String> newThemes, Set<String> newExamples) {
         word = newWord;
         mainTranslation = newMainTranslation;
         ID = id;
-        if (newTranslations == null) {
-            translations = new HashSet<>();
-        } else {
+        if (newTranslations != null) {
             translations = newTranslations;
         }
-        if (newThemes == null) {
-            themes = new HashSet<>();
-        } else {
+        if (newThemes != null) {
             themes = newThemes;
+        }
+        if (newExamples != null) {
+            examples = newExamples;
         }
     }
 
@@ -40,12 +38,23 @@ public class Word implements Serializable{
 
     public void changeThemes(Set<String> newThemes) {
         themes.clear();
-        themes = newThemes;
+        if (newThemes != null) {
+            themes = newThemes;
+        }
     }
 
     public void changeTranslations(Set<String> newTranslations) {
         translations.clear();
-        translations = newTranslations;
+        if (newTranslations != null) {
+            translations = newTranslations;
+        }
+    }
+
+    public void changeExamples(Set<String> newExamples) {
+        examples.clear();
+        if (newExamples != null) {
+            examples = newExamples;
+        }
     }
 
     public boolean hasTheme(String theme) {
@@ -66,6 +75,10 @@ public class Word implements Serializable{
 
     public Set<String> getThemes() {
         return themes;
+    }
+
+    public Set<String> getExamples() {
+        return examples;
     }
 
     public String getWord() {

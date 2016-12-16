@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.UUID;
+
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.PreferenceVars;
@@ -22,6 +24,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private TextView wordTV;
     private TextView mainTransTV;
     private TextView extraTransTV;
+    private TextView examplesTV;
     private Button backBtn;
     private ImageButton editWordIB;
     private ImageButton deleteWordIB;
@@ -70,7 +73,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
                         .setTitle("Delete word?")
                         .setMessage("Are you sure you want to delete this word?")
                         .setPositiveButton("Yes", (dialog, which) -> {
-                            wordManager.delete(cursor.getString(DBConnector.NUM_WORD_ID));
+                            wordManager.delete(UUID.fromString(cursor.getString(DBConnector.NUM_WORD_ID)));
                             Intent intent1 = getIntent();
                             setResult(RESULT_OK, intent1);
                             PopUpWordWatcher.this.finish();
@@ -100,6 +103,8 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
         mainTransTV.setText(cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION));
 
         extraTransTV.setText(cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS));
+
+        examplesTV.setText(cursor.getString(DBConnector.NUM_WORD_EXAMPLES).replace(",","\n"));
     }
 
     private void init() {
@@ -116,6 +121,8 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
         mainTransTV = (TextView) findViewById(R.id.mainTranslationTVWatcher);
 
         extraTransTV = (TextView) findViewById(R.id.extraTranslationsTVWatcher);
+
+        examplesTV = (TextView) findViewById(R.id.examplesTVWatcher);
 
         backBtn = (Button) findViewById(R.id.backBtnWatcher);
         backBtn.setOnClickListener(this);

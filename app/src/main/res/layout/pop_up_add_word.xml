@@ -19,17 +19,6 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:text="+ Theme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addThemeToWord"
-        android:layout_below="@+id/extratranslationsinput"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="18dp"
-        android:layout_marginEnd="18dp" />
-
-    <Button
         android:text="Save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,6 +74,34 @@
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
         android:id="@+id/backBtn" />
+
+    <Button
+        android:text="+ Theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addThemeToWord"
+        android:layout_above="@+id/saveWord"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/examplesLIT"
+        android:theme="@style/Theme.AppCompat"
+        app:errorEnabled="true"
+        android:animateLayoutChanges="true"
+        android:layout_below="@+id/extratranslationsinput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/addThemeToWord">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/examplesET"
+            android:hint="Examples" />
+    </android.support.design.widget.TextInputLayout>
 
 
 </RelativeLayout>

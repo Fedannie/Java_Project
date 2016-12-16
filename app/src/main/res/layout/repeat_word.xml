@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:backgroundTint="@android:color/background_light"
     android:id="@+id/relativeRepeat"
     android:clickable="true"
     android:background="@android:color/background_light">
@@ -16,7 +15,6 @@
         android:clickable="true"
         android:text="Text"
         android:textColor="@android:color/holo_blue_dark"
-        android:fontFamily="sans-serif"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -32,20 +30,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:id="@+id/extraTranslationsTVRepeat"
-        android:textAlignment="center"
-        android:clickable="true"
-        android:layout_above="@+id/editWordIB"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="54dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
     <TextView
         android:text="TextView"
@@ -73,7 +57,8 @@
         android:adjustViewBounds="true"
         android:layout_above="@+id/mainTranslationTVRepeat"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:contentDescription="Next word">
     </ImageButton>
 
     <ImageButton
@@ -87,6 +72,36 @@
         android:adjustViewBounds="true"
         android:layout_above="@+id/mainTranslationTVRepeat"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:contentDescription="Previous word">
     </ImageButton>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:id="@+id/extraTranslationsTVRepeat"
+        android:textAlignment="center"
+        android:clickable="true"
+        android:layout_below="@+id/mainTranslationTVRepeat"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:id="@+id/examplesTVRepeat"
+        android:layout_below="@+id/extraTranslationsTVRepeat"
+        android:clickable="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="160dp"
+        android:layout_alignParentBottom="true"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="@android:color/holo_blue_dark" />
 </RelativeLayout>

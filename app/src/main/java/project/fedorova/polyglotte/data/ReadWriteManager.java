@@ -65,10 +65,16 @@ public class ReadWriteManager {
     }
 
     public String convertSetToString(Set<String> content) {
+        if (content == null) {
+            return "";
+        }
         return Arrays.toString(content.toArray()).replace("[", "").replace("]", "");
     }
 
     public Set<String> convertStringToSet(String content) {
+        if (content == null) {
+            return null;
+        }
         Set<String> res = new HashSet<>();
         res.addAll(Arrays.asList(content.split(", ")));
         return res;
