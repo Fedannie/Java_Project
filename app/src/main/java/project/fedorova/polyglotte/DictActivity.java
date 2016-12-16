@@ -25,6 +25,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
     private DBConnector wordManager;
     private WordListAdapter wordListAdapter;
     private ListView wordList;
+    private TextView dictionary;
     private PreferenceVars prefVars = PreferenceVars.getInstance();
     Cursor cursor;
     @Override
@@ -80,7 +81,6 @@ public class DictActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Toast.makeText(this, "Your word was added", Toast.LENGTH_SHORT).show();
             refresh();
         }
     }
@@ -109,6 +109,9 @@ public class DictActivity extends Activity implements View.OnClickListener {
         cursor = wordManager.getAllWords();
 
         wordList = (ListView) findViewById(R.id.wordList);
+
+        dictionary = (TextView) findViewById(R.id.dictDictionary);
+        dictionary.setText(prefVars.getDictLang());
     }
 
     private static class WordListAdapter extends CursorAdapter {

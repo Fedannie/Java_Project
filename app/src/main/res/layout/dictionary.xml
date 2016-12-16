@@ -18,7 +18,7 @@
         android:text="LANGUAGE"
         android:layout_width="187dp"
         android:layout_height="wrap_content"
-        android:id="@+id/selectedLang" />
+        android:id="@+id/dictDictionary" />
 
     <ScrollView
         android:layout_width="match_parent"
