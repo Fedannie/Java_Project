@@ -109,7 +109,6 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
                 prefVars.getDictLang(),
                 prefVars.getNativeLang());
         Cursor cursor = database.getAllWords();
-        cursor.moveToFirst();
 
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
 

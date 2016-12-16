@@ -65,6 +65,10 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 startActivity(intentFT);
                 break;
             case (R.id.repeatButton):
+                if (wordManager.getAllWords().getCount() == 0) {
+                    Toast.makeText(this, "Sorry, you have not got any words yet", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 Intent intentR = new Intent(this, RepeatWordActivity.class);
                 startActivity(intentR);
                 break;
