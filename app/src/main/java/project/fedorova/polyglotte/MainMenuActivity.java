@@ -16,7 +16,6 @@ import android.widget.Toast;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.PreferenceVars;
@@ -27,7 +26,6 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 

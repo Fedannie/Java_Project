@@ -70,10 +70,12 @@ public class PhraseActivity extends Activity {
                 ArrayList<Map<String, String>> childDataItem = new ArrayList<>();
                 for (String phrase : phrases.get(i)) {
                     m = new HashMap<>();
-                    m.put(PHRASE, phrase);
-                    try {
+                    try{
+                        m.put(PHRASE, translate.execute(phrase,
+                            Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
+                            Language.fromString(translate.getLanguageCode(prefVars.getDictLang()))));
                         m.put(TRANSLATION, translate.execute(phrase,
-                                Language.fromString(translate.getLanguageCode(prefVars.getDictLang())),
+                                Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
                                 Language.fromString(translate.getLanguageCode(prefVars.getNativeLang()))));
                     } catch (Exception e) {
                         Toast.makeText(PhraseActivity.this, "Unknown rror with translation", Toast.LENGTH_SHORT).show();
