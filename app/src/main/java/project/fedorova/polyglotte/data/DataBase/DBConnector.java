@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import project.fedorova.polyglotte.data.Phrase;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
 
@@ -49,10 +50,22 @@ public class DBConnector {
     private static final String PHRASE_ID = "_id";
     private static final String PHRASE_TITLE = "title";
     private static final String PHRASE_TRANSLATION = "translation";
+    private static final String PHRASE_THEME = "theme";
 
     public static final int NUM_PHRASE_ID = 0;
     public static final int NUM_PHRASE_TITLE = 1;
     public static final int NUM_PHRASE_TRANSLATION = 2;
+    public static final int NUM_PHRASE_THEME = 3;
+
+    private static final String[] PHRASES_COLUMNS = new String[] {PHRASE_ID, PHRASE_TITLE, PHRASE_TRANSLATION};
+
+    private static final String PHRASE_THEMES_TABLE_NAME = "phrase themes";
+
+    private static final String PHRASE_THEME_ID = "_id";
+    private static final String PHRASE_THEME_TITLE = "title";
+
+    public static final int NUM_PHRASE_THEME_ID = 0;
+    public static final int NUM_PHRASE_THEME_TITLE = 1;
 
     private OpenHelper dbHelper;
 
@@ -170,6 +183,41 @@ public class DBConnector {
         }
     }
 
+    public void insertPhrase(Phrase phrase) {
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        try {
+            database.beginTransaction();
+            ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
+            ContentValues cv = new ContentValues();
+            cv.put(PHRASE_ID, phrase.getId().toString());
+            cv.put(PHRASE_TITLE, phrase.getPhrase());
+            cv.put(PHRASE_TRANSLATION, phrase.getTranslation());
+            database.insertOrThrow(PHRASES_TABLE_NAME, null, cv);
+            if (phrase.getTheme() != null) {
+                ContentValues cvTheme = new ContentValues();
+                cvTheme.put(PHRASE_THEME_ID, phrase.getId().toString());
+                cvTheme.put(PHRASE_THEME_TITLE, phrase.getTheme());
+                database.insertOrThrow(PHRASE_THEMES_TABLE_NAME, null, cvTheme);
+            }
+            database.setTransactionSuccessful();
+        } finally {
+            database.endTransaction();
+        }
+    }
+
+    public Cursor getAllPhrases() {
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        database.beginTransaction();
+        try {
+            return database.query(PHRASES_TABLE_NAME, PHRASES_COLUMNS, null, null, null, null, PHRASE_TITLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            database.endTransaction();
+        }
+    }
+
     public Cursor getWordsByTheme(Set<String> themes) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         StringBuilder selectionBuilder = null;
@@ -188,6 +236,19 @@ public class DBConnector {
                                        WORDS_COLUMNS, selection, selectionArgs, WORD_ID,
                                        "count(" + THEMES_TABLE_NAME + "." + THEME_TITLE + ") = " +
                                         String.valueOf(themes.size()), null);
+    }
+
+    public Cursor getPhrasesByTheme(String theme) {
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        String[] themes = {theme};
+        String selection = PHRASE_THEMES_TABLE_NAME + "." + PHRASE_THEME_TITLE + " = ?";
+        return database.query(PHRASES_TABLE_NAME + "inner join " +
+                        PHRASE_THEMES_TABLE_NAME + " on " +
+                        PHRASES_TABLE_NAME + "." + " = " +
+                        PHRASE_THEMES_TABLE_NAME + "." + THEME_ID,
+                PHRASES_COLUMNS, selection, themes, PHRASE_ID,
+                "count(" + PHRASE_THEMES_TABLE_NAME + "." + PHRASE_THEME_TITLE + ") = " +
+                        String.valueOf(1), null);
     }
 
     public Set<String> getThemesByWord(UUID id) {
@@ -229,6 +290,11 @@ public class DBConnector {
                     PHRASE_TITLE + " TEXT NOT NULL, " +
                     PHRASE_TRANSLATION + " TEXT);";
             db.execSQL(phraseQuery);
+
+            String phraseThemeQuery = "CREATE TABLE " + PHRASE_THEMES_TABLE_NAME + " (" +
+                    PHRASE_THEME_ID + " TEXT NOT NULL, " +
+                    PHRASE_THEME_TITLE + " TEXT NOT NULL);";
+            db.execSQL(phraseThemeQuery);
         }
 
         @Override
