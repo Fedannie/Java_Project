@@ -69,6 +69,12 @@
             android:name=".RepeatWordActivity">
         </activity>
 
+        <activity
+            android:theme="@android:style/Theme.Dialog"
+            android:label=""
+            android:name=".PopUpShowPhrase">
+        </activity>
+
     </application>
 
 </manifest>

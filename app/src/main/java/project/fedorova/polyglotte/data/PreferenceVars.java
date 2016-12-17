@@ -13,6 +13,9 @@ public class PreferenceVars {
     public static final String NO = "no";
     public static final String WORD_INDEX = "word index";
     public static final String IF_EDIT = "if edit";
+    public static final String PHRASE = "phrase";
+    public static final String TRANS = "translation";
+
 
     public String getNativeLang() {
         if (nativeLang == null) {
