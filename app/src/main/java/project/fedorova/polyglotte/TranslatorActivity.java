@@ -16,16 +16,16 @@ import project.fedorova.polyglotte.translator.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class TranslatorActivity extends Activity implements View.OnClickListener {
-    EditText fromET;
-    TextView transTV;
-    Spinner langFrom;
-    Spinner langTo;
-    ProgressBar translatePB;
+    private EditText fromET;
+    private TextView transTV;
+    private Spinner langFrom;
+    private Spinner langTo;
+    private ProgressBar translatePB;
+    private Translate translate = Translate.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.translator);
-        Translate.fillMap();
         translatePB = (ProgressBar) findViewById(R.id.translateProgressBar);
         fromET = (EditText) findViewById(R.id.textToTrans);
         fromET.addTextChangedListener(new TextWatcher(){
@@ -71,7 +71,6 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
     public void callTranslate() {
         translatePB.setVisibility(View.VISIBLE);
         try {
-            Translate translate = Translate.getInstance();
             String translation = translate.execute(fromET.getText().toString(), getLang(langFrom), getLang(langTo));
             transTV.setText(translation);
         } catch (Exception e) {
@@ -83,10 +82,10 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
 
     private Language getLang(Spinner sLang) {
         try {
-            String pLang = Translate.getLanguageCode(sLang.getSelectedItem().toString());
+            String pLang = translate.getLanguageCode(sLang.getSelectedItem().toString());
             return Language.fromString(pLang);
         } catch (Exception e) {
-            return Translate.DEFAULT_LANG;
+            return translate.DEFAULT_LANG;
         }
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,11 +14,17 @@ import java.util.Map;
 
 import project.fedorova.polyglotte.data.PhraseList;
 import project.fedorova.polyglotte.data.PreferenceVars;
+import project.fedorova.polyglotte.translator.language.Language;
+import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class PhraseActivity extends Activity {
+    private static final String TRANSLATION = "translation";
+    private static final String THEME = "theme";
+    private static final String PHRASE = "phrase";
     private PhraseList phraseList = PhraseList.getInstance();
     private TextView dictionary;
     private PreferenceVars prefVars = PreferenceVars.getInstance();
+    private Translate translate = Translate.getInstance();
     // названия компаний (групп)
     ArrayList<String> themes = phraseList.getThemes();
 
@@ -49,12 +56,12 @@ public class PhraseActivity extends Activity {
         for (String group : themes) {
             // заполняем список атрибутов для каждой группы
             m = new HashMap<String, String>();
-            m.put("theme", group); // имя компании
+            m.put(THEME, group); // имя компании
             themeData.add(m);
         }
 
         // список атрибутов групп для чтения
-        String groupFrom[] = new String[] {"theme"};
+        String groupFrom[] = new String[] {THEME};
         // список ID view-элементов, в которые будет помещены атрибуты групп
         int groupTo[] = new int[] {android.R.id.text1};
 
@@ -68,7 +75,15 @@ public class PhraseActivity extends Activity {
             // заполняем список атрибутов для каждого элемента
             for (String phrase : phrases.get(i)) {
                 m = new HashMap<String, String>();
-                m.put("phrase", phrase); // название телефона
+                m.put(PHRASE, phrase); // название телефона
+                try {
+                    m.put(TRANSLATION, translate.execute(phrase,
+                                    Language.fromString(translate.getLanguageCode(prefVars.getDictLang())),
+                                    Language.fromString(translate.getLanguageCode(prefVars.getNativeLang()))));
+                } catch (Exception e) {
+                    Toast.makeText(this, translate.getLanguageCode(prefVars.getDictLang()) + " " + translate.getLanguageCode(prefVars.getNativeLang()) + "\n" + phrase, Toast.LENGTH_SHORT).show();
+                    m.put(TRANSLATION, "");
+                }
                 childDataItem.add(m);
             }
             // добавляем в коллекцию коллекций
@@ -76,9 +91,9 @@ public class PhraseActivity extends Activity {
         }
 
         // список атрибутов элементов для чтения
-        String childFrom[] = new String[] {"phrase"};
+        String childFrom[] = new String[] {PHRASE, TRANSLATION};
         // список ID view-элементов, в которые будет помещены атрибуты элементов
-        int childTo[] = new int[] {android.R.id.text1};
+        int childTo[] = new int[] {R.id.stringTVList, R.id.translationTVList};
 
         SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(
                 this,
@@ -87,7 +102,7 @@ public class PhraseActivity extends Activity {
                 groupFrom,
                 groupTo,
                 childData,
-                android.R.layout.simple_list_item_1,
+                R.layout.wordlistitem,
                 childFrom,
                 childTo);
 

@@ -7,7 +7,7 @@
     >
 
     <TextView
-        android:id="@+id/wordTVWatcher"
+        android:id="@+id/stringTVList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -15,7 +15,7 @@
         />
 
     <TextView
-        android:id="@+id/translationsTV"
+        android:id="@+id/translationTVList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"

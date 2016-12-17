@@ -11,13 +11,15 @@ import project.fedorova.polyglotte.translator.YandexTranslatorApi;
 import project.fedorova.polyglotte.translator.language.Language;
 
 public class Translate extends YandexTranslatorApi {
-    private static Translate instance;
+    private static volatile Translate instance;
 
     private static final String SERVICE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
     private static final String TRANSLATION_LABEL = "text";
-    public static Language DEFAULT_LANG = Language.ENGLISH;
-    private static Map<String, String> langsCodes;
-    private Translate(){};
+    public Language DEFAULT_LANG = Language.ENGLISH;
+    private Map<String, String> langsCodes;
+    private Translate(){
+        fillMap();
+    };
 
     /**
      * Set new default language
@@ -61,7 +63,7 @@ public class Translate extends YandexTranslatorApi {
         validServiceState();
     }
 
-    public static void fillMap() {
+    private void fillMap() {
         langsCodes = new HashMap<String, String>();
         langsCodes.put("Albanian", Language.ALBANIAN.toString());
         langsCodes.put("Armenian", Language.ARMENIAN.toString());
@@ -100,7 +102,7 @@ public class Translate extends YandexTranslatorApi {
         langsCodes.put("Ukrainian", Language.UKRAINIAN.toString());
     }
 
-    public static String getLanguageCode(String lang) throws NoSuchElementException {
+    public String getLanguageCode(String lang) throws NoSuchElementException {
         String res =  langsCodes.get(lang);
         if (res == null){
             throw new NoSuchElementException();
