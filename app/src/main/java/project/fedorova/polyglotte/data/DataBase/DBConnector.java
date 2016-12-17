@@ -16,7 +16,7 @@ import project.fedorova.polyglotte.data.Word;
 
 public class DBConnector {
 
-    private static final String DATABASE_NAME = "polyglotte_new_database_";
+    private static final String DATABASE_NAME = "polyglotte_new__database_";
     private static final int DATABASE_VERSION = 1;
     
     private static final String WORDS_TABLE_NAME = "words";
@@ -59,7 +59,7 @@ public class DBConnector {
 
     private static final String[] PHRASES_COLUMNS = new String[] {PHRASE_ID, PHRASE_TITLE, PHRASE_TRANSLATION};
 
-    private static final String PHRASE_THEMES_TABLE_NAME = "phrase themes";
+    private static final String PHRASE_THEMES_TABLE_NAME = "phrase_themes";
 
     private static final String PHRASE_THEME_ID = "_id";
     private static final String PHRASE_THEME_TITLE = "title";
