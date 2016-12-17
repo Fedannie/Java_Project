@@ -18,7 +18,7 @@ public class DBConnector {
     private static final String DATABASE_NAME = "polyglotte_new_database_";
     private static final int DATABASE_VERSION = 1;
     
-    private static final String WORDS_TABLE_NAME = "all_words_";
+    private static final String WORDS_TABLE_NAME = "words";
 
     private static final String WORD_ID = "_id";
     private static final String WORD_TITLE = "title";
@@ -43,6 +43,16 @@ public class DBConnector {
 
     public static final int NUM_THEME_ID = 0;
     public static final int NUM_THEME_TITLE = 1;
+
+    private static final String PHRASES_TABLE_NAME = "phrases";
+
+    private static final String PHRASE_ID = "_id";
+    private static final String PHRASE_TITLE = "title";
+    private static final String PHRASE_TRANSLATION = "translation";
+
+    public static final int NUM_PHRASE_ID = 0;
+    public static final int NUM_PHRASE_TITLE = 1;
+    public static final int NUM_PHRASE_TRANSLATION = 2;
 
     private OpenHelper dbHelper;
 
@@ -125,12 +135,6 @@ public class DBConnector {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         database.delete(WORDS_TABLE_NAME, WORD_ID + " = ?", new String[] {String.valueOf(id)});
     }
-
-    /*public void delete(String id) {
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-        database.delete(WORDS_TABLE_NAME, WORD_ID + " = ?", new String[] {id});
-    }*/
-
 
     public Word getWord(UUID id) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -219,6 +223,12 @@ public class DBConnector {
                     THEME_ID + " TEXT NOT NULL, " +
                     THEME_TITLE + " TEXT NOT NULL);";
             db.execSQL(themeQuery);
+
+            String phraseQuery = "CREATE TABLE " + PHRASES_TABLE_NAME + " (" +
+                    PHRASE_ID + " TEXT NOT NULL, " +
+                    PHRASE_TITLE + " TEXT NOT NULL, " +
+                    PHRASE_TRANSLATION + " TEXT);";
+            db.execSQL(phraseQuery);
         }
 
         @Override
