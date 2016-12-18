@@ -1,7 +1,9 @@
 package project.fedorova.polyglotte.data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import project.fedorova.polyglotte.translator.language.Language;
+import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class PhraseList {
     private static volatile PhraseList instance;
@@ -19,22 +21,50 @@ public class PhraseList {
             "Numbers:Zero;One;Two;Three;Four;Five;Six;Seven;Eight;Nine;Ten;Eleven;Twelve;Thirteen;Fourteen;Fifteen;Sixteen;Seventeen;Eighteen;Nineteen;Twenty;Twenty one;Twenty two;Thirty;Forty;Fifty;Sixty;Seventy;Eighty;Ninty;Hundred;Thousnad;";
     private ArrayList<String> themes = new ArrayList<>();
     private ArrayList<ArrayList<String>> phrases = new ArrayList<>();
+    private ArrayList<ArrayList<String>> translations = new ArrayList<>();
+    private PreferenceVars prefVars = PreferenceVars.getInstance();
+    private Translate translate = Translate.getInstance();
+    private boolean ERROR = false;
+
     private PhraseList() {
+        loadPhrases();
+    }
+
+    private void loadPhrases() {
         String[] tmp = allToDivide.split("\n");
         for (String s : tmp) {
             String[] themeNPhrase = s.split(":");
-            themes.add(themeNPhrase[0]);
-            phrases.add(new ArrayList<>(Arrays.asList(themeNPhrase[1].split(";"))));
+            try {
+                themes.add(translate.execute(themeNPhrase[0],
+                        Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
+                        Language.fromString(translate.getLanguageCode(prefVars.getNativeLang()))));
+                ArrayList<String> phrasesLastTheme = new ArrayList<>();
+                ArrayList<String> translatoinsLastTheme = new ArrayList<>();
+                for (String phrase : themeNPhrase[1].split(";")) {
+                    phrasesLastTheme.add(translate.execute(phrase,
+                            Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
+                            Language.fromString(translate.getLanguageCode(prefVars.getDictLang()))));
+                    translatoinsLastTheme.add(translate.execute(phrase,
+                            Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
+                            Language.fromString(translate.getLanguageCode(prefVars.getNativeLang()))));
+                }
+                phrases.add(phrasesLastTheme);
+                translations.add(translatoinsLastTheme);
+            }catch (Exception e) {
+                ERROR = false;
+            }
         }
     }
 
     public static PhraseList getInstance() {
         PhraseList localInstance = instance;
-        if (localInstance == null) {
-            synchronized (PreferenceVars.class) {
+        PreferenceVars preferenceVars = PreferenceVars.getInstance();
+        if (localInstance == null || localInstance.ERROR || preferenceVars.hasNativeLangChanged()) {
+            synchronized (PhraseList.class) {
                 localInstance = instance;
-                if (localInstance == null) {
+                if (localInstance == null || localInstance.ERROR || preferenceVars.hasNativeLangChanged()) {
                     instance = localInstance = new PhraseList();
+                    preferenceVars.setNativeLangChanged(false);
                 }
             }
         }
@@ -47,5 +77,13 @@ public class PhraseList {
 
     public ArrayList<ArrayList<String>> getPhrases() {
         return phrases;
+    }
+
+    public ArrayList<ArrayList<String>> getTranslations() {
+        return translations;
+    }
+
+    public boolean isERROR() {
+        return ERROR;
     }
 }

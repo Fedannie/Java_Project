@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import project.fedorova.polyglotte.data.DictList;
+import project.fedorova.polyglotte.data.PhraseList;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.PreferenceVars;
 
@@ -84,8 +85,18 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 startActivity(intentD);
                 break;
             case (R.id.phrasebookButton):
-                Intent intentPh = new Intent(this, PhraseActivity.class);
-                startActivity(intentPh);
+                PhraseList phraseList = PhraseList.getInstance();
+                if (phraseList.isERROR()) {
+                    new AlertDialog.Builder(this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("No internet connection")
+                            .setMessage("Sorry, it is impossible now to load this phrasebook into database. Check your internet connection and try once again.")
+                            .setNeutralButton("Ok", null)
+                            .show();
+                } else {
+                    Intent intentPh = new Intent(this, PhraseActivity.class);
+                    startActivity(intentPh);
+                }
                 break;
             case (R.id.translatorButton):
                 Intent intentTr = new Intent(this, TranslatorActivity.class);
@@ -172,6 +183,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             Intent intentNL = new Intent(this, PopUpSelectNativeLanguage.class);
             startActivity(intentNL);
             editor.putString(PreferenceVars.FIRST_TIME, PreferenceVars.NO);
+            prefVars.setNativeLangChanged(true);
             editor.commit();
         } else {
             prefVars.setNativeLang(sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG));

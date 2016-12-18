@@ -15,7 +15,15 @@ public class PreferenceVars {
     public static final String IF_EDIT = "if edit";
     public static final String PHRASE = "phrase";
     public static final String TRANS = "translation";
+    private boolean nativeLangChanged = false;
 
+    public boolean hasNativeLangChanged() {
+        return nativeLangChanged;
+    }
+
+    public void setNativeLangChanged(boolean flag) {
+        nativeLangChanged = flag;
+    }
 
     public String getNativeLang() {
         if (nativeLang == null) {

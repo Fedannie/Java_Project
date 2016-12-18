@@ -10,7 +10,7 @@ import android.widget.Toast;
 import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class PrefActivity extends PreferenceActivity {
-    SharedPreferences sPref;
+    PreferenceVars preferenceVars = PreferenceVars.getInstance();
     ListPreference nativeLanguage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,20 +18,15 @@ public class PrefActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
 
         nativeLanguage = (ListPreference) findPreference("nativeLanguage");
-        nativeLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                changeNativeLanguage();
-                return true;
-            }
+        nativeLanguage.setOnPreferenceChangeListener((preference, newValue) -> {
+            changeNativeLanguage();
+            return true;
         });
     }
 
     private void changeNativeLanguage() {
-        sPref = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(PreferenceVars.NATIVE_LANGUAGE, nativeLanguage.getValue());
-        ed.commit();
-        Toast.makeText(this, "Your native language changed", Toast.LENGTH_SHORT).show();
+        preferenceVars.setNativeLang(nativeLanguage.getValue());
+        preferenceVars.setNativeLangChanged(true);
+        Toast.makeText(this, "Your native language changed to" + nativeLanguage.getValue(), Toast.LENGTH_SHORT).show();
     }
 }

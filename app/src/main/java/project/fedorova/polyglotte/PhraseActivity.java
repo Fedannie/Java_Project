@@ -47,10 +47,9 @@ public class PhraseActivity extends Activity {
         private static final String THEME = "theme";
         private static final String PHRASE = "phrase";
         private PhraseList phraseList = PhraseList.getInstance();
-        private PreferenceVars prefVars = PreferenceVars.getInstance();
-        private Translate translate = Translate.getInstance();
         private ArrayList<String> themes = phraseList.getThemes();
         private ArrayList<ArrayList<String>> phrases = phraseList.getPhrases();
+        private ArrayList<ArrayList<String>> translations = phraseList.getTranslations();
         private SimpleExpandableListAdapter adapter;
         SimpleExpandableListAdapter getAdapter() {
             ArrayList<Map<String, String>> themeData = new ArrayList<>();
@@ -68,19 +67,10 @@ public class PhraseActivity extends Activity {
 
             for (int i = 0; i < phrases.size(); i++) {
                 ArrayList<Map<String, String>> childDataItem = new ArrayList<>();
-                for (String phrase : phrases.get(i)) {
+                for (int j = 0; j < phrases.get(i).size(); j++) {
                     m = new HashMap<>();
-                    try{
-                        m.put(PHRASE, translate.execute(phrase,
-                            Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
-                            Language.fromString(translate.getLanguageCode(prefVars.getDictLang()))));
-                        m.put(TRANSLATION, translate.execute(phrase,
-                                Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
-                                Language.fromString(translate.getLanguageCode(prefVars.getNativeLang()))));
-                    } catch (Exception e) {
-                        Toast.makeText(PhraseActivity.this, "Unknown rror with translation", Toast.LENGTH_SHORT).show();
-                        m.put(TRANSLATION, "");
-                    }
+                    m.put(PHRASE, phrases.get(i).get(j));
+                    m.put(TRANSLATION, translations.get(i).get(j));
                     childDataItem.add(m);
                 }
                 childData.add(childDataItem);

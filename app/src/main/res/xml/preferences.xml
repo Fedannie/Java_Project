@@ -4,7 +4,7 @@
         android:entries="@array/wholeLanguageList"
         android:entryValues="@array/wholeLanguageList"
         android:key="nativeLanguage"
-        android:defaultValue="Russian"
+        android:defaultValue="English"
         android:summary="Change native language"
         android:title="Native language"/>
 </PreferenceScreen>
