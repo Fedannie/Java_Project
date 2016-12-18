@@ -1,6 +1,8 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -21,10 +23,10 @@ public class PopUpSelectNativeLanguage extends Activity{
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, langs);
         lvLangs.setAdapter(adapter);
         lvLangs.setOnItemClickListener((parent, view, position, id) -> {
-            DictList dictList = DictList.getInstance();
             Toast.makeText(PopUpSelectNativeLanguage.this, "Your native language is " + langs[(int) id] + "!\n You may change it in preferences.", Toast.LENGTH_LONG).show();
-            PreferenceVars prefVar = PreferenceVars.getInstance();
-            prefVar.setNativeLang(langs[(int) id]);
+            Intent intent = getIntent();
+            intent.putExtra("language", langs[(int) id]);
+            setResult(RESULT_OK, intent);
             onBackPressed();
         });
     }

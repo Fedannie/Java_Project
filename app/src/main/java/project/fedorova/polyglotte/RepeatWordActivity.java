@@ -1,6 +1,7 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -19,16 +20,11 @@ import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
 
 public class RepeatWordActivity extends Activity implements View.OnClickListener {
-    private ImageButton left;
-    private ImageButton right;
-    private Button stop;
-    private RelativeLayout background;
     private TextView wordTV;
     private TextView mainTrans;
     private TextView extraTrans;
     private TextView examplesTV;
     private ArrayList<Word> order;
-    private PreferenceVars prefVars = PreferenceVars.getInstance();
     private int currentWord;
 
     @Override
@@ -79,16 +75,16 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
     }
 
     private void init() {
-        background = (RelativeLayout) findViewById(R.id.relativeRepeat);
+        RelativeLayout background = (RelativeLayout) findViewById(R.id.relativeRepeat);
         background.setOnClickListener(this);
 
-        left = (ImageButton) findViewById(R.id.leftBtnRepeat);
+        ImageButton left = (ImageButton) findViewById(R.id.leftBtnRepeat);
         left.setOnClickListener(this);
 
-        right = (ImageButton) findViewById(R.id.rightBtnRepeat);
+        ImageButton right = (ImageButton) findViewById(R.id.rightBtnRepeat);
         right.setOnClickListener(this);
 
-        stop = (Button) findViewById(R.id.stopBtn);
+        Button stop = (Button) findViewById(R.id.stopBtn);
         stop.setOnClickListener(this);
 
         wordTV = (TextView) findViewById(R.id.wordTVRepeat);
@@ -105,9 +101,10 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
 
         order = new ArrayList<>();
 
+        Intent intent = getIntent();
         DBConnector database = new DBConnector(this,
-                prefVars.getDictLang(),
-                prefVars.getNativeLang());
+                intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
+                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
         Cursor cursor = database.getAllWords();
 
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();

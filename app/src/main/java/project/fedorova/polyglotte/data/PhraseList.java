@@ -22,31 +22,30 @@ public class PhraseList {
     private ArrayList<String> themes = new ArrayList<>();
     private ArrayList<ArrayList<String>> phrases = new ArrayList<>();
     private ArrayList<ArrayList<String>> translations = new ArrayList<>();
-    private PreferenceVars prefVars = PreferenceVars.getInstance();
     private Translate translate = Translate.getInstance();
     private boolean ERROR = false;
 
-    private PhraseList() {
-        loadPhrases();
+    private PhraseList(String dictLang, String nativeLang) {
+        loadPhrases(dictLang, nativeLang);
     }
 
-    private void loadPhrases() {
+    private void loadPhrases(String dictLang, String nativeLang) {
         String[] tmp = allToDivide.split("\n");
         for (String s : tmp) {
             String[] themeNPhrase = s.split(":");
             try {
                 themes.add(translate.execute(themeNPhrase[0],
                         Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
-                        Language.fromString(translate.getLanguageCode(prefVars.getNativeLang()))));
+                        Language.fromString(translate.getLanguageCode(nativeLang))));
                 ArrayList<String> phrasesLastTheme = new ArrayList<>();
                 ArrayList<String> translatoinsLastTheme = new ArrayList<>();
                 for (String phrase : themeNPhrase[1].split(";")) {
                     phrasesLastTheme.add(translate.execute(phrase,
                             Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
-                            Language.fromString(translate.getLanguageCode(prefVars.getDictLang()))));
+                            Language.fromString(translate.getLanguageCode(dictLang))));
                     translatoinsLastTheme.add(translate.execute(phrase,
                             Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
-                            Language.fromString(translate.getLanguageCode(prefVars.getNativeLang()))));
+                            Language.fromString(translate.getLanguageCode(nativeLang))));
                 }
                 phrases.add(phrasesLastTheme);
                 translations.add(translatoinsLastTheme);
@@ -56,15 +55,13 @@ public class PhraseList {
         }
     }
 
-    public static PhraseList getInstance() {
+    public static PhraseList getInstance(String dictLang, String nativeLang, boolean wasChanged) {
         PhraseList localInstance = instance;
-        PreferenceVars preferenceVars = PreferenceVars.getInstance();
-        if (localInstance == null || localInstance.ERROR || preferenceVars.hasNativeLangChanged()) {
+        if (localInstance == null || localInstance.ERROR || wasChanged) {
             synchronized (PhraseList.class) {
                 localInstance = instance;
-                if (localInstance == null || localInstance.ERROR || preferenceVars.hasNativeLangChanged()) {
-                    instance = localInstance = new PhraseList();
-                    preferenceVars.setNativeLangChanged(false);
+                if (localInstance == null || localInstance.ERROR || wasChanged) {
+                    instance = localInstance = new PhraseList(dictLang, nativeLang);
                 }
             }
         }

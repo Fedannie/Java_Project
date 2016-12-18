@@ -21,18 +21,20 @@ import project.fedorova.polyglotte.translator.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class PhraseActivity extends Activity {
-    PreferenceVars prefVars = PreferenceVars.getInstance();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phrasebook);
 
+        Intent intent = getIntent();
         TextView dictionary = (TextView) findViewById(R.id.dictPhrasebook);
-        dictionary.setText(prefVars.getDictLang());
+        dictionary.setText(intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
 
         ExpandableListView phrasesList = (ExpandableListView) findViewById(R.id.phrasesELV);
         PhraseListAdapterHelper adapterHelper = new PhraseListAdapterHelper();
-        phrasesList.setAdapter(adapterHelper.getAdapter());
+        phrasesList.setAdapter(adapterHelper.getAdapter(intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
+                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE),
+                intent.getBooleanExtra(PreferenceVars.NATIVE_LANG_CHANGED, true)));
         phrasesList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             Intent intentWordWatcher = new Intent(PhraseActivity.this, PopUpShowPhrase.class);
             intentWordWatcher.putExtra(PreferenceVars.PHRASE, adapterHelper.getChildPhrase(groupPosition, childPosition));
@@ -46,12 +48,13 @@ public class PhraseActivity extends Activity {
         private static final String TRANSLATION = "translation";
         private static final String THEME = "theme";
         private static final String PHRASE = "phrase";
-        private PhraseList phraseList = PhraseList.getInstance();
+        private PhraseList phraseList;
         private ArrayList<String> themes = phraseList.getThemes();
         private ArrayList<ArrayList<String>> phrases = phraseList.getPhrases();
         private ArrayList<ArrayList<String>> translations = phraseList.getTranslations();
         private SimpleExpandableListAdapter adapter;
-        SimpleExpandableListAdapter getAdapter() {
+        SimpleExpandableListAdapter getAdapter(String dictLang, String nativeLang, boolean wasChanged) {
+            phraseList = PhraseList.getInstance(dictLang, nativeLang, wasChanged);
             ArrayList<Map<String, String>> themeData = new ArrayList<>();
             Map<String, String> m;
             for (String group : themes) {

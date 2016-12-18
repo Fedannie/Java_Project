@@ -25,14 +25,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private TextView mainTransTV;
     private TextView extraTransTV;
     private TextView examplesTV;
-    private Button backBtn;
-    private ImageButton editWordIB;
-    private ImageButton deleteWordIB;
-    private ImageButton left;
-    private ImageButton right;
     private int wordPos;
-    private Intent intent;
-    private PreferenceVars prefVars = PreferenceVars.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,12 +101,12 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     }
 
     private void init() {
-        intent = getIntent();
-        wordPos = intent.getIntExtra(PreferenceVars.WORD_INDEX, 0);
+        Intent intent = getIntent();
 
+        wordPos = intent.getIntExtra(PreferenceVars.WORD_INDEX, 0);
         wordManager = new DBConnector(this,
-                prefVars.getDictLang(),
-                prefVars.getNativeLang());
+                intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
+                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
         cursor = wordManager.getAllWords();
 
         wordTV = (TextView) findViewById(R.id.wordTVWatcher);
@@ -124,19 +117,19 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
 
         examplesTV = (TextView) findViewById(R.id.examplesTVWatcher);
 
-        backBtn = (Button) findViewById(R.id.backBtnWatcher);
+        Button backBtn = (Button) findViewById(R.id.backBtnWatcher);
         backBtn.setOnClickListener(this);
 
-        editWordIB = (ImageButton) findViewById(R.id.editWordIB);
+        ImageButton editWordIB = (ImageButton) findViewById(R.id.editWordIB);
         editWordIB.setOnClickListener(this);
 
-        deleteWordIB = (ImageButton) findViewById(R.id.deleteWordIB);
+        ImageButton deleteWordIB = (ImageButton) findViewById(R.id.deleteWordIB);
         deleteWordIB.setOnClickListener(this);
 
-        left = (ImageButton) findViewById(R.id.leftBtnWatcher);
+        ImageButton left = (ImageButton) findViewById(R.id.leftBtnWatcher);
         left.setOnClickListener(this);
 
-        right = (ImageButton) findViewById(R.id.rightBtnWatcher);
+        ImageButton right = (ImageButton) findViewById(R.id.rightBtnWatcher);
         right.setOnClickListener(this);
     }
 }

@@ -1,6 +1,7 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,19 +14,14 @@ import project.fedorova.polyglotte.layouts.ExerciseListAdapter;
 
 public class ExerciseActivity extends Activity implements View.OnClickListener{
     private TextView dictionary;
-    private Button wholeBtn;
-    private Button prevExerciseBtn;
-    private Button nextExerciseBtn;
-    private CenterLockHorizontalScrollview exerciseScrollView;
-    private int currIndex = 0;
-    PreferenceVars prefVars = PreferenceVars.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise);
 
         dictionary = (TextView) findViewById(R.id.dictExercise);
-        dictionary.setText(prefVars.getDictLang());
+        dictionary.setText(intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
     }
 
     @Override

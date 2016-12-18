@@ -31,7 +31,6 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private TextInputLayout translationTIL;
     private TextInputLayout examplesTIL;
     private Intent intent;
-    private PreferenceVars prefVars = PreferenceVars.getInstance();
     private String wordID = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,9 +85,11 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     }
 
     private void init() {
+        PreferenceVars prefVars = PreferenceVars.getInstance();
+        Intent intent = getIntent();
         wordBase = new DBConnector(this,
-                prefVars.getDictLang(),
-                prefVars.getNativeLang());
+                intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
+                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
 
         addThemeBtn = (Button) findViewById(R.id.addThemeToWord);
         addThemeBtn.setOnClickListener(this);

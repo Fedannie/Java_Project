@@ -20,13 +20,8 @@ import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class DictActivity extends Activity implements View.OnClickListener {
     public static final int REQUEST_TO_REFRESH = 1;
-    private Button repeatAllBtn;
-    private Button filterBtn;
     private DBConnector wordManager;
-    private WordListAdapter wordListAdapter;
     private ListView wordList;
-    private TextView dictionary;
-    private PreferenceVars prefVars = PreferenceVars.getInstance();
     Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +51,18 @@ public class DictActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        Intent intent = getIntent();
         switch (view.getId()) {
             case (R.id.addWordFAB):
                 Intent intentAWA = new Intent(this, PopUpAddNewWord.class);
+                intentAWA.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
+                intentAWA.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
                 startActivityForResult(intentAWA, REQUEST_TO_REFRESH);
                 break;
             case (R.id.filterButton):
                 Intent intentFT = new Intent(this, PopUpFilterThemes.class);
+                intentFT.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
+                intentFT.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
                 startActivity(intentFT);
                 break;
             case (R.id.repeatButton):
@@ -71,6 +71,8 @@ public class DictActivity extends Activity implements View.OnClickListener {
                     break;
                 }
                 Intent intentR = new Intent(this, RepeatWordActivity.class);
+                intentR.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
+                intentR.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
                 startActivity(intentR);
                 break;
             default:
@@ -94,28 +96,29 @@ public class DictActivity extends Activity implements View.OnClickListener {
     }
 
     private void init() {
+        Intent intent = getIntent();
         FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
         addWordBtn.setOnClickListener(this);
 
-        filterBtn = (Button) findViewById(R.id.filterButton);
+        Button filterBtn = (Button) findViewById(R.id.filterButton);
         filterBtn.setOnClickListener(this);
 
-        repeatAllBtn = (Button) findViewById(R.id.repeatButton);
+        Button repeatAllBtn = (Button) findViewById(R.id.repeatButton);
         repeatAllBtn.setOnClickListener(this);
 
         wordManager = new DBConnector(this,
-                prefVars.getDictLang(),
-                prefVars.getNativeLang());
+                intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
+                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
         cursor = wordManager.getAllWords();
 
         wordList = (ListView) findViewById(R.id.wordList);
 
-        dictionary = (TextView) findViewById(R.id.dictDictionary);
-        dictionary.setText(prefVars.getDictLang());
+        TextView dictionary = (TextView) findViewById(R.id.dictDictionary);
+        dictionary.setText(intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
     }
 
     private static class WordListAdapter extends CursorAdapter {
-        public WordListAdapter (Context context, Cursor cursor, int flags) {
+        WordListAdapter(Context context, Cursor cursor, int flags) {
             super(context, cursor, flags);
         }
 
@@ -144,9 +147,9 @@ public class DictActivity extends Activity implements View.OnClickListener {
         }
 
         private static class ViewHolder {
-            public final TextView wordTV;
-            public final TextView translationsTV;
-            public ViewHolder(TextView word, TextView translations) {
+            final TextView wordTV;
+            final TextView translationsTV;
+            ViewHolder(TextView word, TextView translations) {
                 wordTV = word;
                 translationsTV = translations;
             }
@@ -155,11 +158,14 @@ public class DictActivity extends Activity implements View.OnClickListener {
     }
 
     private void setWordList() {
-        wordListAdapter = new WordListAdapter(this, cursor, 0);
+        WordListAdapter wordListAdapter = new WordListAdapter(this, cursor, 0);
         wordList.setAdapter(wordListAdapter);
         wordList.setOnItemClickListener((parent, view, position, id) -> {
             Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
+            Intent intent = getIntent();
             intentWordWatcher.putExtra(PreferenceVars.WORD_INDEX, position);
+            intentWordWatcher.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
+            intentWordWatcher.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
             startActivityForResult(intentWordWatcher, REQUEST_TO_REFRESH);
         });
     }
