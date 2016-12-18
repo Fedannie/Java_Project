@@ -22,11 +22,12 @@ public class PhraseActivity extends Activity {
 
         Intent intent = getIntent();
         TextView dictionary = (TextView) findViewById(R.id.dictPhrasebook);
-        dictionary.setText(intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
+        String dict;
+        dictionary.setText(dict = intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
 
         ExpandableListView phrasesList = (ExpandableListView) findViewById(R.id.phrasesELV);
         PhraseListAdapterHelper adapterHelper = new PhraseListAdapterHelper();
-        phrasesList.setAdapter(adapterHelper.getAdapter(intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
+        phrasesList.setAdapter(adapterHelper.getAdapter(dict,
                 intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE),
                 intent.getBooleanExtra(PreferenceVars.NATIVE_LANG_CHANGED, true)));
         phrasesList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
@@ -43,12 +44,15 @@ public class PhraseActivity extends Activity {
         private static final String THEME = "theme";
         private static final String PHRASE = "phrase";
         private PhraseList phraseList;
-        private ArrayList<String> themes = phraseList.getThemes();
-        private ArrayList<ArrayList<String>> phrases = phraseList.getPhrases();
-        private ArrayList<ArrayList<String>> translations = phraseList.getTranslations();
+        private ArrayList<String> themes;
+        private ArrayList<ArrayList<String>> phrases;
+        private ArrayList<ArrayList<String>> translations;
         private SimpleExpandableListAdapter adapter;
         SimpleExpandableListAdapter getAdapter(String dictLang, String nativeLang, boolean wasChanged) {
             phraseList = PhraseList.getInstance(dictLang, nativeLang, wasChanged);
+            themes = phraseList.getThemes();
+            phrases = phraseList.getPhrases();
+            translations = phraseList.getTranslations();
             ArrayList<Map<String, String>> themeData = new ArrayList<>();
             Map<String, String> m;
             for (String group : themes) {

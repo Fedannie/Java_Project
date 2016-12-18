@@ -30,7 +30,6 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private TextInputLayout mainTranslationTIL;
     private TextInputLayout translationTIL;
     private TextInputLayout examplesTIL;
-    private Intent intent;
     private String wordID = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +84,6 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     }
 
     private void init() {
-        PreferenceVars prefVars = PreferenceVars.getInstance();
         Intent intent = getIntent();
         wordBase = new DBConnector(this,
                 intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
@@ -187,12 +185,11 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
             }
         });
         examplesTIL.setErrorEnabled(false);
-
-        intent = getIntent();
     }
 
     private void setDataToEdit() {
-        if (intent.getStringExtra(PreferenceVars.IF_EDIT) != null && intent.getStringExtra(PreferenceVars.IF_EDIT).equals(PreferenceVars.YES)) {
+        Intent intent = getIntent();
+        if (intent.getStringExtra(PreferenceVars.IF_EDIT).equals(PreferenceVars.YES)) {
             int wordPos = intent.getIntExtra(PreferenceVars.WORD_INDEX, 0);
 
             Cursor cursor = wordBase.getAllWords();

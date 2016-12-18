@@ -1,12 +1,17 @@
 package project.fedorova.polyglotte.data;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import project.fedorova.polyglotte.translator.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class PhraseList {
-    private static volatile PhraseList instance;
+    private static volatile Map<Pair<String, String>, PhraseList> instanceMap = new HashMap<>();
+    //private static volatile PhraseList instance;
     private String allToDivide = "Greeting:More or less;Not too bad;I am very well, thank you;I am fine!;What's new? What is the news?;How are you? How are you getting on?;How are you doing? How are things?;Hello, hi;Good evening!;Good afternoon!;Good morning!;All the best!;Good bye!;See you;Tomorrow;So-so;Couldn't be worse;\n" +
             "Standart phrases:Yes;No;Please;Thank you (Thanks);Thank you very much;Could you;It's all right;Please, accept my apologies;Young man;Young lady (miss);Sir;Mister n ;Madam;Sorry for;Entrance;Exit;No harm done;Open/ closed;Forbidden;Excuse me;I beg your pardon;Please, forgive me;I am sorry;Excuse me;You are welcome!;It's nothing (not at all);Thank you in advance;I must (would like to) thank you;Thak you very much;Thanks a lot for;Thank you for;Glad (nice) to meet you!;My name is;Let me introduce you to;May i introduce myself?;Tell;Help;Show?;Please;Bring;Read;Give;May i ask you?;May i ask you to?;Will (would) you please, give me?;Do you mind?;May i?;Can i?;Of course (sure);All right;Ok (=okay);I agree;Yes, you may (you can);I shouldn't (don't) mind;I cannot (i can't);It's a pity (unfortunately), i can't;It's impossible;I forbid you to ;By no means!;May i invite you to;The theatre;Restaurant;My place;Let's go to ;With pleasure!;I don't mind;It's a pity;How well i understand you;Don't get upset, things do happen;Don't worry;You did it right;Just a moment (a minute);What is your name?;Май нэйм из;How old are you?;When were you born?;Where are you from?;I am from;Where do you live?;I live in ;What is your native language?;I speak;English;Russian;French;Spanish;Italian;I speak english (russian) a little bit;\n" +
             "Station:What are the fares?;One single and one return ticket for tomorrow, please;Two tickets to, please, for the six thirty pm Train;I want to reserve tickets in advance;I must go and get a ticket for the train (plane, ship);Where can i book a ticket for the train (plane, ship)?;I'd like to pay the fares in advance;I'd like a ticket to the;Nonsmoker (smoker);Slumber coach;I'd like a lower berth;How mane luggage pieces may i take free of charge?;Where can i check my luggage?;Please, take my luggage to ;How does one get to the platform?;How long is it till the train departure?;I want a tiket for tomorrow flight to;What flights are there to?;Is there any direct flight to For the day after tomorrow?;Give me, please a seat by a window;Where is the;Arrivals;Departures;Luggage check-in;Eyquiry office (information desk);Toilet;When does the check-in begin?;The flight is delayed by two hours;Where can i return my ticket?;Where are boat tickets sold?;What is the price of a passage to ;I'd like the first (second, third) class cabin for two;\n" +
@@ -38,17 +43,17 @@ public class PhraseList {
                         Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
                         Language.fromString(translate.getLanguageCode(nativeLang))));
                 ArrayList<String> phrasesLastTheme = new ArrayList<>();
-                ArrayList<String> translatoinsLastTheme = new ArrayList<>();
+                ArrayList<String> translationsLastTheme = new ArrayList<>();
                 for (String phrase : themeNPhrase[1].split(";")) {
                     phrasesLastTheme.add(translate.execute(phrase,
                             Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
                             Language.fromString(translate.getLanguageCode(dictLang))));
-                    translatoinsLastTheme.add(translate.execute(phrase,
+                    translationsLastTheme.add(translate.execute(phrase,
                             Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
                             Language.fromString(translate.getLanguageCode(nativeLang))));
                 }
                 phrases.add(phrasesLastTheme);
-                translations.add(translatoinsLastTheme);
+                translations.add(translationsLastTheme);
             }catch (Exception e) {
                 ERROR = false;
             }
@@ -56,12 +61,14 @@ public class PhraseList {
     }
 
     public static PhraseList getInstance(String dictLang, String nativeLang, boolean wasChanged) {
-        PhraseList localInstance = instance;
+        PhraseList localInstance = null;
+        if (instanceMap.containsKey(new Pair<>(dictLang, nativeLang))) {
+            localInstance = instanceMap.get(new Pair<>(dictLang, nativeLang));
+        }
         if (localInstance == null || localInstance.ERROR || wasChanged) {
             synchronized (PhraseList.class) {
-                localInstance = instance;
                 if (localInstance == null || localInstance.ERROR || wasChanged) {
-                    instance = localInstance = new PhraseList(dictLang, nativeLang);
+                    instanceMap.put(new Pair<>(dictLang, nativeLang), localInstance = new PhraseList(dictLang, nativeLang));
                 }
             }
         }

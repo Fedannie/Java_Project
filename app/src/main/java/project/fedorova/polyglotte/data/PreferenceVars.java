@@ -5,7 +5,7 @@ public class PreferenceVars {
 
     public static final String NATIVE_LANGUAGE = "NATIVE_LANG";
     public static final String DICT_LANGUAGE = "DICT_LANG";
-    public static final String DEFAULT_LANG = "English123";
+    public static final String DEFAULT_LANG = "English";
     public static final String FIRST_TIME = "first time";
     public static final String YES = "yes";
     public static final String NO = "no";

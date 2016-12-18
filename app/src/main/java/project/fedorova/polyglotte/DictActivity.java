@@ -57,6 +57,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 Intent intentAWA = new Intent(this, PopUpAddNewWord.class);
                 intentAWA.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
                 intentAWA.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
+                intentAWA.putExtra(PreferenceVars.IF_EDIT, PreferenceVars.NO);
                 startActivityForResult(intentAWA, REQUEST_TO_REFRESH);
                 break;
             case (R.id.filterButton):
