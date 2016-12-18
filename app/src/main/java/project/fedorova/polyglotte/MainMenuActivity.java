@@ -37,7 +37,25 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected void onStart() {
+        super.onPause();
+        setSelectDict();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onPause();
+        setSelectDict();
+    }
+
+    @Override
     protected void onDestroy() {
+        super.onPause();
+        setSelectDict();
+    }
+
+    @Override
+    protected void onResume() {
         super.onPause();
         safeDict();
         safeSettings();
@@ -148,16 +166,20 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dictList.getDictList().toArray(new String[]{}));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectDict.setAdapter(adapter);
-        if (!dictList.empty()){
-            selectDict.setSelection(getLastDict());
-        }
+        setSelectDict();
         selectDict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
                 safeDict();
             }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
+    }
+
+    private void setSelectDict() {
+        DictList dictList = DictList.getInstance();
+        if (!dictList.empty()){
+            selectDict.setSelection(getLastDict());
+        }
     }
 
     private void safeDict() {
@@ -174,6 +196,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             editor.commit();
         } else {
             nativeLanguage = sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG);
+            dictLanguage = sPref.getString(PreferenceVars.DICT_LANGUAGE, PreferenceVars.DEFAULT_LANG);
         }
         loadDict();
     }
@@ -190,7 +213,6 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     }
 
     private void safeSettings() {
-        PreferenceVars prefVars = PreferenceVars.getInstance();
         DictList dictList = DictList.getInstance();
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
         readWriteManager.writeToFile(this, ReadWriteManager.DICT_LIST, readWriteManager.convertSetToString(dictList.getDictList()));
