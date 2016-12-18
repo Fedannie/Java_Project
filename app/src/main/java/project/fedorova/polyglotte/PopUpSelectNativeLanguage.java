@@ -9,9 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import project.fedorova.polyglotte.data.DictList;
-import project.fedorova.polyglotte.data.PreferenceVars;
-
 public class PopUpSelectNativeLanguage extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {

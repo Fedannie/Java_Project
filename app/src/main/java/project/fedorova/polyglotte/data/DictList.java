@@ -6,7 +6,7 @@ import java.util.Set;
 public class DictList {
     private static volatile DictList instance;
 
-    private Set<String> dictList = new HashSet<String>();
+    private Set<String> dictList = new HashSet<>();
 
     public boolean addDict(String language) {
         if (!dictList.contains(language)) {

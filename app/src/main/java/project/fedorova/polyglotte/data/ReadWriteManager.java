@@ -1,7 +1,6 @@
 package project.fedorova.polyglotte.data;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -11,16 +10,11 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class ReadWriteManager {
-    private SharedPreferences sPref;
     public static volatile ReadWriteManager instance;
 
     public static final String DICT_LIST = "dictlist";

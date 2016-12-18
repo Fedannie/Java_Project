@@ -3,22 +3,16 @@ package project.fedorova.polyglotte;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import project.fedorova.polyglotte.data.Phrase;
 import project.fedorova.polyglotte.data.PhraseList;
 import project.fedorova.polyglotte.data.PreferenceVars;
-import project.fedorova.polyglotte.layouts.ExerciseListAdapter;
-import project.fedorova.polyglotte.translator.language.Language;
-import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class PhraseActivity extends Activity {
     @Override
