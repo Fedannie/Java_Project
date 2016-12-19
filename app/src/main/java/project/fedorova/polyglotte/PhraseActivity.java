@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import project.fedorova.polyglotte.data.PhraseList;
-import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class PhraseActivity extends Activity {
     @Override
@@ -23,26 +22,26 @@ public class PhraseActivity extends Activity {
         Intent intent = getIntent();
         TextView dictionary = (TextView) findViewById(R.id.dictPhrasebook);
         String dict;
-        dictionary.setText(dict = intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
+        dictionary.setText(dict = intent.getStringExtra(getString(R.string.dict_lang)));
 
         ExpandableListView phrasesList = (ExpandableListView) findViewById(R.id.phrasesELV);
         PhraseListAdapterHelper adapterHelper = new PhraseListAdapterHelper();
         phrasesList.setAdapter(adapterHelper.getAdapter(dict,
-                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE),
-                intent.getBooleanExtra(PreferenceVars.NATIVE_LANG_CHANGED, true)));
+                intent.getStringExtra(getString(R.string.native_lang)),
+                intent.getBooleanExtra(getString(R.string.native_lang_changed), true)));
         phrasesList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             Intent intentWordWatcher = new Intent(PhraseActivity.this, PopUpShowPhrase.class);
-            intentWordWatcher.putExtra(PreferenceVars.PHRASE, adapterHelper.getChildPhrase(groupPosition, childPosition));
-            intentWordWatcher.putExtra(PreferenceVars.TRANS, adapterHelper.getChildTrans(groupPosition, childPosition));
+            intentWordWatcher.putExtra(getString(R.string.phrase), adapterHelper.getChildPhrase(groupPosition, childPosition));
+            intentWordWatcher.putExtra(getString(R.string.translation), adapterHelper.getChildTrans(groupPosition, childPosition));
             startActivity(intentWordWatcher);
             return false;
         });
     }
 
     private class PhraseListAdapterHelper{
-        private static final String TRANSLATION = "translation";
-        private static final String THEME = "theme";
-        private static final String PHRASE = "phrase";
+        //private static final String TRANSLATION = "translation";
+        //private static final String THEME = "theme";
+        //private static final String PHRASE = "phrase";
         private PhraseList phraseList;
         private ArrayList<String> themes;
         private ArrayList<ArrayList<String>> phrases;
@@ -57,11 +56,11 @@ public class PhraseActivity extends Activity {
             Map<String, String> m;
             for (String group : themes) {
                 m = new HashMap<>();
-                m.put(THEME, group);
+                m.put(getString(R.string.theme), group);
                 themeData.add(m);
             }
 
-            String groupFrom[] = new String[]{THEME};
+            String groupFrom[] = new String[]{getString(R.string.theme)};
             int groupTo[] = new int[]{android.R.id.text1};
 
             ArrayList<ArrayList<Map<String, String>>> childData = new ArrayList<>();
@@ -70,14 +69,14 @@ public class PhraseActivity extends Activity {
                 ArrayList<Map<String, String>> childDataItem = new ArrayList<>();
                 for (int j = 0; j < phrases.get(i).size(); j++) {
                     m = new HashMap<>();
-                    m.put(PHRASE, phrases.get(i).get(j));
-                    m.put(TRANSLATION, translations.get(i).get(j));
+                    m.put(getString(R.string.phrase), phrases.get(i).get(j));
+                    m.put(getString(R.string.translation), translations.get(i).get(j));
                     childDataItem.add(m);
                 }
                 childData.add(childDataItem);
             }
 
-            String childFrom[] = new String[]{PHRASE, TRANSLATION};
+            String childFrom[] = new String[]{getString(R.string.phrase), getString(R.string.translation)};
             int childTo[] = new int[]{R.id.stringTVList, R.id.translationTVList};
 
             adapter = new SimpleExpandableListAdapter(
@@ -94,11 +93,11 @@ public class PhraseActivity extends Activity {
         }
 
         String getChildPhrase(int groupPos, int childPos) {
-            return ((Map<String,String>)(adapter.getChild(groupPos, childPos))).get(PHRASE);
+            return ((Map<String,String>)(adapter.getChild(groupPos, childPos))).get(getString(R.string.phrase));
         }
 
         String getChildTrans(int groupPos, int childPos) {
-            return ((Map<String,String>)(adapter.getChild(groupPos, childPos))).get(TRANSLATION);
+            return ((Map<String,String>)(adapter.getChild(groupPos, childPos))).get(getString(R.string.translation));
         }
     }
 }

@@ -14,7 +14,6 @@ import android.widget.Toast;
 import java.util.UUID;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
-import project.fedorova.polyglotte.data.PreferenceVars;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
 
@@ -46,7 +45,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                 break;
             case (R.id.saveWord):
                 if (!readyToSave()) {
-                    Toast.makeText(PopUpAddNewWord.this, "Your word is not completed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PopUpAddNewWord.this, getString(R.string.msg_word_not_complete), Toast.LENGTH_SHORT).show();
                     break;
                 }
                 if (!wordID.equals("")) {
@@ -86,8 +85,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private void init() {
         Intent intent = getIntent();
         wordBase = new DBConnector(this,
-                intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
-                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
+                intent.getStringExtra(getString(R.string.dict_lang)),
+                intent.getStringExtra(getString(R.string.native_lang)));
 
         addThemeBtn = (Button) findViewById(R.id.addThemeToWord);
         addThemeBtn.setOnClickListener(this);
@@ -189,8 +188,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
 
     private void setDataToEdit() {
         Intent intent = getIntent();
-        if (intent.getStringExtra(PreferenceVars.IF_EDIT).equals(PreferenceVars.YES)) {
-            int wordPos = intent.getIntExtra(PreferenceVars.WORD_INDEX, 0);
+        if (intent.getStringExtra(getString(R.string.if_edit)).equals(getString(R.string.yes))) {
+            int wordPos = intent.getIntExtra(getString(R.string.word_index), 0);
 
             Cursor cursor = wordBase.getAllWords();
             cursor.move(wordPos + 1);

@@ -20,9 +20,9 @@ public class PopUpSelectNativeLanguage extends Activity{
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, langs);
         lvLangs.setAdapter(adapter);
         lvLangs.setOnItemClickListener((parent, view, position, id) -> {
-            Toast.makeText(PopUpSelectNativeLanguage.this, "Your native language is " + langs[(int) id] + "!\n You may change it in preferences.", Toast.LENGTH_LONG).show();
+            Toast.makeText(PopUpSelectNativeLanguage.this, getString(R.string.msg_native_lang_is) + langs[(int) id] + getString(R.string.msg_change_nat_lang), Toast.LENGTH_LONG).show();
             Intent intent = getIntent();
-            intent.putExtra("language", langs[(int) id]);
+            intent.putExtra(getString(R.string.language), langs[(int) id]);
             setResult(RESULT_OK, intent);
             onBackPressed();
         });

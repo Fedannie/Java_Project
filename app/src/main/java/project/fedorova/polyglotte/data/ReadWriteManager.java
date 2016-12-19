@@ -15,17 +15,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ReadWriteManager {
-    public static volatile ReadWriteManager instance;
+import project.fedorova.polyglotte.R;
 
-    public static final String DICT_LIST = "dictlist";
-    public static final String THEMES_LIST = "themes";
+public class ReadWriteManager {
+    private static volatile ReadWriteManager instance;
 
     private ReadWriteManager() {}
 
-    public void writeToFile(Context cntx, String file, String content) {
+    public void writeToFile(Context context, String file, String content) {
         try {
-            File outputFile = new File(cntx.getFilesDir() + "/" + file);
+            File outputFile = new File(context.getFilesDir() + "/" + file);
             if (!outputFile.exists()) {
                 outputFile.createNewFile();
             }
@@ -35,16 +34,16 @@ public class ReadWriteManager {
             bw.close();
             fw.close();
         } catch (FileNotFoundException e) {
-            Toast.makeText(cntx, "File to write not found.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.msg_file_write_not_found), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            Toast.makeText(cntx, "Error with writing to file.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.msg_error_write_file), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
 
-    public String readFromFile(Context cntx, String file) {
+    public String readFromFile(Context context, String file) {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(cntx.openFileInput(file)));
+            BufferedReader br = new BufferedReader(new InputStreamReader(context.openFileInput(file)));
             String res = "";
             String s = "";
             while((s = br.readLine()) != null){
@@ -52,9 +51,9 @@ public class ReadWriteManager {
             }
             return res;
         } catch (FileNotFoundException e) {
-            Toast.makeText(cntx, "File to read not found.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.msg_file_read_not_found), Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(cntx, "Error with reading file.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.msg_error_read_file), Toast.LENGTH_SHORT).show();
         }
         return null;
     }

@@ -1,5 +1,41 @@
 <resources>
     <string name="app_name">Polyglotte</string>
+    <string name="native_lang">NATIVE_LANG</string>
+    <string name="dict_lang">DICT_LANG</string>
+    <string name="default_language">English</string>
+    <string name="language">language</string>
+    <string name="dictionary">dictionary</string>
+    <string name="first_time">first time</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="word_index">word index</string>
+    <string name="if_edit">if edit</string>
+    <string name="phrase">phrase</string>
+    <string name="theme">theme</string>
+    <string name="translation">translation</string>
+    <string name="native_lang_changed">native lang changed</string>
+    <string name="your_dictionaries">Your dictionaries</string>
+    <string name="no_internet_head">No internet connection</string>
+    <string name="no_internet_body">Sorry, it is impossible now to load this phrasebook into database. Check your internet connection and try once again.</string>
+    <string name="error_delete_dict">Error with deleting this dictionary</string>
+    <string name="error">Error </string>
+    <string name="msg_native_lang_changed">Your native language was changed to </string>
+    <string name="nativeLanguage">nativeLanguage</string>
+    <string name="delete_word_head">Delete this word?</string>
+    <string name="delete_word_body">Are you sure you want to delete this word?</string>
+    <string name="word_edited">Word was edited</string>
+    <string name="msg_native_lang_is">Your native language is </string>
+    <string name="msg_change_nat_lang">!\n You may change it in preferences.</string>
+    <string name="msg_word_not_complete">Your word is not completed</string>
+    <string name="msg_dict_created"> dictionary was created.</string>
+    <string name="msg_dict_exist"> dictionary does already exist.</string>
+    <string name="msg_no_words">Sorry, you have not got any words yet</string>
+    <string name="dict_list">dictlist</string>
+    <string name="msg_file_write_not_found">File to write not found.</string>
+    <string name="msg_error_write_file">Error with writing to file.</string>
+    <string name="msg_file_read_not_found">File to read not found.</string>
+    <string name="msg_error_read_file">Error with reading file.</string>
 
     <string-array name="wholeLanguageList">
         <item>Albanian</item>

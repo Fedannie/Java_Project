@@ -1,14 +1,14 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import project.fedorova.polyglotte.data.DictList;
 
 public class PopUpAddDict extends Activity implements View.OnClickListener{
@@ -22,16 +22,17 @@ public class PopUpAddDict extends Activity implements View.OnClickListener{
         final String[] langs = res.getStringArray(R.array.wholeLanguageList);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, langs);
         lvMain.setAdapter(adapter);
-        lvMain.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DictList dictList = DictList.getInstance();
-                if (dictList.addDict(langs[(int) id])) {
-                    Toast.makeText(PopUpAddDict.this, langs[(int) id] + " dictionary was created.", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(PopUpAddDict.this, langs[(int) id] + " dictionary does already exist.", Toast.LENGTH_LONG).show();
-                }
-                onBackPressed();
+        lvMain.setOnItemClickListener((parent, view, position, id) -> {
+            DictList dictList = DictList.getInstance();
+            if (dictList.addDict(langs[(int) id])) {
+                Toast.makeText(PopUpAddDict.this, langs[(int) id] + getString(R.string.msg_dict_created), Toast.LENGTH_LONG).show();
+                Intent intent = getIntent();
+                intent.putExtra(getString(R.string.dictionary), langs[(int) id]);
+                setResult(RESULT_OK, intent);
+            } else {
+                Toast.makeText(PopUpAddDict.this, langs[(int) id] + getString(R.string.msg_dict_exist), Toast.LENGTH_LONG).show();
             }
+            onBackPressed();
         });
     }
 

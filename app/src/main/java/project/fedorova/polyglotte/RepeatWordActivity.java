@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.UUID;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
-import project.fedorova.polyglotte.data.PreferenceVars;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
 
@@ -103,8 +102,8 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
 
         Intent intent = getIntent();
         DBConnector database = new DBConnector(this,
-                intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
-                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
+                intent.getStringExtra(getString(R.string.dict_lang)),
+                intent.getStringExtra(getString(R.string.native_lang)));
         Cursor cursor = database.getAllWords();
 
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();

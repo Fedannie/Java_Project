@@ -13,7 +13,7 @@ public class PrefActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        nativeLanguage = (ListPreference) findPreference("nativeLanguage");
+        nativeLanguage = (ListPreference) findPreference(getString(R.string.nativeLanguage));
         nativeLanguage.setOnPreferenceChangeListener((preference, newValue) -> {
             changeNativeLanguage((String) newValue);
             return true;
@@ -22,8 +22,8 @@ public class PrefActivity extends PreferenceActivity {
 
     private void changeNativeLanguage(String newValue) {
         Intent intent = getIntent();
-        Toast.makeText(this, "Your native language changed to " + newValue, Toast.LENGTH_SHORT).show();
-        intent.putExtra("language", newValue);
+        Toast.makeText(this, getString(R.string.msg_native_lang_changed) + newValue, Toast.LENGTH_SHORT).show();
+        intent.putExtra(getString(R.string.language), newValue);
         setResult(RESULT_OK, intent);
     }
 }

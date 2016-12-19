@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import project.fedorova.polyglotte.data.PreferenceVars;
-
 public class PopUpShowPhrase extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -15,8 +13,8 @@ public class PopUpShowPhrase extends Activity {
 
         Intent intent = getIntent();
         TextView phraseTV = (TextView) findViewById(R.id.phraseTV);
-        phraseTV.setText(intent.getStringExtra(PreferenceVars.PHRASE));
+        phraseTV.setText(intent.getStringExtra(getString(R.string.phrase)));
         TextView translationTV = (TextView) findViewById(R.id.translationPhraseTV);
-        translationTV.setText(intent.getStringExtra(PreferenceVars.TRANS));
+        translationTV.setText(intent.getStringExtra(getString(R.string.translation)));
     }
 }

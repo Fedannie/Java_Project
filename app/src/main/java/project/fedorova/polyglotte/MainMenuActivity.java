@@ -19,7 +19,6 @@ import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.PhraseList;
 import project.fedorova.polyglotte.data.ReadWriteManager;
-import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
     private Spinner selectDict;
@@ -69,8 +68,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         switch(view.getId()) {
             case (R.id.exerciseButton):
                 Intent intentE = new Intent(this, ExerciseActivity.class);
-                intentE.putExtra(PreferenceVars.DICT_LANGUAGE, dictLanguage);
-                intentE.putExtra(PreferenceVars.NATIVE_LANGUAGE, nativeLanguage);
+                intentE.putExtra(getString(R.string.dict_lang), dictLanguage);
+                intentE.putExtra(getString(R.string.native_lang), nativeLanguage);
                 startActivity(intentE);
                 break;
             case (R.id.preferencesButton):
@@ -79,8 +78,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 break;
             case (R.id.dictionaryButton):
                 Intent intentD = new Intent(this, DictActivity.class);
-                intentD.putExtra(PreferenceVars.DICT_LANGUAGE, dictLanguage);
-                intentD.putExtra(PreferenceVars.NATIVE_LANGUAGE, nativeLanguage);
+                intentD.putExtra(getString(R.string.dict_lang), dictLanguage);
+                intentD.putExtra(getString(R.string.native_lang), nativeLanguage);
                 startActivity(intentD);
                 break;
             case (R.id.phrasebookButton):
@@ -88,22 +87,22 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 if (phraseList.isERROR()) {
                     new AlertDialog.Builder(this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("No internet connection")
-                            .setMessage("Sorry, it is impossible now to load this phrasebook into database. Check your internet connection and try once again.")
-                            .setNeutralButton("Ok", null)
+                            .setTitle(getString(R.string.no_internet_head))
+                            .setMessage(getString(R.string.no_internet_body))
+                            .setNeutralButton(getString(R.string.ok), null)
                             .show();
                 } else {
                     Intent intentPh = new Intent(this, PhraseActivity.class);
-                    intentPh.putExtra(PreferenceVars.DICT_LANGUAGE, dictLanguage);
-                    intentPh.putExtra(PreferenceVars.NATIVE_LANGUAGE, nativeLanguage);
-                    intentPh.putExtra(PreferenceVars.NATIVE_LANG_CHANGED, wasChangedNativeLanguage);
+                    intentPh.putExtra(getString(R.string.dict_lang), dictLanguage);
+                    intentPh.putExtra(getString(R.string.native_lang), nativeLanguage);
+                    intentPh.putExtra(getString(R.string.native_lang_changed), wasChangedNativeLanguage);
                     startActivity(intentPh);
                 }
                 break;
             case (R.id.translatorButton):
                 Intent intentTr = new Intent(this, TranslatorActivity.class);
-                intentTr.putExtra(PreferenceVars.DICT_LANGUAGE, dictLanguage);
-                intentTr.putExtra(PreferenceVars.NATIVE_LANGUAGE, nativeLanguage);
+                intentTr.putExtra(getString(R.string.dict_lang), dictLanguage);
+                intentTr.putExtra(getString(R.string.native_lang), nativeLanguage);
                 startActivity(intentTr);
                 break;
             case (R.id.clearPreferences):
@@ -128,12 +127,14 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                                 } else if (!dictList.empty()) {
                                     selectDict.setSelection(item);
                                 }
-                                loadSettings();
+                                dictLanguage = (String) selectDict.getSelectedItem();
+                                loadDictList();
+                                loadDict();
                             } catch (Exception e) {
-                                Toast.makeText(MainMenuActivity.this, "Error with deleting this dictionary", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainMenuActivity.this, getString(R.string.error_delete_dict), Toast.LENGTH_SHORT).show();
                             }
                         })
-                        .setNegativeButton("No", null)
+                        .setNegativeButton(getString(R.string.no), null)
                         .show();
                 break;
             case (R.id.addDictButton):
@@ -149,11 +150,11 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                nativeLanguage = data.getStringExtra("language");
+                nativeLanguage = data.getStringExtra(getString(R.string.language));
                 wasChangedNativeLanguage = true;
             }
             if (requestCode == 2) {
-                dictLanguage = data.getStringExtra("dictionary");
+                dictLanguage = data.getStringExtra(getString(R.string.dictionary));
                 loadDictList();
                 setSelectDict();
             }
@@ -198,15 +199,15 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private void loadSettings() {
         SharedPreferences sPref = getPreferences(MODE_PRIVATE);
-        if (PreferenceVars.YES.equals(sPref.getString(PreferenceVars.FIRST_TIME, PreferenceVars.YES))) {
+        if (getString(R.string.yes).equals(sPref.getString(getString(R.string.first_time), getString(R.string.yes)))) {
             SharedPreferences.Editor editor = sPref.edit();
             Intent intentNL = new Intent(this, PopUpSelectNativeLanguage.class);
             startActivityForResult(intentNL, 1);
-            editor.putString(PreferenceVars.FIRST_TIME, PreferenceVars.NO);
+            editor.putString(getString(R.string.first_time), getString(R.string.no));
             editor.commit();
         } else {
-            nativeLanguage = sPref.getString(PreferenceVars.NATIVE_LANGUAGE, PreferenceVars.DEFAULT_LANG);
-            dictLanguage = sPref.getString(PreferenceVars.DICT_LANGUAGE, PreferenceVars.DEFAULT_LANG);
+            nativeLanguage = sPref.getString(getString(R.string.native_lang), getString(R.string.default_language));
+            dictLanguage = sPref.getString(getString(R.string.dict_lang), getString(R.string.default_language));
         }
         loadDict();
     }
@@ -228,8 +229,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         readWriteManager.writeToFile(this, ReadWriteManager.DICT_LIST, readWriteManager.convertSetToString(dictList.getDictList()));
         SharedPreferences sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sPref.edit();
-        editor.putString(PreferenceVars.DICT_LANGUAGE, dictLanguage);
-        editor.putString(PreferenceVars.NATIVE_LANGUAGE, nativeLanguage);
+        editor.putString(getString(R.string.dict_lang), dictLanguage);
+        editor.putString(getString(R.string.native_lang), nativeLanguage);
         editor.commit();
     }
 
@@ -268,6 +269,6 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         clearPrefBtn.setOnClickListener(this);
 
         selectDict = (Spinner) findViewById(R.id.dictSpinner);
-        selectDict.setPrompt("Your dictionaries");
+        selectDict.setPrompt(getString(R.string.your_dictionaries));
     }
 }

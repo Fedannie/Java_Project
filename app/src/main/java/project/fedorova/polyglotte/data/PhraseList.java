@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import project.fedorova.polyglotte.R;
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.translator.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
@@ -58,16 +59,16 @@ public class PhraseList {
             String[] themeNPhrase = s.split(":");
             try {
                 themes.add(translate.execute(themeNPhrase[0],
-                        Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
+                        Language.fromString(translate.getLanguageCode(context.getString(R.string.default_language))),
                         Language.fromString(translate.getLanguageCode(nativeLang))));
                 ArrayList<String> phrasesLastTheme = new ArrayList<>();
                 ArrayList<String> translationsLastTheme = new ArrayList<>();
                 for (String phrase : themeNPhrase[1].split(";")) {
                     phrasesLastTheme.add(translate.execute(phrase,
-                            Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
+                            Language.fromString(translate.getLanguageCode(context.getString(R.string.default_language))),
                             Language.fromString(translate.getLanguageCode(dictLang))));
                     translationsLastTheme.add(translate.execute(phrase,
-                            Language.fromString(translate.getLanguageCode(PreferenceVars.DEFAULT_LANG)),
+                            Language.fromString(translate.getLanguageCode(context.getString(R.string.default_language))),
                             Language.fromString(translate.getLanguageCode(nativeLang))));
                 }
                 phrases.add(phrasesLastTheme);

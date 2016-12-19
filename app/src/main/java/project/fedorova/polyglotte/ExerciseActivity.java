@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import project.fedorova.polyglotte.data.PreferenceVars;
-
 public class ExerciseActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +14,7 @@ public class ExerciseActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.exercise);
 
         TextView dictionary = (TextView) findViewById(R.id.dictExercise);
-        dictionary.setText(intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
+        dictionary.setText(intent.getStringExtra(getString(R.string.dict_lang)));
     }
 
     @Override

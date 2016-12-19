@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import project.fedorova.polyglotte.data.DataBase.DBConnector;
-import project.fedorova.polyglotte.data.PreferenceVars;
 
 public class DictActivity extends Activity implements View.OnClickListener {
     public static final int REQUEST_TO_REFRESH = 1;
@@ -55,25 +54,25 @@ public class DictActivity extends Activity implements View.OnClickListener {
         switch (view.getId()) {
             case (R.id.addWordFAB):
                 Intent intentAWA = new Intent(this, PopUpAddNewWord.class);
-                intentAWA.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
-                intentAWA.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
-                intentAWA.putExtra(PreferenceVars.IF_EDIT, PreferenceVars.NO);
+                intentAWA.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+                intentAWA.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
+                intentAWA.putExtra(getString(R.string.if_edit), getString(R.string.no));
                 startActivityForResult(intentAWA, REQUEST_TO_REFRESH);
                 break;
             case (R.id.filterButton):
                 Intent intentFT = new Intent(this, PopUpFilterThemes.class);
-                intentFT.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
-                intentFT.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
+                intentFT.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+                intentFT.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
                 startActivity(intentFT);
                 break;
             case (R.id.repeatButton):
                 if (wordManager.getAllWords().getCount() == 0) {
-                    Toast.makeText(this, "Sorry, you have not got any words yet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.msg_no_words), Toast.LENGTH_SHORT).show();
                     break;
                 }
                 Intent intentR = new Intent(this, RepeatWordActivity.class);
-                intentR.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
-                intentR.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
+                intentR.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+                intentR.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
                 startActivity(intentR);
                 break;
             default:
@@ -108,14 +107,14 @@ public class DictActivity extends Activity implements View.OnClickListener {
         repeatAllBtn.setOnClickListener(this);
 
         wordManager = new DBConnector(this,
-                intent.getStringExtra(PreferenceVars.DICT_LANGUAGE),
-                intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
+                intent.getStringExtra(getString(R.string.dict_lang)),
+                intent.getStringExtra(getString(R.string.native_lang)));
         cursor = wordManager.getAllWords();
 
         wordList = (ListView) findViewById(R.id.wordList);
 
         TextView dictionary = (TextView) findViewById(R.id.dictDictionary);
-        dictionary.setText(intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
+        dictionary.setText(intent.getStringExtra(getString(R.string.dict_lang)));
     }
 
     private static class WordListAdapter extends CursorAdapter {
@@ -164,9 +163,9 @@ public class DictActivity extends Activity implements View.OnClickListener {
         wordList.setOnItemClickListener((parent, view, position, id) -> {
             Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
             Intent intent = getIntent();
-            intentWordWatcher.putExtra(PreferenceVars.WORD_INDEX, position);
-            intentWordWatcher.putExtra(PreferenceVars.DICT_LANGUAGE, intent.getStringExtra(PreferenceVars.DICT_LANGUAGE));
-            intentWordWatcher.putExtra(PreferenceVars.NATIVE_LANGUAGE, intent.getStringExtra(PreferenceVars.NATIVE_LANGUAGE));
+            intentWordWatcher.putExtra(getString(R.string.word_index), position);
+            intentWordWatcher.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+            intentWordWatcher.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
             startActivityForResult(intentWordWatcher, REQUEST_TO_REFRESH);
         });
     }
