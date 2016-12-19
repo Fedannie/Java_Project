@@ -1,17 +1,19 @@
 package project.fedorova.polyglotte.data;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.translator.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class PhraseList {
     private static volatile Map<Pair<String, String>, PhraseList> instanceMap = new HashMap<>();
-    //private static volatile PhraseList instance;
     private String allToDivide = "Greeting:More or less;Not too bad;I am very well, thank you;I am fine!;What's new? What is the news?;How are you? How are you getting on?;How are you doing? How are things?;Hello, hi;Good evening!;Good afternoon!;Good morning!;All the best!;Good bye!;See you;Tomorrow;So-so;Couldn't be worse;\n" +
             "Standart phrases:Yes;No;Please;Thank you (Thanks);Thank you very much;Could you;It's all right;Please, accept my apologies;Young man;Young lady (miss);Sir;Mister n ;Madam;Sorry for;Entrance;Exit;No harm done;Open/ closed;Forbidden;Excuse me;I beg your pardon;Please, forgive me;I am sorry;Excuse me;You are welcome!;It's nothing (not at all);Thank you in advance;I must (would like to) thank you;Thak you very much;Thanks a lot for;Thank you for;Glad (nice) to meet you!;My name is;Let me introduce you to;May i introduce myself?;Tell;Help;Show?;Please;Bring;Read;Give;May i ask you?;May i ask you to?;Will (would) you please, give me?;Do you mind?;May i?;Can i?;Of course (sure);All right;Ok (=okay);I agree;Yes, you may (you can);I shouldn't (don't) mind;I cannot (i can't);It's a pity (unfortunately), i can't;It's impossible;I forbid you to ;By no means!;May i invite you to;The theatre;Restaurant;My place;Let's go to ;With pleasure!;I don't mind;It's a pity;How well i understand you;Don't get upset, things do happen;Don't worry;You did it right;Just a moment (a minute);What is your name?;Май нэйм из;How old are you?;When were you born?;Where are you from?;I am from;Where do you live?;I live in ;What is your native language?;I speak;English;Russian;French;Spanish;Italian;I speak english (russian) a little bit;\n" +
             "Station:What are the fares?;One single and one return ticket for tomorrow, please;Two tickets to, please, for the six thirty pm Train;I want to reserve tickets in advance;I must go and get a ticket for the train (plane, ship);Where can i book a ticket for the train (plane, ship)?;I'd like to pay the fares in advance;I'd like a ticket to the;Nonsmoker (smoker);Slumber coach;I'd like a lower berth;How mane luggage pieces may i take free of charge?;Where can i check my luggage?;Please, take my luggage to ;How does one get to the platform?;How long is it till the train departure?;I want a tiket for tomorrow flight to;What flights are there to?;Is there any direct flight to For the day after tomorrow?;Give me, please a seat by a window;Where is the;Arrivals;Departures;Luggage check-in;Eyquiry office (information desk);Toilet;When does the check-in begin?;The flight is delayed by two hours;Where can i return my ticket?;Where are boat tickets sold?;What is the price of a passage to ;I'd like the first (second, third) class cabin for two;\n" +
@@ -24,17 +26,33 @@ public class PhraseList {
             "Purchases:I'd like to buy a suit for everyday wear;What size is this sweater;I want to try on this dress;Underwear;Jeans;Sweater;Skirt;Costume;Dress (frock);Blouse;I want to buy;How long do they keep this shop open?;Cash-desk;Foodstuffs;Market;Will you reduce the price?;It is free of charge (for nothing); gratis;It is too dear (cheap);By metres;It costs;By the pound;By the piece;What does it cost?;It is sold;What is the price?;I need a black t-shirt;What sport's shoes will you offer me?;I'd like to choose;Soap;Toothpaste;Shampoo;Show me, please;Let's go (do) shopping;We are short of ;We have run out of;Meat;Tinned food;I need a piece of beef;Let's buy some sausage and ham;Give me please ten eggs;Where can we buy the fish?;I need;A head of cabbage;New potatoes;I like fruits;Give me please;One loaf of rye (brown) bread;Long loaf of white (wheat) bread;Is this bread new (fresh) or stale?;\n" +
             "Restaurant:I want to order a table;Waiter;Do you have free tables?;Accept my order;Specialty of the house;Beer;Wine;What year is the wine;Soup;Spaghetti;Macaronis;Sandwich;Cheese / sour cream (sour);Tea / coffee;Soluble coffee;Lettuce;I do not eat meat;Check please;\n" +
             "Numbers:Zero;One;Two;Three;Four;Five;Six;Seven;Eight;Nine;Ten;Eleven;Twelve;Thirteen;Fourteen;Fifteen;Sixteen;Seventeen;Eighteen;Nineteen;Twenty;Twenty one;Twenty two;Thirty;Forty;Fifty;Sixty;Seventy;Eighty;Ninty;Hundred;Thousnad;";
-    private ArrayList<String> themes = new ArrayList<>();
-    private ArrayList<ArrayList<String>> phrases = new ArrayList<>();
-    private ArrayList<ArrayList<String>> translations = new ArrayList<>();
+    private ArrayList<String> themes;
+    private ArrayList<ArrayList<String>> phrases;
+    private ArrayList<ArrayList<String>> translations;
     private Translate translate = Translate.getInstance();
     private boolean ERROR = false;
 
-    private PhraseList(String dictLang, String nativeLang) {
-        loadPhrases(dictLang, nativeLang);
+    private PhraseList(Context context, String dictLang, String nativeLang) {
+        loadPhrases(context, dictLang, nativeLang);
     }
 
-    private void loadPhrases(String dictLang, String nativeLang) {
+    private void loadPhrases(Context context, String dictLang, String nativeLang) {
+        themes = new ArrayList<>();
+        phrases = new ArrayList<>();
+        translations = new ArrayList<>();
+        DBConnector database = new DBConnector(context, dictLang, nativeLang);
+        Cursor cursor = database.getAllPhraseThemes();
+        ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
+        if (cursor != null && cursor.getCount() != 0 && cursor.moveToFirst()) {
+            do {
+                themes.add(cursor.getString(DBConnector.NUM_PHRASE_THEME_TRANS_NAT));
+                ArrayList<String> currentPhrasesDict = new ArrayList<>(readWriteManager.convertStringToArrayList(cursor.getString(DBConnector.NUM_PHRASE_THEME_LIST_TRANS_DICT), ';'));
+                ArrayList<String> currentPhrasesNat = new ArrayList<>(readWriteManager.convertStringToArrayList(cursor.getString(DBConnector.NUM_PHRASE_THEME_LIST_TRANS_NAT), ';'));
+                phrases.add(currentPhrasesDict);
+                translations.add(currentPhrasesNat);
+            } while (cursor.moveToNext());
+            return;
+        }
         String[] tmp = allToDivide.split("\n");
         for (String s : tmp) {
             String[] themeNPhrase = s.split(":");
@@ -54,13 +72,16 @@ public class PhraseList {
                 }
                 phrases.add(phrasesLastTheme);
                 translations.add(translationsLastTheme);
-            }catch (Exception e) {
-                ERROR = false;
+            } catch (Exception ex) {
+                ERROR = true;
             }
+        }
+        for (int i = 0; i < themes.size(); i++) {
+            database.insertPhraseTheme(new Theme(themes.get(i), phrases.get(i), translations.get(i)));
         }
     }
 
-    public static PhraseList getInstance(String dictLang, String nativeLang, boolean wasChanged) {
+    public static PhraseList getInstance(Context context, String dictLang, String nativeLang, boolean wasChanged) {
         PhraseList localInstance = null;
         if (instanceMap.containsKey(new Pair<>(dictLang, nativeLang))) {
             localInstance = instanceMap.get(new Pair<>(dictLang, nativeLang));
@@ -68,7 +89,7 @@ public class PhraseList {
         if (localInstance == null || localInstance.ERROR || wasChanged) {
             synchronized (PhraseList.class) {
                 if (localInstance == null || localInstance.ERROR || wasChanged) {
-                    instanceMap.put(new Pair<>(dictLang, nativeLang), localInstance = new PhraseList(dictLang, nativeLang));
+                    instanceMap.put(new Pair<>(dictLang, nativeLang), localInstance = new PhraseList(context, dictLang, nativeLang));
                 }
             }
         }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import project.fedorova.polyglotte.data.DataBase.DBConnector;
 import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.PhraseList;
 import project.fedorova.polyglotte.data.ReadWriteManager;
@@ -32,8 +33,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
         init();
 
-        loadSettings();
         loadDictList();
+        loadSettings();
     }
 
     @Override
@@ -83,7 +84,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 startActivity(intentD);
                 break;
             case (R.id.phrasebookButton):
-                PhraseList phraseList = PhraseList.getInstance(dictLanguage, nativeLanguage, wasChangedNativeLanguage);
+                PhraseList phraseList = PhraseList.getInstance(this, dictLanguage, nativeLanguage, wasChangedNativeLanguage);
                 if (phraseList.isERROR()) {
                     new AlertDialog.Builder(this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -106,6 +107,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 startActivity(intentTr);
                 break;
             case (R.id.clearPreferences):
+                DBConnector dbConnector = new DBConnector(this, dictLanguage, nativeLanguage);
+                dbConnector.deleteAll();
                 SharedPreferences sPref = getPreferences(MODE_PRIVATE);
                 SharedPreferences.Editor editor = sPref.edit();
                 editor.clear();
@@ -135,7 +138,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 break;
             case (R.id.addDictButton):
                 Intent intentAD = new Intent(this, PopUpAddDict.class);
-                startActivity(intentAD);
+                startActivityForResult(intentAD, 2);
                 break;
             default:
                 break;
@@ -145,8 +148,15 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            nativeLanguage = data.getStringExtra("language");
-            wasChangedNativeLanguage = true;
+            if (requestCode == 1) {
+                nativeLanguage = data.getStringExtra("language");
+                wasChangedNativeLanguage = true;
+            }
+            if (requestCode == 2) {
+                dictLanguage = data.getStringExtra("dictionary");
+                loadDictList();
+                setSelectDict();
+            }
         }
     }
 

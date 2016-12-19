@@ -1,20 +1,27 @@
 package project.fedorova.polyglotte.data;
 
-import java.util.Set;
+import java.util.ArrayList;
 
 public class Theme {
-    public static final String PATH = "themes/";
-    private static Set<String> exist;
+    private String title;
+    private ArrayList<String> phrases_dict;
+    private ArrayList<String> phrases_nat;
 
-    public static String getPath(String theme) {
-        return PATH + theme;
+    public Theme(String newTitle, ArrayList<String> newPhrases_dict, ArrayList<String> newPhrases_nat) {
+        title = newTitle;
+        phrases_dict = newPhrases_dict;
+        phrases_nat = newPhrases_nat;
     }
 
-    public static boolean hasTheme(String theme) {
-        return exist.contains(theme);
+    public String getTitle() {
+        return title;
     }
 
-    public static void addTheme(String theme){
-        exist.add(theme);
+    public ArrayList<String> getPhrases_dict() {
+        return phrases_dict;
+    }
+
+    public ArrayList<String> getPhrases_nat() {
+        return phrases_nat;
     }
 }

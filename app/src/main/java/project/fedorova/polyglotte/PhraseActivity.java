@@ -49,7 +49,7 @@ public class PhraseActivity extends Activity {
         private ArrayList<ArrayList<String>> translations;
         private SimpleExpandableListAdapter adapter;
         SimpleExpandableListAdapter getAdapter(String dictLang, String nativeLang, boolean wasChanged) {
-            phraseList = PhraseList.getInstance(dictLang, nativeLang, wasChanged);
+            phraseList = PhraseList.getInstance(PhraseActivity.this, dictLang, nativeLang, wasChanged);
             themes = phraseList.getThemes();
             phrases = phraseList.getPhrases();
             translations = phraseList.getTranslations();

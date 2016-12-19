@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -71,6 +72,27 @@ public class ReadWriteManager {
         }
         Set<String> res = new HashSet<>();
         res.addAll(Arrays.asList(content.split(", ")));
+        return res;
+    }
+
+    public String convertArrayListToString(ArrayList<String> content, char div) {
+        if (content == null) {
+            return "";
+        }
+        String ans = "";
+        for (String s : content) {
+            ans += s + div;
+        }
+        return ans;
+    }
+
+    public ArrayList<String> convertStringToArrayList(String content, char div) {
+        if (content == null) {
+            return null;
+        }
+        ArrayList<String> res = new ArrayList<>();
+        String newDiv = "" + div;
+        res.addAll(Arrays.asList(content.split(newDiv)));
         return res;
     }
 
