@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.UUID;
 
-import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.db.DBConnector;
 
 public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private DBConnector wordManager;

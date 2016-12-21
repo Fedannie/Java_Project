@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.UUID;
 
-import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
 

@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.db.DBConnector;
 
 public class DictActivity extends Activity implements View.OnClickListener {
     public static final int REQUEST_TO_REFRESH = 1;

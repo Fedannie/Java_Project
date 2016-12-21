@@ -1,4 +1,4 @@
-package project.fedorova.polyglotte.data.DataBase;
+package project.fedorova.polyglotte.data.db;
 
 import android.content.ContentValues;
 import android.content.Context;

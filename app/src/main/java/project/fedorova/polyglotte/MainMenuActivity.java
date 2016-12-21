@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.data.DictList;
 import project.fedorova.polyglotte.data.PhraseList;
 import project.fedorova.polyglotte.data.ReadWriteManager;
@@ -214,7 +214,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private void loadDictList() {
         ReadWriteManager rwManager = ReadWriteManager.getInstance();
-        Set<String> dicts = rwManager.convertStringToSet(rwManager.readFromFile(this, ReadWriteManager.DICT_LIST));
+        Set<String> dicts = rwManager.convertStringToSet(rwManager.readFromFile(this, getString(R.string.dict_list)));
         DictList dictList = DictList.getInstance();
         if (dicts != null) {
             for (String s : dicts) {
@@ -226,7 +226,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     private void safeSettings() {
         DictList dictList = DictList.getInstance();
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
-        readWriteManager.writeToFile(this, ReadWriteManager.DICT_LIST, readWriteManager.convertSetToString(dictList.getDictList()));
+        readWriteManager.writeToFile(this, getString(R.string.dict_list), readWriteManager.convertSetToString(dictList.getDictList()));
         SharedPreferences sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sPref.edit();
         editor.putString(getString(R.string.dict_lang), dictLanguage);

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import project.fedorova.polyglotte.R;
-import project.fedorova.polyglotte.data.DataBase.DBConnector;
+import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.translator.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
 

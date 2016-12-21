@@ -46,7 +46,7 @@ public enum Language {
     TURKISH("tr"),
     UKRAINIAN("uk");
 
-    String language;
+    private final String language;
 
     Language(String pLanguage) {
         language = pLanguage;
