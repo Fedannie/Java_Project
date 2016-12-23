@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.UUID;
@@ -22,13 +23,13 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private static final String ONLY_COMMAS_AP = "Sorry, only apostrophe and commas to divide words";
     private static final String ONLY_LETTERS = "Sorry, only letters and numbers.";
     private Button addThemeBtn;
-    private Button saveWordBtn;
-    private Button backBtn;
     private DBConnector wordBase;
     private TextInputLayout wordTIL;
     private TextInputLayout mainTranslationTIL;
     private TextInputLayout translationTIL;
     private TextInputLayout examplesTIL;
+    private TextView plusExtraTrans;
+    private TextView plusExamples;
     private String wordID = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,14 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                 break;
             case (R.id.backBtn):
                 finish();
+                break;
+            case (R.id.plusExamples):
+                plusExamples.setVisibility(View.INVISIBLE);
+                examplesTIL.setVisibility(View.VISIBLE);
+                break;
+            case (R.id.plusExtraTranslations):
+                plusExtraTrans.setVisibility(View.INVISIBLE);
+                translationTIL.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -91,10 +100,10 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         addThemeBtn = (Button) findViewById(R.id.addThemeToWord);
         addThemeBtn.setOnClickListener(this);
 
-        saveWordBtn = (Button) findViewById(R.id.saveWord);
+        Button saveWordBtn = (Button) findViewById(R.id.saveWord);
         saveWordBtn.setOnClickListener(this);
 
-        backBtn = (Button) findViewById(R.id.backBtn);
+        Button backBtn = (Button) findViewById(R.id.backBtn);
         backBtn.setOnClickListener(this);
 
         wordTIL = (TextInputLayout) findViewById(R.id.wordinput);
@@ -184,6 +193,12 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
             }
         });
         examplesTIL.setErrorEnabled(false);
+
+        plusExamples = (TextView) findViewById(R.id.plusExamples);
+        plusExamples.setOnClickListener(this);
+
+        plusExtraTrans = (TextView) findViewById(R.id.plusExtraTranslations);
+        plusExtraTrans.setOnClickListener(this);
     }
 
     private void setDataToEdit() {
@@ -193,8 +208,14 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
 
             Cursor cursor = wordBase.getAllWords();
             cursor.move(wordPos + 1);
-
+            //TODO get rid of database here
             wordID = cursor.getString(DBConnector.NUM_WORD_ID);
+            if (!cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS).equals("")) {
+                onClick(plusExtraTrans);
+            }
+            if (!cursor.getString(DBConnector.NUM_WORD_EXAMPLES).equals("")) {
+                onClick(plusExamples);
+            }
             try {
                 wordTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_TITLE));
                 mainTranslationTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION));

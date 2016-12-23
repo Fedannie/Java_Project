@@ -15,17 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/wordET"
-            android:hint="Your word" />
+            android:hint="@string/your_word" />
     </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:text="Save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/saveWord" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -43,46 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/translationET"
-            android:hint="Main translation" />
+            android:hint="@string/main_translation" />
     </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/extratranslationsinput"
-        android:theme="@style/Theme.AppCompat"
-        app:errorEnabled="true"
-        android:animateLayoutChanges="true"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/extratranslationsET"
-            android:hint="Extra translations" />
-    </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:text="Back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:id="@+id/backBtn" />
-
-    <Button
-        android:text="+ Theme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addThemeToWord"
-        android:layout_above="@+id/saveWord"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -94,14 +47,93 @@
         android:layout_below="@+id/extratranslationsinput"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/addThemeToWord">
+        android:layout_above="@+id/addThemeToWord"
+        android:visibility="invisible">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/examplesET"
-            android:hint="Examples" />
+            android:hint="@string/examples" />
+
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/extratranslationsinput"
+        android:theme="@style/Theme.AppCompat"
+        app:errorEnabled="true"
+        android:animateLayoutChanges="true"
+        android:visibility="invisible"
+        android:layout_below="@+id/translationinput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/extratranslationsET"
+            android:hint="@string/extra_translations" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:text="@string/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/saveWord" />
+
+    <Button
+        android:text="@string/plus_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addThemeToWord"
+        android:layout_above="@+id/saveWord"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="@string/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:clickable="true"
+        android:id="@+id/backBtn" />
+
+    <TextView
+        android:text="@string/plus_extra_translations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:id="@+id/plusExtraTranslations"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22sp"
+        android:layout_marginTop="26dp"
+        android:layout_alignTop="@+id/extratranslationsinput"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:autoLink="all"/>
+
+    <TextView
+        android:text="@string/plus_examples"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/plusExamples"
+        android:textSize="22sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@+id/plusExtraTranslations"
+        android:clickable="true"
+        android:layout_marginTop="17dp"
+        android:layout_alignLeft="@+id/plusExtraTranslations"
+        android:layout_alignStart="@+id/plusExtraTranslations"
+        android:autoLink="all"/>
 
 </RelativeLayout>

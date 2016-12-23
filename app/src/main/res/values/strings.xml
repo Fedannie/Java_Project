@@ -8,7 +8,7 @@
     <string name="first_time">first time</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="word_index">word index</string>
     <string name="if_edit">if edit</string>
     <string name="phrase">phrase</string>
@@ -36,6 +36,15 @@
     <string name="msg_error_write_file">Error with writing to file.</string>
     <string name="msg_file_read_not_found">File to read not found.</string>
     <string name="msg_error_read_file">Error with reading file.</string>
+    <string name="your_word">Your word</string>
+    <string name="save">Save</string>
+    <string name="main_translation">Main translation</string>
+    <string name="extra_translations">Extra translations</string>
+    <string name="back">Back</string>
+    <string name="plus_theme">+ Theme</string>
+    <string name="examples">Examples</string>
+    <string name="plus_extra_translations">+ Extra translations</string>
+    <string name="plus_examples">+ Examples</string>
 
     <string-array name="wholeLanguageList">
         <item>Albanian</item>
