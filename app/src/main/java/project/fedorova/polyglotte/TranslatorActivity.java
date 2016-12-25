@@ -1,6 +1,7 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
+import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.translator.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
 
@@ -26,6 +30,8 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.translator);
+        Intent intent = getIntent();
+
         translatePB = (ProgressBar) findViewById(R.id.translateProgressBar);
         fromET = (EditText) findViewById(R.id.textToTrans);
         fromET.addTextChangedListener(new TextWatcher(){
@@ -62,6 +68,18 @@ public class TranslatorActivity extends Activity implements View.OnClickListener
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        try {
+            langFrom.setSelection(Arrays.asList(getResources().getStringArray(R.array.wholeLanguageList)).indexOf(intent.getStringExtra(getString(R.string.dict_lang))));
+        } catch (Exception e) {
+            langFrom.setSelection(Arrays.asList(getResources().getStringArray(R.array.wholeLanguageList)).indexOf(intent.getStringExtra(getString(R.string.default_language))));
+        }
+        try {
+            langTo.setSelection(Arrays.asList(getResources().getStringArray(R.array.wholeLanguageList)).indexOf(intent.getStringExtra(getString(R.string.native_lang))));
+        } catch (Exception e) {
+            langFrom.setSelection(Arrays.asList(getResources().getStringArray(R.array.wholeLanguageList)).indexOf(intent.getStringExtra(getString(R.string.default_language))));
+        }
+
     }
 
     @Override

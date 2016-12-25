@@ -45,6 +45,11 @@
     <string name="examples">Examples</string>
     <string name="plus_extra_translations">+ Extra translations</string>
     <string name="plus_examples">+ Examples</string>
+    <string name="word_title">word title</string>
+    <string name="word_main_trans">word main translation</string>
+    <string name="word_extra_trans">word extra trans</string>
+    <string name="word_examples">word examples</string>
+    <string name="word_id">word id</string>
 
     <string-array name="wholeLanguageList">
         <item>Albanian</item>

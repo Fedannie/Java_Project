@@ -141,23 +141,25 @@ public class DBConnector {
 
     public Word getWord(UUID id) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
-        database.beginTransaction();
-        Cursor cursor = database.query(WORDS_TABLE_NAME, WORDS_COLUMNS, WORD_ID + " = ?", new String[] {String.valueOf(id)}, null, null, null);
-        if (cursor.moveToFirst()) {
-            ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
-            cursor.moveToFirst();
-            String word = cursor.getString(NUM_WORD_TITLE);
-            String mainTranslation = cursor.getString(NUM_WORD_MAIN_TRANSLATION);
-            Set<String> translations = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_TRANSLATIONS));
-            Set<String> themes = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_THEMES));
-            Set<String> examples = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_EXAMPLES));
-            cursor.close();
-            database.setTransactionSuccessful();
-            database.endTransaction();
-            return new Word(id, word, mainTranslation, translations, themes, examples);
-        } else {
-            return null;
-        }
+        Cursor cursor = database.rawQuery( "SELECT * FROM " + WORDS_TABLE_NAME + " WHERE " +
+                WORD_ID + " = ?", new String[] {String.valueOf(id)});
+
+        //String selectQuery = "SELECT * FROM " + WORDS_TABLE_NAME + " WHERE " + WORD_ID + " = " + id.toString();
+        //Cursor cursor = database.rawQuery(selectQuery, null);
+        //  Cursor cursor = database.query(WORDS_TABLE_NAME, WORDS_COLUMNS, WORD_ID + " = ?", new String[] {String.valueOf(id)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
+                String word = cursor.getString(NUM_WORD_TITLE);
+                String mainTranslation = cursor.getString(NUM_WORD_MAIN_TRANSLATION);
+                Set<String> translations = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_TRANSLATIONS));
+                Set<String> themes = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_THEMES));
+                Set<String> examples = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_EXAMPLES));
+                cursor.close();
+                return new Word(id, word, mainTranslation, translations, themes, examples);
+            } else {
+                cursor.close();
+                return null;
+            }
     }
 
     public Cursor getAllWords() {

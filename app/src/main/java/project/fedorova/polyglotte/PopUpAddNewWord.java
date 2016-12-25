@@ -2,7 +2,6 @@ package project.fedorova.polyglotte;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
@@ -22,7 +21,6 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private static final String ONLY_COMMAS = "Sorry, only commas to divide words";
     private static final String ONLY_COMMAS_AP = "Sorry, only apostrophe and commas to divide words";
     private static final String ONLY_LETTERS = "Sorry, only letters and numbers.";
-    private Button addThemeBtn;
     private DBConnector wordBase;
     private TextInputLayout wordTIL;
     private TextInputLayout mainTranslationTIL;
@@ -30,13 +28,17 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private TextInputLayout examplesTIL;
     private TextView plusExtraTrans;
     private TextView plusExamples;
-    private String wordID = "";
+    private UUID wordID = null;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_add_word);
+        intent = getIntent();
         init();
-        setDataToEdit();
+        if (intent.getStringExtra(getString(R.string.if_edit)).equals(getString(R.string.yes))) {
+            setDataToEdit();
+        }
     }
 
     @Override
@@ -49,8 +51,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                     Toast.makeText(PopUpAddNewWord.this, getString(R.string.msg_word_not_complete), Toast.LENGTH_SHORT).show();
                     break;
                 }
-                if (!wordID.equals("")) {
-                    wordBase.delete(UUID.fromString(wordID));
+                if (wordID != null) {
+                    wordBase.delete(wordID);
                 }
                 saveNewWord();
                 setResult(RESULT_OK, getIntent());
@@ -83,7 +85,9 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
             mainTrans = mainTranslationTIL.getEditText().getText().toString();
             extraTrans = translationTIL.getEditText().getText().toString();
             examples = examplesTIL.getEditText().getText().toString();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            Toast.makeText(this, "Oops. Something went wrong with saving.", Toast.LENGTH_SHORT).show();
+        }
         wordBase.insertWord(new Word(UUID.randomUUID(), title,
                 mainTrans,
                 readWriteManager.convertStringToSet(extraTrans),
@@ -92,12 +96,11 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     }
 
     private void init() {
-        Intent intent = getIntent();
         wordBase = new DBConnector(this,
                 intent.getStringExtra(getString(R.string.dict_lang)),
                 intent.getStringExtra(getString(R.string.native_lang)));
 
-        addThemeBtn = (Button) findViewById(R.id.addThemeToWord);
+        Button addThemeBtn = (Button) findViewById(R.id.addThemeToWord);
         addThemeBtn.setOnClickListener(this);
 
         Button saveWordBtn = (Button) findViewById(R.id.saveWord);
@@ -202,27 +205,20 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     }
 
     private void setDataToEdit() {
-        Intent intent = getIntent();
-        if (intent.getStringExtra(getString(R.string.if_edit)).equals(getString(R.string.yes))) {
-            int wordPos = intent.getIntExtra(getString(R.string.word_index), 0);
-
-            Cursor cursor = wordBase.getAllWords();
-            cursor.move(wordPos + 1);
-            //TODO get rid of database here
-            wordID = cursor.getString(DBConnector.NUM_WORD_ID);
-            if (!cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS).equals("")) {
-                onClick(plusExtraTrans);
-            }
-            if (!cursor.getString(DBConnector.NUM_WORD_EXAMPLES).equals("")) {
-                onClick(plusExamples);
-            }
-            try {
-                wordTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_TITLE));
-                mainTranslationTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION));
-                translationTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS));
-                examplesTIL.getEditText().setText(cursor.getString(DBConnector.NUM_WORD_EXAMPLES));
-            } catch (Exception e) {}
+        Word word = wordBase.getWord(wordID = UUID.fromString(intent.getStringExtra(getString(R.string.word_id))));
+        ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
+        if (!readWriteManager.convertSetToString(word.getTranslations()).equals("")) {
+            onClick(plusExtraTrans);
         }
+        if (!readWriteManager.convertSetToString(word.getExamples()).equals("")) {
+            onClick(plusExamples);
+        }
+        try {
+            wordTIL.getEditText().setText(word.getWord());
+            mainTranslationTIL.getEditText().setText(word.getMainTranslation());
+            translationTIL.getEditText().setText(readWriteManager.convertSetToString(word.getTranslations()));
+            examplesTIL.getEditText().setText(readWriteManager.convertSetToString(word.getExamples()));
+        } catch (Exception e) {}
     }
 
     private boolean readyToSave() {

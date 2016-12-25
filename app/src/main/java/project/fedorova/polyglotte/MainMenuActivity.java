@@ -128,7 +128,6 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                                     selectDict.setSelection(item);
                                 }
                                 dictLanguage = (String) selectDict.getSelectedItem();
-                                loadDictList();
                                 loadDict();
                             } catch (Exception e) {
                                 Toast.makeText(MainMenuActivity.this, getString(R.string.error_delete_dict), Toast.LENGTH_SHORT).show();

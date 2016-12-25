@@ -23,7 +23,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private TextView extraTransTV;
     private TextView examplesTV;
     private int wordPos;
-
+    private String wordID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,21 +40,24 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
                 finish();
                 break;
             case (R.id.leftBtnWatcher):
-                if (wordPos > 0) {
-                    wordPos--;
+                if (wordPos > 0){
+                    cursor.moveToPrevious();
                     setTV();
                 }
                 break;
             case (R.id.rightBtnWatcher):
-                if (wordPos < cursor.getCount() - 1) {
-                    wordPos++;
+                if (wordPos < cursor.getCount() - 1){
+                    cursor.moveToNext();
                     setTV();
                 }
                 break;
             case (R.id.editWordIB):
                 Intent intentEditor = new Intent(this, PopUpAddNewWord.class);
-                intentEditor.putExtra(getString(R.string.word_index), wordPos);
+                Intent intent = getIntent();
                 intentEditor.putExtra(getString(R.string.if_edit), getString(R.string.yes));
+                intentEditor.putExtra(getString(R.string.word_id), wordID);
+                intentEditor.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+                intentEditor.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
                 startActivityForResult(intentEditor, DictActivity.REQUEST_TO_REFRESH);
                 break;
             case (R.id.deleteWordIB):
@@ -86,7 +89,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     }
 
     private void setTV() {
-        cursor.move(wordPos + 1);
+        wordID = cursor.getString(DBConnector.NUM_WORD_ID);
 
         wordTV.setText(cursor.getString(DBConnector.NUM_WORD_TITLE));
 
@@ -105,6 +108,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
                 intent.getStringExtra(getString(R.string.dict_lang)),
                 intent.getStringExtra(getString(R.string.native_lang)));
         cursor = wordManager.getAllWords();
+        cursor.move(wordPos + 1);
 
         wordTV = (TextView) findViewById(R.id.wordTVWatcher);
 
