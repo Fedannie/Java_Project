@@ -1,10 +1,12 @@
 package project.fedorova.polyglotte;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,30 +24,43 @@ public class DictActivity extends Activity implements View.OnClickListener {
     private DBConnector wordManager;
     private ListView wordList;
     Cursor cursor;
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
+        setContentView(R.layout.dictionary);
+        chooseWordList();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dictionary);
         init();
-        setWordList();
+        chooseWordList();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        setWordList();
+        chooseWordList();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        setWordList();
+        chooseWordList();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setWordList();
+        chooseWordList();
     }
 
     @Override
@@ -88,7 +103,11 @@ public class DictActivity extends Activity implements View.OnClickListener {
     }
 
     private void refresh() {
-        setWordList();
+        if(getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().heightPixels) {
+            setWordListLand();
+        } else {
+            setWordListPort();
+        }
         Intent intent = getIntent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         finish();
@@ -118,47 +137,93 @@ public class DictActivity extends Activity implements View.OnClickListener {
     }
 
     private static class WordListAdapter extends CursorAdapter {
-        WordListAdapter(Context context, Cursor cursor, int flags) {
+        @LayoutRes int res;
+        WordListAdapter(Context context, Cursor cursor, int flags, @LayoutRes int resource) {
             super(context, cursor, flags);
+            res = resource;
         }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            View view = LayoutInflater.from(context).inflate(R.layout.wordlistitem, parent, false);
-            ViewHolder viewHolder = new ViewHolder((TextView) view.findViewById(R.id.stringTVList), (TextView) view.findViewById(R.id.translationTVList));
-            view.setTag(viewHolder);
+            View view = LayoutInflater.from(context).inflate(res, parent, false);
+            if (res == R.layout.wordlistitem) {
+                ViewHolderPort viewHolder = new ViewHolderPort((TextView) view.findViewById(R.id.stringTVList), (TextView) view.findViewById(R.id.translationTVList));
+                view.setTag(viewHolder);
+            } else {
+                ViewHolderLand viewHolder = new ViewHolderLand((TextView) view.findViewById(R.id.stringTVListLand), (TextView) view.findViewById(R.id.mainTransTVListLand), (TextView) view.findViewById(R.id.extraTransTVListLand));
+                view.setTag(viewHolder);
+            }
             return view;
         }
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            ViewHolder viewHolder = (ViewHolder) view.getTag();
+            if (res == R.layout.wordlistitem) {
+                ViewHolderPort viewHolder = (ViewHolderPort) view.getTag();
 
-            TextView wordTV = viewHolder.wordTV;
-            String word = cursor.getString(DBConnector.NUM_WORD_TITLE);
-            wordTV.setText(word);
+                TextView wordTV = viewHolder.wordTV;
+                String word = cursor.getString(DBConnector.NUM_WORD_TITLE);
+                wordTV.setText(word);
 
-            TextView translationsTV = viewHolder.translationsTV;
-            String translations = cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION);
-            if (!cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS).equals("")) {
-                translations += ", " + cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
+                TextView translationsTV = viewHolder.translationsTV;
+                String translations = cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION);
+                if (!cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS).equals("")) {
+                    translations += ", " + cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
+                }
+                translationsTV.setText(translations);
+            } else {
+                ViewHolderLand viewHolder = (ViewHolderLand) view.getTag();
+
+                TextView wordTV = viewHolder.wordTV;
+                String word = cursor.getString(DBConnector.NUM_WORD_TITLE);
+                wordTV.setText(word);
+
+                TextView translationsTV = viewHolder.mainTransTV;
+                String mainTranslation = cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION);
+                translationsTV.setText(mainTranslation);
+
+                TextView extraTransTV = viewHolder.mainTransTV;
+                String translations = "";
+                if (!cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS).equals("")) {
+                    translations += ", " + cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
+                }
+                extraTransTV.setText(translations);
             }
-            translationsTV.setText(translations);
         }
 
-        private static class ViewHolder {
+        private static class ViewHolderPort {
             final TextView wordTV;
             final TextView translationsTV;
-            ViewHolder(TextView word, TextView translations) {
+            ViewHolderPort(TextView word, TextView translations) {
                 wordTV = word;
                 translationsTV = translations;
             }
 
         }
+
+        private static class ViewHolderLand {
+            final TextView wordTV;
+            final TextView mainTransTV;
+            final TextView extraTransTV;
+            ViewHolderLand(TextView word, TextView mainTrans, TextView extraTrans) {
+                wordTV = word;
+                mainTransTV = mainTrans;
+                extraTransTV = extraTrans;
+            }
+        }
     }
 
-    private void setWordList() {
-        WordListAdapter wordListAdapter = new WordListAdapter(this, cursor, 0);
+    private void setWordListPort() {
+        WordListAdapter wordListAdapter = new WordListAdapter(this, cursor, 0, R.layout.wordlistitem);
+        setWordList(wordListAdapter);
+    }
+
+
+    private void setWordListLand() {
+        WordListAdapter wordListAdapter = new WordListAdapter(this, cursor, 0, R.layout.wordlistitemland);
+        setWordList(wordListAdapter);
+    }
+    private void setWordList(WordListAdapter wordListAdapter) {
         wordList.setAdapter(wordListAdapter);
         wordList.setOnItemClickListener((parent, view, position, id) -> {
             Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
@@ -168,5 +233,13 @@ public class DictActivity extends Activity implements View.OnClickListener {
             intentWordWatcher.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
             startActivityForResult(intentWordWatcher, REQUEST_TO_REFRESH);
         });
+    }
+
+    private void chooseWordList() {
+        if(getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().heightPixels) {
+            setWordListLand();
+        } else {
+            setWordListPort();
+        }
     }
 }

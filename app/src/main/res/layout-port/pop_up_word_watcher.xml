@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@+id/wordTVWatcher"
+        android:id="@+id/mainTranslationTVWatcher"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:id="@+id/extraTranslationsTVWatcher"
+        android:layout_below="@+id/mainTranslationTVWatcher"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18sp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/wordTVWatcher"
+        android:layout_marginTop="75dp"
+        android:textAlignment="center"
+        android:layout_height="72dp"
+        android:textSize="26sp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backBtnWatcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_edit"
+        android:layout_marginRight="42dp"
+        android:layout_marginEnd="42dp"
+        android:id="@+id/editWordIB"
+        android:contentDescription="Edit word"
+        android:layout_marginBottom="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorPrimaryDark">
+    </ImageButton>
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_delete"
+        android:contentDescription="Delete word"
+        android:layout_marginLeft="42dp"
+        android:layout_marginStart="42dp"
+        android:id="@+id/deleteWordIB"
+        android:layout_marginBottom="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorPrimaryDark">
+    </ImageButton>
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:src="@drawable/right_arrow"
+        android:id="@+id/rightBtnWatcher"
+        android:background="@android:color/background_light"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:contentDescription="Next word"
+        android:layout_below="@+id/extraTranslationsTVWatcher"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+    </ImageButton>
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:src="@drawable/left_arrow"
+        android:background="@android:color/background_light"
+        android:id="@+id/leftBtnWatcher"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:contentDescription="Previous word"
+        android:layout_below="@+id/extraTranslationsTVWatcher"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    </ImageButton>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:id="@+id/examplesTVWatcher"
+        android:textAlignment="center"
+        android:layout_below="@+id/extraTranslationsTVWatcher"
+        android:layout_above="@+id/editWordIB"
+        android:layout_toLeftOf="@+id/rightBtnWatcher"
+        android:layout_toRightOf="@+id/leftBtnWatcher"
+        android:layout_toEndOf="@+id/leftBtnWatcher"
+        android:layout_width="264dp"
+        android:textSize="18sp" />
+
+
+</RelativeLayout>

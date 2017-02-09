@@ -98,7 +98,7 @@ public class ReadWriteManager {
     public static ReadWriteManager getInstance() {
         ReadWriteManager localInstance = instance;
         if (localInstance == null) {
-            synchronized (DictList.class){
+            synchronized (ReadWriteManager.class){
                 localInstance = instance;
                 if (localInstance == null) {
                     instance = localInstance = new ReadWriteManager();
@@ -107,5 +107,4 @@ public class ReadWriteManager {
         }
         return localInstance;
     }
-
 }

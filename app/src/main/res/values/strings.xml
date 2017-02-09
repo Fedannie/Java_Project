@@ -50,6 +50,13 @@
     <string name="word_extra_trans">word extra trans</string>
     <string name="word_examples">word examples</string>
     <string name="word_id">word id</string>
+    <string name="mode">mode</string>
+    <string name="trans_by_word">trans by word</string>
+    <string name="quit_training_head">Quit</string>
+    <string name="quit_training_body">Are you sure tou want to quit?</string>
+    <string name="oops">Oops</string>
+    <string name="msg_not_enough_words">Sorry, you have not enought words in your dictionary.</string>
+    <string name="msg_bad_language">Sorry, you cannot pass this exercise with your language</string>
 
     <string-array name="wholeLanguageList">
         <item>Albanian</item>

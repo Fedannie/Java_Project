@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import project.fedorova.polyglotte.translator.ApiKey;
 import project.fedorova.polyglotte.translator.YandexTranslatorApi;
-import project.fedorova.polyglotte.translator.language.Language;
+import project.fedorova.polyglotte.data.language.Language;
 
 public class Translate extends YandexTranslatorApi {
     private static volatile Translate instance;

@@ -154,7 +154,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             }
             if (requestCode == 2) {
                 dictLanguage = data.getStringExtra(getString(R.string.dictionary));
-                loadDictList();
+                loadDict();
                 setSelectDict();
             }
         }

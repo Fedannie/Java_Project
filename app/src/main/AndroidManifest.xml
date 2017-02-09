@@ -21,58 +21,89 @@
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:name=".DictActivity">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:name=".ExerciseActivity">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:name=".TranslatorActivity">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:name=".PhraseActivity">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:name=".PrefActivity">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpFilterThemes">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpAddDict">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpSelectNativeLanguage">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpAddNewWord">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Dialog"
             android:name=".PopUpWordWatcher">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:name=".RepeatWordActivity">
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Dialog"
             android:label=""
             android:name=".PopUpShowPhrase">
+        </activity>
+
+        <activity
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:screenOrientation="sensor"
+            android:label=""
+            android:name=".ExerciseUniqueWord">
         </activity>
 
     </application>

@@ -10,7 +10,7 @@ import java.util.Map;
 
 import project.fedorova.polyglotte.R;
 import project.fedorova.polyglotte.data.db.DBConnector;
-import project.fedorova.polyglotte.translator.language.Language;
+import project.fedorova.polyglotte.data.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class PhraseList {

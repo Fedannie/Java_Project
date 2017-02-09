@@ -15,8 +15,7 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 
-import project.fedorova.polyglotte.data.ReadWriteManager;
-import project.fedorova.polyglotte.translator.language.Language;
+import project.fedorova.polyglotte.data.language.Language;
 import project.fedorova.polyglotte.translator.translate.Translate;
 
 public class TranslatorActivity extends Activity implements View.OnClickListener {
