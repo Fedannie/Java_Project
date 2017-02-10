@@ -9,15 +9,17 @@ import project.fedorova.polyglotte.data.Word;
 
 public abstract class DoubleWordTraining extends Training {
     private List<Word> words;
+    private int n;
     public abstract boolean check(Word first, String second);
     public DoubleWordTraining(Cursor cursor, int num) {
         super(cursor);
-        words = new ArrayList<>(num);
+        words = new ArrayList<>();
+        n = num;
     }
 
-    public boolean getTraining()  throws Exception{
+    public boolean getTraining() throws Exception{
         try {
-            words = super.choose(words.size());
+            words = super.choose(n);
             incPos();
         } catch (NullPointerException e) {
             throw e;

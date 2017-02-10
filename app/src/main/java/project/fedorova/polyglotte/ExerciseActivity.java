@@ -31,6 +31,13 @@ public class ExerciseActivity extends Activity implements View.OnClickListener{
                 intentTBW.putExtra(getString(R.string.mode), getString(R.string.trans_by_word));
                 startActivity(intentTBW);
                 break;
+            case (R.id.wordByTrans):
+                Intent intentWBT = new Intent(this, ExerciseUniqueWord.class);
+                intentWBT.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+                intentWBT.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
+                intentWBT.putExtra(getString(R.string.mode), getString(R.string.word_by_trans));
+                startActivity(intentWBT);
+                break;
             default:
                 break;
         }

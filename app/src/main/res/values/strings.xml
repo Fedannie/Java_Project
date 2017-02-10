@@ -52,6 +52,7 @@
     <string name="word_id">word id</string>
     <string name="mode">mode</string>
     <string name="trans_by_word">trans by word</string>
+    <string name="word_by_trans">word by trans</string>
     <string name="quit_training_head">Quit</string>
     <string name="quit_training_body">Are you sure tou want to quit?</string>
     <string name="oops">Oops</string>

@@ -18,9 +18,9 @@ import java.util.List;
 import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.exercise.UniqueWordTraining;
 import project.fedorova.polyglotte.exercise.exersice_classes.TransByWord;
+import project.fedorova.polyglotte.exercise.exersice_classes.WordByTrans;
 
 public class ExerciseUniqueWord extends Activity implements View.OnClickListener {
-    private final static int N = 15;
     private UniqueWordTraining training;
     private TextView wordNameView;
     private TextView transToEnter;
@@ -73,7 +73,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                     step--;
                     emptySpaces++;
                     showLetters();
-                    for (int i = 1; i < 9; i++) {
+                    for (int i = 1; i < UniqueWordTraining.LETTERS_CNT; i++) {
                         letterArray.get(moves.get(moves.size() - i)).setEnabled(false);
                         letterArray.get(moves.get(moves.size() - i)).setVisibility(View.INVISIBLE);
                     }
@@ -109,7 +109,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                 showTraining();
             }
         } else {
-            if (moves.size() % 9 == 0) {
+            if (moves.size() % UniqueWordTraining.LETTERS_CNT == 0) {
                 step++;
                 showLetters();
             }
@@ -117,7 +117,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
     }
 
     private Integer getPos(View view) {
-        for (int i = 0; i < 15; i++){
+        for (int i = 0; i < UniqueWordTraining.BUTTONS_CNT; i++){
             if (letterArray.get(i).equals(view)) {
                 return i;
             }
@@ -140,7 +140,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         deleteLast.setOnClickListener(this);
         Button quit = (Button) findViewById(R.id.quit);
         quit.setOnClickListener(this);
-        letterArray = new ArrayList<>(N);
+        letterArray = new ArrayList<>(UniqueWordTraining.BUTTONS_CNT);
         letterArray.add(0, (Button) findViewById(R.id.button1));
         letterArray.add(1, (Button) findViewById(R.id.button2));
         letterArray.add(2, (Button) findViewById(R.id.button3));
@@ -163,8 +163,8 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         Cursor cursor = wordManager.getAllWords();
         if (mode.equals(getString(R.string.trans_by_word))) {
             training = new TransByWord(cursor, intent.getStringExtra(getString(R.string.native_lang)));
-        } else {
-            training = new TransByWord(cursor, intent.getStringExtra(getString(R.string.native_lang)));
+        } else if (mode.equals(getString(R.string.word_by_trans))) {
+            training = new WordByTrans(cursor, intent.getStringExtra(getString(R.string.dict_lang)));
         }
     }
 
@@ -179,8 +179,8 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                         .show();
             } else {
                 try {
-                    wordNameView.setText(training.getWord().getWord());
-                    firstTrans = training.getWordToEnter();
+                    wordNameView.setText(training.getEntry());
+                    firstTrans = training.getFirstWordToEnter();
                     transToEnter.setText(firstTrans);
                     emptySpaces = firstTrans.length() - firstTrans.replaceAll("_", "").length();
                     allSpaces = emptySpaces;
@@ -204,7 +204,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
     }
 
     private void showLetters() {
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < UniqueWordTraining.BUTTONS_CNT; i++) {
             letterArray.get(i).setText(String.valueOf(letters.get(step).charAt(i)));
             letterArray.get(i).setVisibility(View.VISIBLE);
             letterArray.get(i).setEnabled(true);

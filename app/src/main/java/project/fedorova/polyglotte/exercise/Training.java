@@ -75,11 +75,11 @@ abstract class Training {
         return wordList;
     }
 
-    public Word getWord(int i) {
+    public Word getNextWord(int i) {
         return wordList.get(i);
     }
 
-    public Word getWord() {
+    public Word getNextWord() {
         return wordList.get(position);
         //incPos();
     }
