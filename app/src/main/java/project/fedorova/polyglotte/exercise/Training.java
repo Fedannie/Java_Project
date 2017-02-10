@@ -12,16 +12,27 @@ import project.fedorova.polyglotte.data.Word;
 import project.fedorova.polyglotte.data.db.DBConnector;
 
 abstract class Training {
-    private List<Word> wordList = new ArrayList<>();
+    protected List<Word> wordList = new ArrayList<>();
+    protected int position = 0;
+
     List <Word> choose(int n) throws IndexOutOfBoundsException{
-        Collections.shuffle(wordList);
-        List<Word> res;
-        try {
-            res = wordList.subList(0, n);
-        } catch (IndexOutOfBoundsException e) {
-            throw new IndexOutOfBoundsException("Not enough words");
+        if (position == wordList.size()) {
+            throw new NullPointerException("That's all.");
         }
-        return res;
+        List<Word> shuffled = new ArrayList<>();
+        if (position != 0) {
+            shuffled = wordList.subList(0, position);
+        }
+        if (position + 1 < wordList.size()) {
+            shuffled.addAll(wordList.subList(position + 1, wordList.size()));
+        }
+        Collections.shuffle(shuffled);
+        try {
+            shuffled = shuffled.subList(0, n);
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexOutOfBoundsException("That's all.");
+        }
+        return shuffled;
     }
 
     Training(Cursor cursor) {
@@ -43,5 +54,8 @@ abstract class Training {
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_THEMES)),
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_EXAMPLES))));
         }
+        Collections.shuffle(wordList);
     }
+
+    public abstract boolean getTraining() throws Exception;
 }

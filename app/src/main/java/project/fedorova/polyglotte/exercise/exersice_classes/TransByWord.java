@@ -16,12 +16,11 @@ public class TransByWord extends UniqueWordTraining {
     public TransByWord(Cursor cursor, String lang) {
         super(cursor, lang);
     }
-
     private Alphabet alpha = Alphabet.getInstance();
 
     @Override
     public String getWordToEnter() throws Exception {
-        String translation = getWord().getMainTranslation();
+        String translation = getWord().getMainTranslation().toLowerCase();
         String res = "";
         List<String> alphabet = alpha.getAlphabet(Language.fromString(lang).toString());
         if (alphabet == null) {
@@ -40,14 +39,10 @@ public class TransByWord extends UniqueWordTraining {
     @Override
     public List<String> getLetters() {
         Random random = new Random();
-        String translation = getWord().getMainTranslation().replaceAll(" ", "").replaceAll("'", "");
+        String translation = getWord().getMainTranslation().toLowerCase().replaceAll(" ", "").replaceAll("'", "");
         int size = (translation.length() + 8) / 9;
         List<String> res = new ArrayList<>();
         List<String> alphabet = alpha.getAlphabet(Language.fromString(lang).toString());
-        String ttmp = "";
-        for (int i = 0; i < alphabet.size(); i++) {
-            ttmp += alphabet.get(i);
-        }
         for (int i = 0; i < size; i++) {
             if (translation.length() >= 9) {
                 res.add(i, translation.substring(0, 9));
@@ -72,7 +67,7 @@ public class TransByWord extends UniqueWordTraining {
 
     @Override
     public boolean check(String second) {
-        return word.getMainTranslation().equals(second);
+        return word.getMainTranslation().toLowerCase().equals(second.toLowerCase());
     }
 
 }

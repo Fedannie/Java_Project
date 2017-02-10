@@ -5,20 +5,15 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 
 import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.exercise.UniqueWordTraining;
@@ -38,12 +33,10 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
     private Animation animShake;
     private List<Integer> moves = new ArrayList<>();
     private ImageButton clear;
-    private Button quit;
     private String firstTrans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_trans_by_word);
 
@@ -59,9 +52,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle(getString(R.string.quit_training_head))
                         .setMessage(getString(R.string.quit_training_body))
-                        .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                            ExerciseUniqueWord.this.finish();
-                        })
+                        .setPositiveButton(getString(R.string.yes), (dialog, which) -> ExerciseUniqueWord.this.finish())
                         .setNegativeButton(getString(R.string.no), null)
                         .show();
                 break;
@@ -103,10 +94,6 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
 
     public void onLetterClick(View view) {
         view.startAnimation(animBtnDisappear);
-        try {
-            TimeUnit.MILLISECONDS.sleep(750);
-        } catch (Exception e) {
-        }
         view.setVisibility(View.INVISIBLE);
         view.setEnabled(false);
         moves.add(getPos(view));
@@ -114,11 +101,11 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         emptySpaces--;
         if (emptySpaces == 0) {
             if (!training.check(transToEnter.getText().toString())) {
-                transToEnter.startAnimation(animShake);
                 clear.callOnClick();
+                transToEnter.startAnimation(animShake);
             } else {
                 //TODO OK next word
-                //TODO list of words
+                clear.callOnClick();
                 showTraining();
             }
         } else {
@@ -151,7 +138,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         clear.setOnClickListener(this);
         ImageButton deleteLast = (ImageButton) findViewById(R.id.deleteLast);
         deleteLast.setOnClickListener(this);
-        quit = (Button) findViewById(R.id.quit);
+        Button quit = (Button) findViewById(R.id.quit);
         quit.setOnClickListener(this);
         letterArray = new ArrayList<>(N);
         letterArray.add(0, (Button) findViewById(R.id.button1));
@@ -174,8 +161,6 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                 intent.getStringExtra(getString(R.string.dict_lang)),
                 intent.getStringExtra(getString(R.string.native_lang)));
         Cursor cursor = wordManager.getAllWords();
-        int m = cursor.getCount();
-
         if (mode.equals(getString(R.string.trans_by_word))) {
             training = new TransByWord(cursor, intent.getStringExtra(getString(R.string.native_lang)));
         } else {
@@ -184,48 +169,43 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
     }
 
     private void showTraining() {
-        if (!training.getTraining()) {
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle(getString(R.string.oops))
-                    .setMessage(getString(R.string.msg_not_enough_words))
-                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                        ExerciseUniqueWord.this.finish();
-                    })
-                    .show();
-        } else {
-            try {
-                wordNameView.setText(training.getWord().getWord());
-                firstTrans = training.getWordToEnter();
-                transToEnter.setText(firstTrans);
-                emptySpaces = firstTrans.length() - firstTrans.replaceAll("_", "").length();
-                allSpaces = emptySpaces;
-                step = 0;
-                letters = training.getLetters();
-            } catch (Exception e) {
+        try {
+            if (!training.getTraining()) {
                 new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle(getString(R.string.oops))
-                        .setMessage(getString(R.string.msg_bad_language))
-                        .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                            ExerciseUniqueWord.this.finish();
-                        })
+                        .setMessage(getString(R.string.msg_not_enough_words))
+                        .setPositiveButton(getString(R.string.yes), (dialog, which) -> ExerciseUniqueWord.this.finish())
                         .show();
-                return;
+            } else {
+                try {
+                    wordNameView.setText(training.getWord().getWord());
+                    firstTrans = training.getWordToEnter();
+                    transToEnter.setText(firstTrans);
+                    emptySpaces = firstTrans.length() - firstTrans.replaceAll("_", "").length();
+                    allSpaces = emptySpaces;
+                    step = 0;
+                    letters = training.getLetters();
+                } catch (Exception e) {
+                    new AlertDialog.Builder(this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle(getString(R.string.oops))
+                            .setMessage(getString(R.string.msg_bad_language))
+                            .setPositiveButton(getString(R.string.yes), (dialog, which) -> ExerciseUniqueWord.this.finish())
+                            .show();
+                    return;
+                }
+                showLetters();
             }
-            showLetters();
+        } catch (Exception e) {
+            //TODO animation finish
+            ExerciseUniqueWord.this.finish();
         }
     }
 
     private void showLetters() {
-        String tmp = "";
-        for (int i = 0; i < letters.size(); i++) {
-            tmp += letters.get(i);
-        }
         for (int i = 0; i < N; i++) {
-            //TODO get rid of a
-            char a = letters.get(step).charAt(i);
-            letterArray.get(i).setText(String.valueOf(a));
+            letterArray.get(i).setText(String.valueOf(letters.get(step).charAt(i)));
             letterArray.get(i).setVisibility(View.VISIBLE);
             letterArray.get(i).setEnabled(true);
         }

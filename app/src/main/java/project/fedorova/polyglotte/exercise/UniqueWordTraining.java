@@ -15,11 +15,16 @@ public abstract class UniqueWordTraining extends Training {
         lang = language;
     }
 
-    public boolean getTraining() {
-        try {
-            word = super.choose(1).get(0);
-        } catch (IndexOutOfBoundsException e) {
+    public boolean getTraining() throws Exception{
+        String res = "";
+        for (int i = 0; i < wordList.size(); i++) res += wordList.get(i);
+        if (wordList.size() == 0) {
             return false;
+        } else if (wordList.size() <= position) {
+            throw new NullPointerException("That's all.");
+        } else {
+            word = wordList.get(position);
+            position++;
         }
         return true;
     }
