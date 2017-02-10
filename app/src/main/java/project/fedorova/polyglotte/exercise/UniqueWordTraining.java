@@ -16,15 +16,13 @@ public abstract class UniqueWordTraining extends Training {
     }
 
     public boolean getTraining() throws Exception{
-        String res = "";
-        for (int i = 0; i < wordList.size(); i++) res += wordList.get(i);
-        if (wordList.size() == 0) {
+        if (wordsCount() == 0) {
             return false;
-        } else if (wordList.size() <= position) {
+        } else if (wordsCount() <= getPos()) {
             throw new NullPointerException("That's all.");
         } else {
-            word = wordList.get(position);
-            position++;
+            word = getWord();
+            incPos();
         }
         return true;
     }

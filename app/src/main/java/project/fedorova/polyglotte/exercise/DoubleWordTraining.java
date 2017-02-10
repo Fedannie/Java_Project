@@ -15,10 +15,10 @@ public abstract class DoubleWordTraining extends Training {
         words = new ArrayList<>(num);
     }
 
-    public boolean getTraining()  throws Exception {
+    public boolean getTraining()  throws Exception{
         try {
             words = super.choose(words.size());
-            position++;
+            incPos();
         } catch (NullPointerException e) {
             throw e;
         } catch (IndexOutOfBoundsException e) {

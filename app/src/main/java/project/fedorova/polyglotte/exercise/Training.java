@@ -12,8 +12,8 @@ import project.fedorova.polyglotte.data.Word;
 import project.fedorova.polyglotte.data.db.DBConnector;
 
 abstract class Training {
-    protected List<Word> wordList = new ArrayList<>();
-    protected int position = 0;
+    private List<Word> wordList = new ArrayList<>();
+    private int position = 0;
 
     List <Word> choose(int n) throws IndexOutOfBoundsException{
         if (position == wordList.size()) {
@@ -58,4 +58,29 @@ abstract class Training {
     }
 
     public abstract boolean getTraining() throws Exception;
+
+    public int wordsCount() {
+        return wordList.size();
+    }
+
+    public int getPos(){
+        return position;
+    }
+
+    public void incPos() {
+        position++;
+    }
+
+    public List<Word> getWordList() {
+        return wordList;
+    }
+
+    public Word getWord(int i) {
+        return wordList.get(i);
+    }
+
+    public Word getWord() {
+        return wordList.get(position);
+        //incPos();
+    }
 }
