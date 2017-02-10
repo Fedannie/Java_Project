@@ -8,18 +8,19 @@ import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.exercise.UniqueWordTraining;
 
 public class WordByTrans extends UniqueWordTraining {
+
     public WordByTrans(Cursor cursor, String language) {
         super(cursor, language);
     }
 
     @Override
-    public List<String> getLetters() {
-        return getLetters(getTrWord().getWord().toLowerCase().replaceAll(" ", "").replaceAll("'", ""));
+    public boolean check(String second) {
+        return getTrWord().getWord().toLowerCase().equals(second.toLowerCase());
     }
 
     @Override
-    public boolean check(String second) {
-        return getTrWord().getWord().toLowerCase().equals(second.toLowerCase());
+    public List<String> getLetters() {
+        return getLetters(getTrWord().getWord().toLowerCase().replaceAll(" ", "").replaceAll("'", ""));
     }
 
     @Override

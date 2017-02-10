@@ -21,9 +21,15 @@ public abstract class UniqueWordTraining extends Training {
 
     public abstract boolean check(String second);
 
+    public abstract List<String> getLetters();
+
     public abstract String getEntry();
 
     public abstract String getFirstWordToEnter() throws Exception;
+
+    public String getMistaken() {
+        return "";
+    }
 
     public UniqueWordTraining(Cursor cursor, String language) {
         super(cursor);
@@ -62,8 +68,6 @@ public abstract class UniqueWordTraining extends Training {
         return res;
     }
 
-    public abstract List<String> getLetters();
-
     protected List<String> getLetters(String guess) {
         Random random = new Random();
         int size = (guess.length() + (LETTERS_CNT - 1)) / LETTERS_CNT;
@@ -89,5 +93,9 @@ public abstract class UniqueWordTraining extends Training {
             res.set(i, ans);
         }
         return res;
+    }
+
+    protected List<String> getAlpha() {
+        return alpha.getAlphabet(lang);
     }
 }

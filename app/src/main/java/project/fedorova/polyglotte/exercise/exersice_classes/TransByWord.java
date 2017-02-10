@@ -30,6 +30,4 @@ public class TransByWord extends UniqueWordTraining {
     public String getFirstWordToEnter() throws Exception{
         return getWordToEnter(getTrWord().getMainTranslation().toLowerCase());
     }
-
-
 }

@@ -17,12 +17,14 @@ import java.util.List;
 
 import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.exercise.UniqueWordTraining;
+import project.fedorova.polyglotte.exercise.exersice_classes.CorrectMistakes;
 import project.fedorova.polyglotte.exercise.exersice_classes.TransByWord;
 import project.fedorova.polyglotte.exercise.exersice_classes.WordByTrans;
 
 public class ExerciseUniqueWord extends Activity implements View.OnClickListener {
     private UniqueWordTraining training;
     private TextView wordNameView;
+    private TextView textViewMist;
     private TextView transToEnter;
     private int allSpaces;
     private int emptySpaces;
@@ -131,6 +133,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
 
         wordNameView = (TextView) findViewById(R.id.word_name);
         transToEnter = (TextView) findViewById(R.id.transToEnter);
+        textViewMist = (TextView) findViewById(R.id.text_view_mist);
 
         animBtnDisappear = AnimationUtils.loadAnimation(this, R.anim.button_click_disappear);
         animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
@@ -165,6 +168,9 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
             training = new TransByWord(cursor, intent.getStringExtra(getString(R.string.native_lang)));
         } else if (mode.equals(getString(R.string.word_by_trans))) {
             training = new WordByTrans(cursor, intent.getStringExtra(getString(R.string.dict_lang)));
+        } else if (mode.equals(getString(R.string.correct_mistake))) {
+            training = new CorrectMistakes(cursor, intent.getStringExtra(getString(R.string.dict_lang)));
+
         }
     }
 
@@ -179,6 +185,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                         .show();
             } else {
                 try {
+                    textViewMist.setText(training.getMistaken());
                     wordNameView.setText(training.getEntry());
                     firstTrans = training.getFirstWordToEnter();
                     transToEnter.setText(firstTrans);
@@ -190,7 +197,8 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                     new AlertDialog.Builder(this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setTitle(getString(R.string.oops))
-                            .setMessage(getString(R.string.msg_bad_language))
+//                            .setMessage(getString(R.string.msg_bad_language))
+                            .setMessage(e.getMessage())
                             .setPositiveButton(getString(R.string.yes), (dialog, which) -> ExerciseUniqueWord.this.finish())
                             .show();
                     return;

@@ -23,7 +23,7 @@ public class Alphabet {
 
     public List<String> getAlphabet(String language) {
         String str = "";
-        switch (language){
+        switch (Language.fromString(language).toString()){
             case "sq":
                 str = "\u0061\u002C\u0020\u0062\u002C\u0020\u0063\u002C\u0020\u00E7\u002C\u0020\u0064" +
                         "\u002C\u0020\u0064\u0068\u002C\u0020\u0065\u002C\u0020\u00EB\u002C\u0020\u0066" +
@@ -139,6 +139,6 @@ public class Alphabet {
             default:
                 break;
         }
-        return Arrays.asList(str.split("\\s*,\\s*"));
+        return Arrays.asList(str.split(", "));
     }
 }

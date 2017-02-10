@@ -15,25 +15,7 @@ abstract class Training {
     private List<Word> wordList = new ArrayList<>();
     private int position = 0;
 
-    List <Word> choose(int n) throws IndexOutOfBoundsException{
-        if (position == wordList.size()) {
-            throw new NullPointerException("That's all.");
-        }
-        List<Word> shuffled = new ArrayList<>();
-        if (position != 0) {
-            shuffled = wordList.subList(0, position);
-        }
-        if (position + 1 < wordList.size()) {
-            shuffled.addAll(wordList.subList(position + 1, wordList.size()));
-        }
-        Collections.shuffle(shuffled);
-        try {
-            shuffled = shuffled.subList(0, n);
-        } catch (IndexOutOfBoundsException e) {
-            throw new IndexOutOfBoundsException("That's all.");
-        }
-        return shuffled;
-    }
+    public abstract boolean getTraining() throws Exception;
 
     Training(Cursor cursor) {
         cursor.moveToFirst();
@@ -57,30 +39,39 @@ abstract class Training {
         Collections.shuffle(wordList);
     }
 
-    public abstract boolean getTraining() throws Exception;
-
-    public int wordsCount() {
-        return wordList.size();
+    List <Word> choose(int n) throws IndexOutOfBoundsException{
+        if (position == wordList.size()) {
+            throw new NullPointerException("That's all.");
+        }
+        List<Word> shuffled = new ArrayList<>();
+        if (position != 0) {
+            shuffled = wordList.subList(0, position);
+        }
+        if (position + 1 < wordList.size()) {
+            shuffled.addAll(wordList.subList(position + 1, wordList.size()));
+        }
+        Collections.shuffle(shuffled);
+        try {
+            shuffled = shuffled.subList(0, n);
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexOutOfBoundsException("That's all.");
+        }
+        return shuffled;
     }
 
-    public int getPos(){
+    int getPos(){
         return position;
     }
 
-    public void incPos() {
+    Word getNextWord() {
+        return wordList.get(position);
+    }
+
+    void incPos() {
         position++;
     }
 
-    public List<Word> getWordList() {
-        return wordList;
-    }
-
-    public Word getNextWord(int i) {
-        return wordList.get(i);
-    }
-
-    public Word getNextWord() {
-        return wordList.get(position);
-        //incPos();
+    int wordsCount() {
+        return wordList.size();
     }
 }
