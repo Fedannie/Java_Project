@@ -17,7 +17,7 @@ public abstract class Training {
 
     public abstract boolean getTraining() throws Exception;
 
-    Training(Cursor cursor) {
+    protected Training(Cursor cursor) {
         cursor.moveToFirst();
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
         if (cursor.getCount() > 0) {
@@ -69,6 +69,16 @@ public abstract class Training {
 
     protected void incPos() {
         position++;
+    }
+
+    protected void setNullPosition() {
+        position = -1;
+    }
+
+    public void movePosition(int i) {
+        for (int j = 0; j < i; j++) {
+            incPos();
+        }
     }
 
     protected int wordsCount() {

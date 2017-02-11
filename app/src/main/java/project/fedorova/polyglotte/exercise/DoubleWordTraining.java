@@ -5,7 +5,6 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import project.fedorova.polyglotte.data.Word;
 
@@ -14,7 +13,7 @@ public abstract class DoubleWordTraining extends Training {
     private List<Word> choices = new ArrayList<>(VARIANTS);
     private static final int VARIANTS = 6;
     public static final int BUTTONS_COUNT = 9;
-    private static final int[][] buttons = {{4,5,6},{3,6},{4,5,6},{2,3},{5},{2,3},{4,5,6},{6},{4,5,6}};
+    private int[][] buttons = {{4,5,6},{3,6},{4,5,6},{2,3},{5},{2,3},{4,5,6},{6},{4,5,6}};
 
     public abstract boolean check(String second);
 
@@ -53,7 +52,7 @@ public abstract class DoubleWordTraining extends Training {
         super(cursor);
     }
 
-    public boolean isActivated(int number, int cnt) {
+    protected boolean isActivated(int number, int cnt) {
         for (int i : buttons[number]){
             if (i == cnt){
                 return true;
@@ -62,7 +61,7 @@ public abstract class DoubleWordTraining extends Training {
         return false;
     }
 
-    public List<String> getButtons(List<String> ch) {
+    protected List<String> getButtons(List<String> ch) {
         List<String> ans = new ArrayList<>(BUTTONS_COUNT);
         int pos = 0;
         for (int i = 0; i < BUTTONS_COUNT; i++) {
@@ -75,4 +74,13 @@ public abstract class DoubleWordTraining extends Training {
         }
         return ans;
     }
+
+    protected void setWord(Word new_w){
+        word = new_w;
+    }
+
+    protected void setButtons(int[][] new_b){
+        buttons = new_b;
+    }
+
 }

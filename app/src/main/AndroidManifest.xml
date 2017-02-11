@@ -113,6 +113,13 @@
             android:name=".ExerciseOneWordManyChoices">
         </activity>
 
+        <activity
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:screenOrientation="sensor"
+            android:label=""
+            android:name=".ExerciseConnect">
+        </activity>
+
     </application>
 
 </manifest>

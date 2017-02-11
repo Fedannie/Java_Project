@@ -59,6 +59,12 @@ public class ExerciseActivity extends Activity implements View.OnClickListener{
                 intentCHWBT.putExtra(getString(R.string.mode), getString(R.string.word_by_trans));
                 startActivity(intentCHWBT);
                 break;
+            case (R.id.connect):
+                Intent intentC = new Intent(this, ExerciseConnect.class);
+                intentC.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
+                intentC.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+                startActivity(intentC);
+                break;
             default:
                 break;
         }
