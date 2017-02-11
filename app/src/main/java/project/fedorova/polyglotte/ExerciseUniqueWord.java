@@ -17,9 +17,9 @@ import java.util.List;
 
 import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.exercise.UniqueWordTraining;
-import project.fedorova.polyglotte.exercise.exersice_classes.CorrectMistakes;
-import project.fedorova.polyglotte.exercise.exersice_classes.TransByWord;
-import project.fedorova.polyglotte.exercise.exersice_classes.WordByTrans;
+import project.fedorova.polyglotte.exercise.unique.CorrectMistakes;
+import project.fedorova.polyglotte.exercise.unique.TransByWord;
+import project.fedorova.polyglotte.exercise.unique.WordByTrans;
 
 public class ExerciseUniqueWord extends Activity implements View.OnClickListener {
     private UniqueWordTraining training;
@@ -40,7 +40,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.exercise_trans_by_word);
+        setContentView(R.layout.exercise_unique);
 
         init();
         showTraining();
@@ -197,8 +197,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                     new AlertDialog.Builder(this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setTitle(getString(R.string.oops))
-//                            .setMessage(getString(R.string.msg_bad_language))
-                            .setMessage(e.getMessage())
+                            .setMessage(getString(R.string.msg_bad_language))
                             .setPositiveButton(getString(R.string.yes), (dialog, which) -> ExerciseUniqueWord.this.finish())
                             .show();
                     return;

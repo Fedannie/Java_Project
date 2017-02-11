@@ -106,6 +106,13 @@
             android:name=".ExerciseUniqueWord">
         </activity>
 
+        <activity
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:screenOrientation="sensor"
+            android:label=""
+            android:name=".ExerciseOneWordManyChoices">
+        </activity>
+
     </application>
 
 </manifest>

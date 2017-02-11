@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Button
+        android:text="QUIT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/quit_d"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:id="@+id/layout_entry"
+        android:layout_height="80dp"
+        android:layout_marginTop="59dp"
+        android:layout_below="@+id/quit_d"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/entry"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textStyle="normal|bold"
+            android:textSize="26sp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/layout_entry">
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="0.33"
+            android:padding="5dp" >
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button16"
+                android:onClick="onChoiceClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button17"
+                android:onClick="onChoiceClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button18"
+                android:onClick="onChoiceClick" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="0.33"
+            android:padding="5dp" >
+            
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button19"
+                android:onClick="onChoiceClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button20"
+                android:onClick="onChoiceClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button21"
+                android:onClick="onChoiceClick" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="0.33"
+            android:padding="5dp" >
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button22"
+                android:onClick="onChoiceClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button23"
+                android:onClick="onChoiceClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="center"
+                android:id="@+id/button24"
+                android:onClick="onChoiceClick" />
+            
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>

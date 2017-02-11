@@ -11,7 +11,7 @@ import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
 import project.fedorova.polyglotte.data.db.DBConnector;
 
-abstract class Training {
+public abstract class Training {
     private List<Word> wordList = new ArrayList<>();
     private int position = 0;
 
@@ -39,39 +39,39 @@ abstract class Training {
         Collections.shuffle(wordList);
     }
 
-    List <Word> choose(int n) throws IndexOutOfBoundsException{
+    protected List <Word> choose(int n) throws IndexOutOfBoundsException{
         if (position == wordList.size()) {
             throw new NullPointerException("That's all.");
         }
         List<Word> shuffled = new ArrayList<>();
-        if (position != 0) {
-            shuffled = wordList.subList(0, position);
-        }
-        if (position + 1 < wordList.size()) {
-            shuffled.addAll(wordList.subList(position + 1, wordList.size()));
+        for (int i = 0; i < wordList.size(); i++) {
+            if (i != position) {
+                shuffled.add(wordList.get(i));
+            }
         }
         Collections.shuffle(shuffled);
+        List<Word> ans;
         try {
-            shuffled = shuffled.subList(0, n);
-        } catch (IndexOutOfBoundsException e) {
+             ans = shuffled.subList(0, n);
+        } catch (Exception e) {
             throw new IndexOutOfBoundsException("That's all.");
         }
-        return shuffled;
+        return ans;
     }
 
-    int getPos(){
+    protected int getPos(){
         return position;
     }
 
-    Word getNextWord() {
+    protected Word getNextWord() {
         return wordList.get(position);
     }
 
-    void incPos() {
+    protected void incPos() {
         position++;
     }
 
-    int wordsCount() {
+    protected int wordsCount() {
         return wordList.size();
     }
 }
