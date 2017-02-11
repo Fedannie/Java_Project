@@ -15,6 +15,7 @@ import java.util.List;
 import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.exercise.DoubleWordTraining;
 import project.fedorova.polyglotte.exercise.double_cl.ChooseTransByWord;
+import project.fedorova.polyglotte.exercise.double_cl.ChooseWordByTrans;
 
 import static project.fedorova.polyglotte.exercise.DoubleWordTraining.BUTTONS_COUNT;
 
@@ -84,6 +85,8 @@ public class ExerciseOneWordManyChoices extends Activity implements View.OnClick
 
         if (mode.equals(getString(R.string.trans_by_word))) {
             training = new ChooseTransByWord(cursor);
+        } else if (mode.equals(getString(R.string.word_by_trans))) {
+            training = new ChooseWordByTrans(cursor);
         }
     }
 

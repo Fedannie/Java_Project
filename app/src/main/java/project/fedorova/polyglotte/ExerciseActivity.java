@@ -52,7 +52,13 @@ public class ExerciseActivity extends Activity implements View.OnClickListener{
                 intentCHTBW.putExtra(getString(R.string.mode), getString(R.string.trans_by_word));
                 startActivity(intentCHTBW);
                 break;
-
+            case (R.id.chooseWordByTrans):
+                Intent intentCHWBT = new Intent(this, ExerciseOneWordManyChoices.class);
+                intentCHWBT.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
+                intentCHWBT.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+                intentCHWBT.putExtra(getString(R.string.mode), getString(R.string.word_by_trans));
+                startActivity(intentCHWBT);
+                break;
             default:
                 break;
         }

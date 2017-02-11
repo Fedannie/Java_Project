@@ -61,4 +61,18 @@ public abstract class DoubleWordTraining extends Training {
         }
         return false;
     }
+
+    public List<String> getButtons(List<String> ch) {
+        List<String> ans = new ArrayList<>(BUTTONS_COUNT);
+        int pos = 0;
+        for (int i = 0; i < BUTTONS_COUNT; i++) {
+            if (isActivated(i, choices.size())) {
+                ans.add(i, ch.get(pos));
+                pos++;
+            } else {
+                ans.add(i, null);
+            }
+        }
+        return ans;
+    }
 }

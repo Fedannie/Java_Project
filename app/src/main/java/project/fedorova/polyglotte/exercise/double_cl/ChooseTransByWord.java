@@ -24,16 +24,10 @@ public class ChooseTransByWord extends DoubleWordTraining {
 
     @Override
     public List<String> getChoicesVars() {
-        List<String> ans = new ArrayList<>(BUTTONS_COUNT);
-        int pos = 0;
-        for (int i = 0; i < BUTTONS_COUNT; i++) {
-            if (isActivated(i, getChoicesCnt())) {
-                ans.add(i, getChoice(pos).getMainTranslation());
-                pos++;
-            } else {
-                ans.add(i, null);
-            }
+        List<String> tmp = new ArrayList<>(getChoicesCnt());
+        for (int i = 0; i < getChoicesCnt(); i++) {
+            tmp.add(i, getChoice(i).getMainTranslation());
         }
-        return ans;
+        return getButtons(tmp);
     }
 }
