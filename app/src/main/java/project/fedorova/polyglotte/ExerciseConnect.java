@@ -23,6 +23,18 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
     private boolean step = false;
     private int[] notEmptyNames = new int[BUTTONS_COUNT];
     private int first_pos;
+    private static final int[] BUTTON_IDS = {
+            R.id.button_c1,
+            R.id.button_c4,
+            R.id.button_c7,
+            R.id.button_c10,
+            R.id.button_c13,
+            R.id.button_c3,
+            R.id.button_c6,
+            R.id.button_c9,
+            R.id.button_c12,
+            R.id.button_c15
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +46,7 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
     }
 
     public void onChoiceClick(View view) {
-        int index = getInd((Button) view);
+        int index = variantArray.indexOf(view);
         if (index < 5) {
             training.setWord(notEmptyNames[index]);
         } else {
@@ -63,15 +75,6 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
         }
     }
 
-    private int getInd(Button button) {
-        for (int i = 0; i < variantArray.size(); i++) {
-            if (variantArray.get(i).equals(button)) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -96,16 +99,9 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
         quit.setOnClickListener(this);
 
         variantArray = new ArrayList<>(BUTTONS_COUNT);
-        variantArray.add(0, (Button) findViewById(R.id.button_c1));
-        variantArray.add(1, (Button) findViewById(R.id.button_c4));
-        variantArray.add(2, (Button) findViewById(R.id.button_c7));
-        variantArray.add(3, (Button) findViewById(R.id.button_c10));
-        variantArray.add(4, (Button) findViewById(R.id.button_c13));
-        variantArray.add(5, (Button) findViewById(R.id.button_c3));
-        variantArray.add(6, (Button) findViewById(R.id.button_c6));
-        variantArray.add(7, (Button) findViewById(R.id.button_c9));
-        variantArray.add(8, (Button) findViewById(R.id.button_c12));
-        variantArray.add(9, (Button) findViewById(R.id.button_c15));
+        for (int i = 0; i < BUTTONS_COUNT; i++) {
+            variantArray.add(i, (Button) findViewById(BUTTON_IDS[i]));
+        }
 
         DBConnector wordManager = new DBConnector(this,
                 intent.getStringExtra(getString(R.string.dict_lang)),

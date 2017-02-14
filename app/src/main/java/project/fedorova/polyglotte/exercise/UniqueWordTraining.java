@@ -53,22 +53,23 @@ public abstract class UniqueWordTraining extends Training {
     }
 
     protected String getWordToEnter(String guess) throws Exception {
-        String res = "";
+        StringBuilder res = new StringBuilder();
         List<String> alphabet = alpha.getAlphabet(Language.fromString(lang).toString());
         if (alphabet == null) {
             throw new Exception();
         }
         for (int i = 0; i < guess.length(); i++) {
             if (!alphabet.contains(String.valueOf(guess.charAt(i)))) {
-                res += guess.charAt(i);
+                res.append(guess.charAt(i));
             } else {
-                res += "_";
+                res.append("_");
             }
         }
-        return res;
+        return res.toString();
     }
 
     protected List<String> getLetters(String guess) {
+        guess = guess.toLowerCase().replaceAll(" ", "").replaceAll("'", "");
         Random random = new Random();
         int size = (guess.length() + (LETTERS_CNT - 1)) / LETTERS_CNT;
         List<String> res = new ArrayList<>();
@@ -86,11 +87,11 @@ public abstract class UniqueWordTraining extends Training {
             }
             List<String> shuffled = Arrays.asList(res.get(i).split(""));
             Collections.shuffle(shuffled);
-            String ans = "";
+            StringBuilder ans = new StringBuilder();
             for (String letter : shuffled){
-                ans += letter;
+                ans.append(letter);
             }
-            res.set(i, ans);
+            res.set(i, ans.toString());
         }
         return res;
     }

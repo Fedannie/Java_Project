@@ -15,12 +15,12 @@ public class WordByTrans extends UniqueWordTraining {
 
     @Override
     public boolean check(String second) {
-        return getTrWord().getWord().toLowerCase().equals(second.toLowerCase());
+        return getTrWord().getWord().equalsIgnoreCase(second);
     }
 
     @Override
     public List<String> getLetters() {
-        return getLetters(getTrWord().getWord().toLowerCase().replaceAll(" ", "").replaceAll("'", ""));
+        return getLetters(getTrWord().getWord());
     }
 
     @Override

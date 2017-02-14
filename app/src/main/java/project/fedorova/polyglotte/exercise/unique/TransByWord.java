@@ -13,12 +13,12 @@ public class TransByWord extends UniqueWordTraining {
 
     @Override
     public List<String> getLetters() {
-        return getLetters(getTrWord().getMainTranslation().toLowerCase().replaceAll(" ", "").replaceAll("'", ""));
+        return getLetters(getTrWord().getMainTranslation());
     }
 
     @Override
     public boolean check(String second) {
-        return getTrWord().getMainTranslation().toLowerCase().equals(second.toLowerCase());
+        return getTrWord().getMainTranslation().equalsIgnoreCase(second);
     }
 
     @Override

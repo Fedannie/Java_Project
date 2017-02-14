@@ -23,6 +23,17 @@ public class ExerciseOneWordManyChoices extends Activity implements View.OnClick
     private DoubleWordTraining training;
     TextView entry;
     private List<Button> variantArray;
+    private static final int[] BUTTON_IDS = {
+            R.id.button16,
+            R.id.button17,
+            R.id.button18,
+            R.id.button19,
+            R.id.button20,
+            R.id.button21,
+            R.id.button22,
+            R.id.button23,
+            R.id.button24,
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,17 +77,11 @@ public class ExerciseOneWordManyChoices extends Activity implements View.OnClick
         quit.setOnClickListener(this);
 
 
-        variantArray = new ArrayList<>(BUTTONS_COUNT);
-        variantArray.add(0, (Button) findViewById(R.id.button16));
-        variantArray.add(1, (Button) findViewById(R.id.button17));
-        variantArray.add(2, (Button) findViewById(R.id.button18));
-        variantArray.add(3, (Button) findViewById(R.id.button19));
-        variantArray.add(4, (Button) findViewById(R.id.button20));
-        variantArray.add(5, (Button) findViewById(R.id.button21));
-        variantArray.add(6, (Button) findViewById(R.id.button22));
-        variantArray.add(7, (Button) findViewById(R.id.button23));
-        variantArray.add(8, (Button) findViewById(R.id.button24));
 
+        variantArray = new ArrayList<>(BUTTONS_COUNT);
+        for (int i = 0; i < BUTTONS_COUNT; i++) {
+            variantArray.add(i, (Button) findViewById(BUTTON_IDS[i]));
+        }
 
         DBConnector wordManager = new DBConnector(this,
                 intent.getStringExtra(getString(R.string.dict_lang)),

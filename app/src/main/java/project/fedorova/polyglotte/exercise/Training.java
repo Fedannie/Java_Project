@@ -17,7 +17,7 @@ public abstract class Training {
 
     public abstract boolean getTraining() throws Exception;
 
-    protected Training(Cursor cursor) {
+    Training(Cursor cursor) {
         cursor.moveToFirst();
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
         if (cursor.getCount() > 0) {
@@ -41,7 +41,7 @@ public abstract class Training {
 
     protected List <Word> choose(int n) throws IndexOutOfBoundsException{
         if (position == wordList.size()) {
-            throw new NullPointerException("That's all.");
+            throw new IndexOutOfBoundsException("That's all.");
         }
         List<Word> shuffled = new ArrayList<>();
         for (int i = 0; i < wordList.size(); i++) {
@@ -63,11 +63,11 @@ public abstract class Training {
         return position;
     }
 
-    protected Word getNextWord() {
+    Word getNextWord() {
         return wordList.get(position);
     }
 
-    protected void incPos() {
+    void incPos() {
         position++;
     }
 

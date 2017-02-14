@@ -5,6 +5,7 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.data.Word;
@@ -29,7 +30,7 @@ public class Connect extends DoubleWordTraining {
         if (wordsCount() < 2) {
             return false;
         } else if (wordsCount() <= getPos()) {
-            throw new NullPointerException("That's all.");
+            throw new NoSuchElementException("That's all.");
         } else {
             tr_words = choose(Math.min(wordsCount(), VARIANTS));
         }

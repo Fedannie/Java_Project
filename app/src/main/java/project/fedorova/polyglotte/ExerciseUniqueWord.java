@@ -21,6 +21,8 @@ import project.fedorova.polyglotte.exercise.unique.CorrectMistakes;
 import project.fedorova.polyglotte.exercise.unique.TransByWord;
 import project.fedorova.polyglotte.exercise.unique.WordByTrans;
 
+import static project.fedorova.polyglotte.exercise.UniqueWordTraining.BUTTONS_CNT;
+
 public class ExerciseUniqueWord extends Activity implements View.OnClickListener {
     private UniqueWordTraining training;
     private TextView wordNameView;
@@ -36,6 +38,24 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
     private List<Integer> moves = new ArrayList<>();
     private ImageButton clear;
     private String firstTrans;
+    private static final int[] BUTTON_IDS = {
+            R.id.button1,
+            R.id.button2,
+            R.id.button3,
+            R.id.button4,
+            R.id.button5,
+            R.id.button6,
+            R.id.button7,
+            R.id.button8,
+            R.id.button9,
+            R.id.button10,
+            R.id.button11,
+            R.id.button12,
+            R.id.button13,
+            R.id.button14,
+            R.id.button15
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +139,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
     }
 
     private Integer getPos(View view) {
-        for (int i = 0; i < UniqueWordTraining.BUTTONS_CNT; i++){
+        for (int i = 0; i < BUTTONS_CNT; i++){
             if (letterArray.get(i).equals(view)) {
                 return i;
             }
@@ -143,22 +163,10 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         deleteLast.setOnClickListener(this);
         Button quit = (Button) findViewById(R.id.quit);
         quit.setOnClickListener(this);
-        letterArray = new ArrayList<>(UniqueWordTraining.BUTTONS_CNT);
-        letterArray.add(0, (Button) findViewById(R.id.button1));
-        letterArray.add(1, (Button) findViewById(R.id.button2));
-        letterArray.add(2, (Button) findViewById(R.id.button3));
-        letterArray.add(3, (Button) findViewById(R.id.button4));
-        letterArray.add(4, (Button) findViewById(R.id.button5));
-        letterArray.add(5, (Button) findViewById(R.id.button6));
-        letterArray.add(6, (Button) findViewById(R.id.button7));
-        letterArray.add(7, (Button) findViewById(R.id.button8));
-        letterArray.add(8, (Button) findViewById(R.id.button9));
-        letterArray.add(9, (Button) findViewById(R.id.button10));
-        letterArray.add(10, (Button) findViewById(R.id.button11));
-        letterArray.add(11, (Button) findViewById(R.id.button12));
-        letterArray.add(12, (Button) findViewById(R.id.button13));
-        letterArray.add(13, (Button) findViewById(R.id.button14));
-        letterArray.add(14, (Button) findViewById(R.id.button15));
+        letterArray = new ArrayList<>(BUTTONS_CNT);
+        for (int i = 0; i < BUTTONS_CNT; i++) {
+            letterArray.add(i, (Button) findViewById(BUTTON_IDS[i]));
+        }
 
         DBConnector wordManager = new DBConnector(this,
                 intent.getStringExtra(getString(R.string.dict_lang)),
@@ -211,7 +219,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
     }
 
     private void showLetters() {
-        for (int i = 0; i < UniqueWordTraining.BUTTONS_CNT; i++) {
+        for (int i = 0; i < BUTTONS_CNT; i++) {
             letterArray.get(i).setText(String.valueOf(letters.get(step).charAt(i)));
             letterArray.get(i).setVisibility(View.VISIBLE);
             letterArray.get(i).setEnabled(true);

@@ -49,46 +49,9 @@ public enum Language {
     
     public static Language fromString(final String pLanguage) {
         for (Language l : values()) {
-            if (l.toString().equals(pLanguage)) {
+            if (l.toString().equals(pLanguage) || l.name().equalsIgnoreCase(pLanguage)){
                 return l;
             }
-        }
-        switch (pLanguage.toUpperCase()) {
-            case ("ALBANIAN"): return ALBANIAN;
-            case ("ARMENIAN"): return ARMENIAN;
-            case ("AZERBAIJANI"): return AZERBAIJANI;
-            case ("ARABIC"): return ARABIC;
-            case ("BELARUSIAN"): return BELARUSIAN;
-            case ("BULGARIAN"): return BULGARIAN;
-            case ("CATALAN"): return CATALAN;
-            case ("CROATIAN"): return CROATIAN;
-            case ("CZECH"): return CZECH;
-            case ("DANISH"): return DANISH;
-            case ("DUTCH"): return DUTCH;
-            case ("ENGLISH"): return ENGLISH;
-            case ("ESTONIAN"): return ESTONIAN;
-            case ("FINNISH"): return FINNISH;
-            case ("FRENCH"): return FRENCH;
-            case ("GERMAN"): return GERMAN;
-            case ("GEORGIAN"): return GEORGIAN;
-            case ("GREEK"): return GREEK;
-            case ("HUNGARIAN"): return HUNGARIAN;
-            case ("ITALIAN"): return ITALIAN;
-            case ("LATVIAN"): return LATVIAN;
-            case ("LITHUANIAN"): return LITHUANIAN;
-            case ("MACEDONIAN"): return MACEDONIAN;
-            case ("NORWEGIAN"): return NORWEGIAN;
-            case ("POLISH"): return POLISH;
-            case ("PORTUGUESE"): return PORTUGUESE;
-            case ("ROMANIAN"): return ROMANIAN;
-            case ("RUSSIAN"): return RUSSIAN;
-            case ("SERBIAN"): return SERBIAN;
-            case ("SLOVAK"): return SLOVAK;
-            case ("SLOVENIAN"): return SLOVENIAN;
-            case ("SPANISH"): return SPANISH;
-            case ("SWEDISH"): return SWEDISH;
-            case ("TURKISH"): return TURKISH;
-            case ("UKRAINIAN"): return UKRAINIAN;
         }
         return null;
     }
