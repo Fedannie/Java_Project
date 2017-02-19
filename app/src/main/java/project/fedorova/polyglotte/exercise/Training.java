@@ -1,6 +1,7 @@
 package project.fedorova.polyglotte.exercise;
 
 import android.database.Cursor;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import project.fedorova.polyglotte.data.db.DBConnector;
 
 public abstract class Training {
     private List<Word> wordList = new ArrayList<>();
+    private int correct_cnt = 0;
     private int position = 0;
 
     public abstract boolean getTraining() throws Exception;
@@ -83,5 +85,13 @@ public abstract class Training {
 
     protected int wordsCount() {
         return wordList.size();
+    }
+
+    public void intCorrect() {
+        correct_cnt++;
+    }
+
+    public Pair<Integer, Integer> getCorrect() {
+        return new Pair<Integer, Integer>(correct_cnt, position);
     }
 }

@@ -127,6 +127,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                 transToEnter.startAnimation(animShake);
             } else {
                 //TODO OK next word
+                training.intCorrect();
                 clear.callOnClick();
                 showTraining();
             }
@@ -214,7 +215,16 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
             }
         } catch (Exception e) {
             //TODO animation finish
-            ExerciseUniqueWord.this.finish();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert) //TODO change drawable
+                    .setTitle(getString(R.string.test_finished))
+                    .setMessage(getString(R.string.passed) +
+                            String.valueOf(training.getCorrect().first) + " " +
+                            getString(R.string.of) + " " +
+                            String.valueOf(training.getCorrect().second) + " " +
+                            getString(R.string.answers))
+                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> ExerciseUniqueWord.this.finish())
+                    .show();
         }
     }
 

@@ -46,6 +46,7 @@ public class ExerciseOneWordManyChoices extends Activity implements View.OnClick
 
     public void onChoiceClick(View view) {
         if (training.check(((Button) view).getText().toString())) {
+            training.intCorrect();
             //TODO animation
             showTraining();
         }  //TODO else animation
@@ -120,7 +121,16 @@ public class ExerciseOneWordManyChoices extends Activity implements View.OnClick
             }
         } catch (Exception e) {
             //TODO animation finish
-            ExerciseOneWordManyChoices.this.finish();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert) //TODO change drawable
+                    .setTitle(getString(R.string.test_finished))
+                    .setMessage(getString(R.string.passed) +
+                            String.valueOf(training.getCorrect().first) + " " +
+                            getString(R.string.of) + " " +
+                            String.valueOf(training.getCorrect().second) + " " +
+                            getString(R.string.answers))
+                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> ExerciseOneWordManyChoices.this.finish())
+                    .show();
         }
     }
 }
