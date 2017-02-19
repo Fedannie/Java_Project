@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
@@ -253,4 +254,67 @@
         android:textStyle="normal|bold"
         android:textColor="@android:color/holo_red_dark" />
 
+    <ImageView
+        app:srcCompat="@drawable/favorites"
+        android:layout_alignParentTop="true"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/favorites"
+        android:scaleType="center"
+        android:visibility="visible"
+        android:id="@+id/live1"
+        android:layout_above="@+id/word_name" />
+
+    <ImageView
+        app:srcCompat="@drawable/favorites"
+        android:id="@+id/live2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/favorites"
+        android:scaleType="center"
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/live1"
+        android:layout_toEndOf="@+id/live1"
+        android:layout_above="@+id/word_name" />
+
+    <ImageView
+        app:srcCompat="@drawable/favorites"
+        android:id="@+id/live3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/favorites"
+        android:scaleType="center"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/live2"
+        android:layout_toEndOf="@+id/live2"
+        android:layout_above="@+id/word_name"
+        android:visibility="visible"/>
+
+
+    <ImageView
+        app:srcCompat="@drawable/favorites"
+        android:id="@+id/live4"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/favorites"
+        android:scaleType="center"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/live3"
+        android:layout_toEndOf="@+id/live3"
+        android:layout_above="@+id/word_name"
+        android:visibility="visible" />
+
+    <ImageView
+        app:srcCompat="@drawable/favorites"
+        android:id="@+id/live5"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/favorites"
+        android:scaleType="center"
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/live4"
+        android:layout_toEndOf="@+id/live4"
+        android:layout_above="@+id/word_name" />
 </RelativeLayout>

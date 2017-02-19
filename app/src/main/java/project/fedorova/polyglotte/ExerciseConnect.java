@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,16 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
             R.id.button_c9,
             R.id.button_c12,
             R.id.button_c15
+    };
+    private List<ImageView> livesArray;
+    private static final int LIVES_CNT = 5;
+    private int lives = LIVES_CNT;
+    private static final int[] LIVES_IDS = {
+            R.id.live_con1,
+            R.id.live_con2,
+            R.id.live_con3,
+            R.id.live_con4,
+            R.id.live_con5
     };
 
     @Override
@@ -71,6 +82,17 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
                 first_pos = -1;
                 step = false;
                 variantArray.get(first_pos).setVisibility(View.VISIBLE);
+                lives--;
+                if (lives == 0) {
+                    new AlertDialog.Builder(this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle(getString(R.string.oops))
+                            .setMessage(getString(R.string.failed_exercise))
+                            .setPositiveButton(getString(R.string.ok), (dialog, which) -> ExerciseConnect.this.finish())
+                            .show();
+                } else {
+                    livesArray.get(lives).setVisibility(View.INVISIBLE); //TODO animation
+                }
             }
         }
     }
@@ -101,6 +123,11 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
         variantArray = new ArrayList<>(BUTTONS_COUNT);
         for (int i = 0; i < BUTTONS_COUNT; i++) {
             variantArray.add(i, (Button) findViewById(BUTTON_IDS[i]));
+        }
+
+        livesArray = new ArrayList<>(LIVES_CNT);
+        for (int i = 0; i < LIVES_CNT; i++) {
+            livesArray.add(i, (ImageView) findViewById(LIVES_IDS[i]));
         }
 
         DBConnector wordManager = new DBConnector(this,

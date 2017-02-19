@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -55,7 +57,16 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
             R.id.button14,
             R.id.button15
     };
-
+    private List<ImageView> livesArray;
+    private static final int LIVES_CNT = 5;
+    private int lives = LIVES_CNT;
+    private static final int[] LIVES_IDS = {
+            R.id.live1,
+            R.id.live2,
+            R.id.live3,
+            R.id.live4,
+            R.id.live5
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +134,19 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         emptySpaces--;
         if (emptySpaces == 0) {
             if (!training.check(transToEnter.getText().toString())) {
-                clear.callOnClick();
                 transToEnter.startAnimation(animShake);
+                lives--;
+                if (lives == 0) {
+                    new AlertDialog.Builder(this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle(getString(R.string.oops))
+                            .setMessage(getString(R.string.failed_exercise))
+                            .setPositiveButton(getString(R.string.ok), (dialog, which) -> ExerciseUniqueWord.this.finish())
+                            .show();
+                } else {
+                    livesArray.get(lives).setVisibility(View.INVISIBLE); //TODO animation
+                }
+                clear.callOnClick();
             } else {
                 //TODO OK next word
                 training.intCorrect();
@@ -167,6 +189,11 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         letterArray = new ArrayList<>(BUTTONS_CNT);
         for (int i = 0; i < BUTTONS_CNT; i++) {
             letterArray.add(i, (Button) findViewById(BUTTON_IDS[i]));
+        }
+
+        livesArray = new ArrayList<>(LIVES_CNT);
+        for (int i = 0; i < LIVES_CNT; i++) {
+            livesArray.add(i, (ImageView) findViewById(LIVES_IDS[i]));
         }
 
         DBConnector wordManager = new DBConnector(this,
@@ -216,7 +243,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         } catch (Exception e) {
             //TODO animation finish
             new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert) //TODO change drawable
+                    .setIcon(android.R.drawable.ic_menu_myplaces)
                     .setTitle(getString(R.string.test_finished))
                     .setMessage(getString(R.string.passed) +
                             String.valueOf(training.getCorrect().first) + " " +

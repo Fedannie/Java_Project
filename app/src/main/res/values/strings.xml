@@ -63,6 +63,7 @@
     <string name="passed">You have passed the test!\n You have</string>
     <string name="answers">correct answers.</string>
     <string name="of">of</string>
+    <string name="failed_exercise">Sorry, you have failed this exercise :(</string>
 
     <string-array name="wholeLanguageList">
         <item>Albanian</item>
