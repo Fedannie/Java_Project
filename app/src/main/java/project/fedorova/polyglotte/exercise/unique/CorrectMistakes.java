@@ -1,5 +1,6 @@
 package project.fedorova.polyglotte.exercise.unique;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
@@ -8,11 +9,13 @@ import java.util.List;
 import java.util.Random;
 
 public class CorrectMistakes extends WordByTrans {
-    private static final int PERCENT_MISTAKES = 45;
-    public CorrectMistakes(Cursor cursor, String language) {
-        super(cursor, language);
-    }
+    private static final int CORRECT_RATE = 2;
+    private static final int INCORRECT_RATE = -6;
 
+    private static final int PERCENT_MISTAKES = 45;
+    public CorrectMistakes(Context cntx, String lang_from, String lang_to) {
+        super(cntx, lang_from, lang_to);
+    }
     @Override
     public String getMistaken(){
         Random random = new Random();
@@ -32,5 +35,15 @@ public class CorrectMistakes extends WordByTrans {
             }
         }
         return word;
+    }
+
+    @Override
+    public void correctAnswer() {
+        answer(CORRECT_RATE);
+    }
+
+    @Override
+    public void incorrectAnswer() {
+        answer(INCORRECT_RATE);
     }
 }

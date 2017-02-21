@@ -19,11 +19,14 @@ import android.widget.Toast;
 
 import project.fedorova.polyglotte.data.db.DBConnector;
 
+import com.github.lzyzsd.circleprogress.DonutProgress;
+
 public class DictActivity extends Activity implements View.OnClickListener {
     public static final int REQUEST_TO_REFRESH = 1;
     private DBConnector wordManager;
     private ListView wordList;
     Cursor cursor;
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -147,10 +150,10 @@ public class DictActivity extends Activity implements View.OnClickListener {
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             View view = LayoutInflater.from(context).inflate(res, parent, false);
             if (res == R.layout.wordlistitem) {
-                ViewHolderPort viewHolder = new ViewHolderPort((TextView) view.findViewById(R.id.stringTVList), (TextView) view.findViewById(R.id.translationTVList));
+                ViewHolderPort viewHolder = new ViewHolderPort((TextView) view.findViewById(R.id.stringTVList), (TextView) view.findViewById(R.id.translationTVList), (DonutProgress) view.findViewById(R.id.progress));
                 view.setTag(viewHolder);
             } else {
-                ViewHolderLand viewHolder = new ViewHolderLand((TextView) view.findViewById(R.id.stringTVListLand), (TextView) view.findViewById(R.id.mainTransTVListLand), (TextView) view.findViewById(R.id.extraTransTVListLand));
+                ViewHolderLand viewHolder = new ViewHolderLand((TextView) view.findViewById(R.id.stringTVListLand), (TextView) view.findViewById(R.id.mainTransTVListLand), (TextView) view.findViewById(R.id.extraTransTVListLand), (DonutProgress) view.findViewById(R.id.progressLand));
                 view.setTag(viewHolder);
             }
             return view;
@@ -171,6 +174,9 @@ public class DictActivity extends Activity implements View.OnClickListener {
                     translations += ", " + cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
                 }
                 translationsTV.setText(translations);
+
+                DonutProgress donutProgress = viewHolder.donutProgress;
+                donutProgress.setProgress(cursor.getInt(DBConnector.NUM_WORD_KNOWLEDGE));
             } else {
                 ViewHolderLand viewHolder = (ViewHolderLand) view.getTag();
 
@@ -188,27 +194,33 @@ public class DictActivity extends Activity implements View.OnClickListener {
                     translations += ", " + cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS);
                 }
                 extraTransTV.setText(translations);
+
+                DonutProgress donutProgress = viewHolder.donutProgress;
+                donutProgress.setProgress(cursor.getInt(DBConnector.NUM_WORD_KNOWLEDGE));
             }
         }
 
         private static class ViewHolderPort {
             final TextView wordTV;
             final TextView translationsTV;
-            ViewHolderPort(TextView word, TextView translations) {
+            final DonutProgress donutProgress;
+            ViewHolderPort(TextView word, TextView translations, DonutProgress donut) {
                 wordTV = word;
                 translationsTV = translations;
+                donutProgress = donut;
             }
-
         }
 
         private static class ViewHolderLand {
             final TextView wordTV;
             final TextView mainTransTV;
             final TextView extraTransTV;
-            ViewHolderLand(TextView word, TextView mainTrans, TextView extraTrans) {
+            final DonutProgress donutProgress;
+            ViewHolderLand(TextView word, TextView mainTrans, TextView extraTrans, DonutProgress donut) {
                 wordTV = word;
                 mainTransTV = mainTrans;
                 extraTransTV = extraTrans;
+                donutProgress = donut;
             }
         }
     }

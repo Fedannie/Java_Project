@@ -12,8 +12,9 @@ public class Word implements Serializable{
     private String mainTranslation;
     private Set<String> translations = new HashSet<>();
     private Set<String> examples = new HashSet<>();
+    private int knowledge;
 
-    public Word(UUID id, String newWord, String newMainTranslation, Set<String> newTranslations, Set<String> newThemes, Set<String> newExamples) {
+    public Word(UUID id, String newWord, String newMainTranslation, Set<String> newTranslations, Set<String> newThemes, Set<String> newExamples, int newKnowledge) {
         word = newWord;
         mainTranslation = newMainTranslation;
         ID = id;
@@ -26,6 +27,11 @@ public class Word implements Serializable{
         if (newExamples != null) {
             examples = newExamples;
         }
+        knowledge = newKnowledge;
+    }
+
+    public int getKnowledge() {
+        return knowledge;
     }
 
     public void changeWord(String newWord) {
@@ -87,5 +93,15 @@ public class Word implements Serializable{
 
     public UUID getID() {
         return ID;
+    }
+
+    public void incKnowledge(int rate) {
+        knowledge += rate;
+        knowledge = Math.min(100, knowledge);
+    }
+
+    public void decKnowledge(int rate) {
+        knowledge -= rate;
+        knowledge = Math.max(0, knowledge);
     }
 }

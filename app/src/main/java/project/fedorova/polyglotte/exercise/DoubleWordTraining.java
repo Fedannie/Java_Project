@@ -1,6 +1,6 @@
 package project.fedorova.polyglotte.exercise;
 
-import android.database.Cursor;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,8 +48,8 @@ public abstract class DoubleWordTraining extends Training {
         return choices.get(pos);
     }
 
-    public DoubleWordTraining(Cursor cursor) {
-        super(cursor);
+    public DoubleWordTraining(Context cntx, String lang_from, String lang_to) {
+        super(cntx, lang_from, lang_to);
     }
 
     protected boolean isActivated(int number, int cnt) {
@@ -83,4 +83,9 @@ public abstract class DoubleWordTraining extends Training {
         buttons = new_b;
     }
 
+    @Override
+    public void answer(int rate) {
+        word.incKnowledge(rate);
+        dbConnector.updateWord(word);
+    }
 }

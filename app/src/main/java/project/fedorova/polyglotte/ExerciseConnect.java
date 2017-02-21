@@ -3,7 +3,6 @@ package project.fedorova.polyglotte;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,9 +11,9 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.exercise.double_cl.Connect;
 
+import static project.fedorova.polyglotte.exercise.Training.LIVES_CNT;
 import static project.fedorova.polyglotte.exercise.double_cl.Connect.BUTTONS_COUNT;
 
 public class ExerciseConnect extends Activity implements View.OnClickListener {
@@ -37,7 +36,6 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
             R.id.button_c15
     };
     private List<ImageView> livesArray;
-    private static final int LIVES_CNT = 5;
     private int lives = LIVES_CNT;
     private static final int[] LIVES_IDS = {
             R.id.live_con1,
@@ -69,6 +67,7 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
         } else {
             if (training.check()) {
                 emptySpaces--;
+                training.correctAnswer();
                 view.setVisibility(View.INVISIBLE);
                 variantArray.get(first_pos).setVisibility(View.INVISIBLE);
                 first_pos = -1;
@@ -79,6 +78,7 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
                 }
             } else {
                 //TODO animation
+                training.incorrectAnswer();
                 first_pos = -1;
                 step = false;
                 variantArray.get(first_pos).setVisibility(View.VISIBLE);
@@ -130,11 +130,9 @@ public class ExerciseConnect extends Activity implements View.OnClickListener {
             livesArray.add(i, (ImageView) findViewById(LIVES_IDS[i]));
         }
 
-        DBConnector wordManager = new DBConnector(this,
+        training = new Connect(this,
                 intent.getStringExtra(getString(R.string.dict_lang)),
                 intent.getStringExtra(getString(R.string.native_lang)));
-        Cursor cursor = wordManager.getAllWords();
-        training = new Connect(cursor);
     }
 
     private void showTraining() {

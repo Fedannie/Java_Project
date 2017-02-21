@@ -3,7 +3,6 @@ package project.fedorova.polyglotte;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,12 +12,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import project.fedorova.polyglotte.data.db.DBConnector;
 import project.fedorova.polyglotte.exercise.DoubleWordTraining;
 import project.fedorova.polyglotte.exercise.double_cl.ChooseTransByWord;
 import project.fedorova.polyglotte.exercise.double_cl.ChooseWordByTrans;
 
 import static project.fedorova.polyglotte.exercise.DoubleWordTraining.BUTTONS_COUNT;
+import static project.fedorova.polyglotte.exercise.Training.LIVES_CNT;
 
 public class ExerciseOneWordManyChoices extends Activity implements View.OnClickListener {
     private DoubleWordTraining training;
@@ -36,7 +35,6 @@ public class ExerciseOneWordManyChoices extends Activity implements View.OnClick
             R.id.button24,
     };
     private List<ImageView> livesArray;
-    private static final int LIVES_CNT = 5;
     private int lives = LIVES_CNT;
     private static final int[] LIVES_IDS = {
             R.id.live_c1,
@@ -58,10 +56,12 @@ public class ExerciseOneWordManyChoices extends Activity implements View.OnClick
 
     public void onChoiceClick(View view) {
         if (training.check(((Button) view).getText().toString())) {
-            training.intCorrect();
+            training.incCorrect();
+            training.correctAnswer();
             //TODO animation
             showTraining();
         } else {  //TODO else animation
+            training.incorrectAnswer();
             lives--;
             if (lives == 0) {
                 new AlertDialog.Builder(this)
@@ -111,15 +111,14 @@ public class ExerciseOneWordManyChoices extends Activity implements View.OnClick
             livesArray.add(i, (ImageView) findViewById(LIVES_IDS[i]));
         }
 
-        DBConnector wordManager = new DBConnector(this,
-                intent.getStringExtra(getString(R.string.dict_lang)),
-                intent.getStringExtra(getString(R.string.native_lang)));
-        Cursor cursor = wordManager.getAllWords();
-
         if (mode.equals(getString(R.string.trans_by_word))) {
-            training = new ChooseTransByWord(cursor);
+            training = new ChooseTransByWord(this,
+                    intent.getStringExtra(getString(R.string.dict_lang)),
+                    intent.getStringExtra(getString(R.string.native_lang)));
         } else if (mode.equals(getString(R.string.word_by_trans))) {
-            training = new ChooseWordByTrans(cursor);
+            training = new ChooseWordByTrans(this,
+                    intent.getStringExtra(getString(R.string.dict_lang)),
+                    intent.getStringExtra(getString(R.string.native_lang)));
         }
     }
 

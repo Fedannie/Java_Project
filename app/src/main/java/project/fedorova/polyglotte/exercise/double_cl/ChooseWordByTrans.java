@@ -1,5 +1,6 @@
 package project.fedorova.polyglotte.exercise.double_cl;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
@@ -9,8 +10,11 @@ import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.exercise.DoubleWordTraining;
 
 public class ChooseWordByTrans extends DoubleWordTraining {
-    public ChooseWordByTrans(Cursor cursor) {
-        super(cursor);
+    private static final int CORRECT_RATE = 4;
+    private static final int INCORRECT_RATE = -6;
+
+    public ChooseWordByTrans(Context cntx, String lang_from, String lang_to) {
+        super(cntx, lang_from, lang_to);
     }
 
     @Override
@@ -32,5 +36,13 @@ public class ChooseWordByTrans extends DoubleWordTraining {
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
         return getTrWord().getMainTranslation() + "\n" +
                 readWriteManager.convertSetToString(getTrWord().getTranslations());
+    }
+
+    public void correctAnswer() {
+        answer(CORRECT_RATE);
+    }
+
+    public void incorrectAnswer() {
+        answer(INCORRECT_RATE);
     }
 }

@@ -114,7 +114,8 @@ public class RepeatWordActivity extends Activity implements View.OnClickListener
                     cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION),
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS)),
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_THEMES)),
-                    readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_EXAMPLES))));
+                    readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_EXAMPLES)),
+                    cursor.getInt(DBConnector.NUM_WORD_KNOWLEDGE)));
         }
         Collections.shuffle(order);
         currentWord = 0;

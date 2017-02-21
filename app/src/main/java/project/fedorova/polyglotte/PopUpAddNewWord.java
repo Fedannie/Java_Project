@@ -92,7 +92,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                 mainTrans,
                 readWriteManager.convertStringToSet(extraTrans),
                 null,
-                readWriteManager.convertStringToSet(examples)));
+                readWriteManager.convertStringToSet(examples), 0));
     }
 
     private void init() {

@@ -1,5 +1,7 @@
 package project.fedorova.polyglotte.exercise;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Pair;
 
@@ -13,13 +15,16 @@ import project.fedorova.polyglotte.data.Word;
 import project.fedorova.polyglotte.data.db.DBConnector;
 
 public abstract class Training {
+    public static final int LIVES_CNT = 5;
     private List<Word> wordList = new ArrayList<>();
     private int correct_cnt = 0;
     private int position = 0;
-
+    protected DBConnector dbConnector;
     public abstract boolean getTraining() throws Exception;
 
-    Training(Cursor cursor) {
+    Training(Context cntx, String dict_from, String dict_to) {
+        dbConnector = new DBConnector(cntx, dict_from, dict_to);
+        Cursor cursor = dbConnector.getAllWords();
         cursor.moveToFirst();
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
         if (cursor.getCount() > 0) {
@@ -28,7 +33,8 @@ public abstract class Training {
                     cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION),
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS)),
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_THEMES)),
-                    readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_EXAMPLES))));
+                    readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_EXAMPLES)),
+                    cursor.getInt(DBConnector.NUM_WORD_KNOWLEDGE)));
         }
         while (cursor.moveToNext()) {
             wordList.add(new Word(UUID.fromString(cursor.getString(DBConnector.NUM_WORD_ID)),
@@ -36,7 +42,8 @@ public abstract class Training {
                     cursor.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION),
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS)),
                     readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_THEMES)),
-                    readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_EXAMPLES))));
+                    readWriteManager.convertStringToSet(cursor.getString(DBConnector.NUM_WORD_EXAMPLES)),
+                    cursor.getInt(DBConnector.NUM_WORD_KNOWLEDGE)));
         }
         Collections.shuffle(wordList);
     }
@@ -87,11 +94,17 @@ public abstract class Training {
         return wordList.size();
     }
 
-    public void intCorrect() {
+    public void incCorrect() {
         correct_cnt++;
     }
 
     public Pair<Integer, Integer> getCorrect() {
-        return new Pair<Integer, Integer>(correct_cnt, position);
+        return new Pair<>(correct_cnt, position);
     }
+
+    public abstract void answer(int rate);
+
+    public abstract void correctAnswer();
+
+    public abstract void incorrectAnswer();
 }

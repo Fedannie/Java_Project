@@ -23,6 +23,7 @@ import project.fedorova.polyglotte.exercise.unique.CorrectMistakes;
 import project.fedorova.polyglotte.exercise.unique.TransByWord;
 import project.fedorova.polyglotte.exercise.unique.WordByTrans;
 
+import static project.fedorova.polyglotte.exercise.Training.LIVES_CNT;
 import static project.fedorova.polyglotte.exercise.UniqueWordTraining.BUTTONS_CNT;
 
 public class ExerciseUniqueWord extends Activity implements View.OnClickListener {
@@ -58,7 +59,6 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
             R.id.button15
     };
     private List<ImageView> livesArray;
-    private static final int LIVES_CNT = 5;
     private int lives = LIVES_CNT;
     private static final int[] LIVES_IDS = {
             R.id.live1,
@@ -135,6 +135,7 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
         if (emptySpaces == 0) {
             if (!training.check(transToEnter.getText().toString())) {
                 transToEnter.startAnimation(animShake);
+                training.incorrectAnswer();
                 lives--;
                 if (lives == 0) {
                     new AlertDialog.Builder(this)
@@ -149,7 +150,8 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
                 clear.callOnClick();
             } else {
                 //TODO OK next word
-                training.intCorrect();
+                training.incCorrect();
+                training.correctAnswer();
                 clear.callOnClick();
                 showTraining();
             }
@@ -196,16 +198,12 @@ public class ExerciseUniqueWord extends Activity implements View.OnClickListener
             livesArray.add(i, (ImageView) findViewById(LIVES_IDS[i]));
         }
 
-        DBConnector wordManager = new DBConnector(this,
-                intent.getStringExtra(getString(R.string.dict_lang)),
-                intent.getStringExtra(getString(R.string.native_lang)));
-        Cursor cursor = wordManager.getAllWords();
         if (mode.equals(getString(R.string.trans_by_word))) {
-            training = new TransByWord(cursor, intent.getStringExtra(getString(R.string.native_lang)));
+            training = new TransByWord(this, intent.getStringExtra(getString(R.string.dict_lang)), intent.getStringExtra(getString(R.string.native_lang)));
         } else if (mode.equals(getString(R.string.word_by_trans))) {
-            training = new WordByTrans(cursor, intent.getStringExtra(getString(R.string.dict_lang)));
+            training = new WordByTrans(this, intent.getStringExtra(getString(R.string.dict_lang)), intent.getStringExtra(getString(R.string.native_lang)));
         } else if (mode.equals(getString(R.string.correct_mistake))) {
-            training = new CorrectMistakes(cursor, intent.getStringExtra(getString(R.string.dict_lang)));
+            training = new CorrectMistakes(this, intent.getStringExtra(getString(R.string.dict_lang)), intent.getStringExtra(getString(R.string.native_lang)));
 
         }
     }

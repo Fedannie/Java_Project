@@ -16,7 +16,7 @@ import project.fedorova.polyglotte.data.Word;
 
 public class DBConnector {
 
-    private static final String DATABASE_NAME = "polyglotte_words_and__phrases_database";
+    private static final String DATABASE_NAME = "polyglotte_words_and__phrases_database_with_knowledge";
     private static final int DATABASE_VERSION = 1;
     
     private static final String WORDS_TABLE_NAME = "words";
@@ -27,6 +27,7 @@ public class DBConnector {
     private static final String WORD_TRANSLATIONS = "translations";
     private static final String WORD_THEMES = "theme";
     private static final String WORD_EXAMPLES = "examples";
+    private static final String WORD_KNOWLEDGE = "knowledge";
 
     public static final int NUM_WORD_ID = 0;
     public static final int NUM_WORD_TITLE = 1;
@@ -34,8 +35,9 @@ public class DBConnector {
     public static final int NUM_WORD_TRANSLATIONS = 3;
     public static final int NUM_WORD_THEMES = 4;
     public static final int NUM_WORD_EXAMPLES = 5;
+    public static final int NUM_WORD_KNOWLEDGE = 6;
 
-    private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_TITLE, WORD_MAIN_TRANSLATION, WORD_TRANSLATIONS, WORD_THEMES, WORD_EXAMPLES};
+    private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_TITLE, WORD_MAIN_TRANSLATION, WORD_TRANSLATIONS, WORD_THEMES, WORD_EXAMPLES, WORD_KNOWLEDGE};
 
     private static final String THEMES_TABLE_NAME = "themes";
 
@@ -81,6 +83,7 @@ public class DBConnector {
             if (word.getExamples() != null) {
                 cv.put(WORD_EXAMPLES, readWriteManager.convertSetToString(word.getExamples()));
             }
+            cv.put(WORD_KNOWLEDGE, word.getKnowledge());
             database.insertOrThrow(WORDS_TABLE_NAME, null, cv);
             if (word.getThemes() != null) {
                 for (String theme : word.getThemes()) {
@@ -113,6 +116,7 @@ public class DBConnector {
             if (word.getExamples() != null) {
                 cv.put(WORD_EXAMPLES, readWriteManager.convertSetToString(word.getExamples()));
             }
+            cv.put(WORD_KNOWLEDGE, word.getKnowledge());
             database.update(WORDS_TABLE_NAME, cv, WORD_ID + " = ?", new String[]{String.valueOf(word.getID())});
             database.delete(THEMES_TABLE_NAME, THEME_ID + " = ?", new String[]{String.valueOf(word.getID())});
             if (word.getThemes() != null) {
@@ -154,10 +158,13 @@ public class DBConnector {
                 Set<String> translations = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_TRANSLATIONS));
                 Set<String> themes = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_THEMES));
                 Set<String> examples = readWriteManager.convertStringToSet(cursor.getString(NUM_WORD_EXAMPLES));
+                int knowledge = cursor.getInt(NUM_WORD_KNOWLEDGE);
                 cursor.close();
-                return new Word(id, word, mainTranslation, translations, themes, examples);
+                return new Word(id, word, mainTranslation, translations, themes, examples, knowledge);
             } else {
-                cursor.close();
+                if (cursor != null) {
+                    cursor.close();
+                }
                 return null;
             }
     }
@@ -251,7 +258,8 @@ public class DBConnector {
                     WORD_MAIN_TRANSLATION + " TEXT NOT NULL, " +
                     WORD_TRANSLATIONS + " TEXT, " +
                     WORD_THEMES + " TEXT, " +
-                    WORD_EXAMPLES + " TEXT);";
+                    WORD_EXAMPLES + " TEXT, " +
+                    WORD_KNOWLEDGE + " INTEGER);";
             db.execSQL(wordsQuery);
 
             String themeQuery = "CREATE TABLE " + THEMES_TABLE_NAME + " (" +

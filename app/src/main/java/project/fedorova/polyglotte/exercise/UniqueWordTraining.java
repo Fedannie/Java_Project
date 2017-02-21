@@ -1,6 +1,6 @@
 package project.fedorova.polyglotte.exercise;
 
-import android.database.Cursor;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,9 +31,9 @@ public abstract class UniqueWordTraining extends Training {
         return "";
     }
 
-    public UniqueWordTraining(Cursor cursor, String language) {
-        super(cursor);
-        lang = language;
+    public UniqueWordTraining(Context cntx, String from_lang, String to_lang) {
+        super(cntx, from_lang, to_lang);
+        lang = to_lang;
     }
 
     public boolean getTraining() throws Exception{
@@ -98,5 +98,12 @@ public abstract class UniqueWordTraining extends Training {
 
     protected List<String> getAlpha() {
         return alpha.getAlphabet(lang);
+    }
+
+    //TODO move to training
+    @Override
+    public void answer(int rate) {
+        word.incKnowledge(rate);
+        dbConnector.updateWord(word);
     }
 }

@@ -1,6 +1,6 @@
 package project.fedorova.polyglotte.exercise.double_cl;
 
-import android.database.Cursor;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +18,10 @@ public class Connect extends DoubleWordTraining {
     private List<String> trans;
     private List<Word> tr_words;
     private String translation;
-    public Connect(Cursor cursor) {
-        super(cursor);
+    private static final int CORRECT_RATE = 1;
+    private static final int INCORRECT_RATE = -6;
+    public Connect(Context cntx, String lang_from, String lang_to) {
+        super(cntx, lang_from, lang_to);
         setNullPosition();
         int[][] new_buttons = {{3, 4, 5}, {2, 4, 5}, {3, 5}, {2, 4, 5}, {3, 4, 5}, {3, 4, 5}, {2, 4, 5}, {3, 5}, {2, 4, 5}, {3, 4, 5}};
         setButtons(new_buttons);
@@ -100,5 +102,13 @@ public class Connect extends DoubleWordTraining {
 
     public void setTranslation(String new_tr) {
         translation = new_tr;
+    }
+
+    public void correctAnswer() {
+        answer(CORRECT_RATE);
+    }
+
+    public void incorrectAnswer() {
+        answer(INCORRECT_RATE);
     }
 }

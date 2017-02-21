@@ -1,6 +1,6 @@
 package project.fedorova.polyglotte.exercise.unique;
 
-import android.database.Cursor;
+import android.content.Context;
 
 import java.util.List;
 
@@ -8,9 +8,11 @@ import project.fedorova.polyglotte.data.ReadWriteManager;
 import project.fedorova.polyglotte.exercise.UniqueWordTraining;
 
 public class WordByTrans extends UniqueWordTraining {
+    private static final int CORRECT_RATE = 4;
+    private static final int INCORRECT_RATE = -6;
 
-    public WordByTrans(Cursor cursor, String language) {
-        super(cursor, language);
+    public WordByTrans(Context cntx, String lang_from, String lang_to) {
+        super(cntx, lang_from, lang_to);
     }
 
     @Override
@@ -33,5 +35,13 @@ public class WordByTrans extends UniqueWordTraining {
     @Override
     public String getFirstWordToEnter() throws Exception {
         return getWordToEnter(getTrWord().getWord().toLowerCase());
+    }
+
+    public void correctAnswer() {
+        answer(CORRECT_RATE);
+    }
+
+    public void incorrectAnswer() {
+        answer(INCORRECT_RATE);
     }
 }
