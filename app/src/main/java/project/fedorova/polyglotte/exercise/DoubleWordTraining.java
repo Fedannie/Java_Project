@@ -9,7 +9,6 @@ import java.util.List;
 import project.fedorova.polyglotte.data.Word;
 
 public abstract class DoubleWordTraining extends Training {
-    private Word word;
     private List<Word> choices = new ArrayList<>(VARIANTS);
     private static final int VARIANTS = 6;
     public static final int BUTTONS_COUNT = 9;
@@ -27,9 +26,9 @@ public abstract class DoubleWordTraining extends Training {
         } else if (wordsCount() <= getPos()) {
             throw new NullPointerException("That's all.");
         } else {
-            word = getNextWord();
+            setWord(getNextWord());
             choices = choose(Math.min(wordsCount() - 1, VARIANTS - 1));
-            choices.add(word);
+            choices.add(getTrWord());
             Collections.shuffle(choices);
             incPos();
         }
@@ -38,10 +37,6 @@ public abstract class DoubleWordTraining extends Training {
 
     protected int getChoicesCnt() {
         return choices.size();
-    }
-
-    protected Word getTrWord() {
-        return word;
     }
 
     protected  Word getChoice(int pos) {
@@ -75,17 +70,7 @@ public abstract class DoubleWordTraining extends Training {
         return ans;
     }
 
-    protected void setWord(Word new_w){
-        word = new_w;
-    }
-
     protected void setButtons(int[][] new_b){
         buttons = new_b;
-    }
-
-    @Override
-    public void answer(int rate) {
-        word.incKnowledge(rate);
-        dbConnector.updateWord(word);
     }
 }

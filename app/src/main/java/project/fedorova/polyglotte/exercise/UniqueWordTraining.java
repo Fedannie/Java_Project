@@ -13,7 +13,6 @@ import project.fedorova.polyglotte.data.language.Alphabet;
 import project.fedorova.polyglotte.data.language.Language;
 
 public abstract class UniqueWordTraining extends Training {
-    private Word word;
     private Alphabet alpha = Alphabet.getInstance();
     private String lang;
     public final static int LETTERS_CNT = 7;
@@ -42,14 +41,10 @@ public abstract class UniqueWordTraining extends Training {
         } else if (wordsCount() <= getPos()) {
             throw new NullPointerException("That's all.");
         } else {
-            word = getNextWord();
+            setWord(getNextWord());
             incPos();
         }
         return true;
-    }
-
-    protected Word getTrWord() {
-        return word;
     }
 
     protected String getWordToEnter(String guess) throws Exception {
@@ -98,12 +93,5 @@ public abstract class UniqueWordTraining extends Training {
 
     protected List<String> getAlpha() {
         return alpha.getAlphabet(lang);
-    }
-
-    //TODO move to training
-    @Override
-    public void answer(int rate) {
-        word.incKnowledge(rate);
-        dbConnector.updateWord(word);
     }
 }

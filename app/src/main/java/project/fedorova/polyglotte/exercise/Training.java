@@ -1,6 +1,5 @@
 package project.fedorova.polyglotte.exercise;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Pair;
@@ -15,12 +14,21 @@ import project.fedorova.polyglotte.data.Word;
 import project.fedorova.polyglotte.data.db.DBConnector;
 
 public abstract class Training {
+    private Word word;
     public static final int LIVES_CNT = 5;
     private List<Word> wordList = new ArrayList<>();
     private int correct_cnt = 0;
     private int position = 0;
-    protected DBConnector dbConnector;
+    DBConnector dbConnector;
     public abstract boolean getTraining() throws Exception;
+
+    protected void setWord(Word newWord) {
+        word = newWord;
+    }
+
+    protected Word getTrWord() {
+        return word;
+    }
 
     Training(Context cntx, String dict_from, String dict_to) {
         dbConnector = new DBConnector(cntx, dict_from, dict_to);
@@ -102,9 +110,12 @@ public abstract class Training {
         return new Pair<>(correct_cnt, position);
     }
 
-    public abstract void answer(int rate);
-
     public abstract void correctAnswer();
 
     public abstract void incorrectAnswer();
+
+    public void answer(int rate) {
+        word.incKnowledge(rate);
+        dbConnector.updateWord(word);
+    }
 }
