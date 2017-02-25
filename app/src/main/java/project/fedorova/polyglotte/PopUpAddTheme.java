@@ -42,7 +42,10 @@ public class PopUpAddTheme extends Activity implements View.OnClickListener{
                             this,
                             android.R.layout.simple_dropdown_item_1line, themes);
                     themeACTV.setAdapter(adapter);
+                } else {
+                    newAdd = "";
                 }
+
                 Intent intentRes = new Intent();
                 intentRes.putExtra(getString(R.string.theme), newAdd);
                 setResult(RESULT_OK, intentRes);

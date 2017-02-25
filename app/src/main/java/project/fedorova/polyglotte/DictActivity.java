@@ -235,6 +235,7 @@ public class DictActivity extends Activity implements View.OnClickListener {
         WordListAdapter wordListAdapter = new WordListAdapter(this, cursor, 0, R.layout.wordlistitemland);
         setWordList(wordListAdapter);
     }
+
     private void setWordList(WordListAdapter wordListAdapter) {
         wordList.setAdapter(wordListAdapter);
         wordList.setOnItemClickListener((parent, view, position, id) -> {

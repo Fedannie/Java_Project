@@ -24,12 +24,13 @@ public class ThemesActivity extends Activity {
     private ArrayList<ArrayList<UUID>> ids = new ArrayList<>();
     private DBConnector dbConnector;
     private Cursor cursor;
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.themesactivity);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         TextView dictionary = (TextView) findViewById(R.id.dictThemes);
         dictionary.setText(intent.getStringExtra(getString(R.string.dict_lang)));
         ExpandableListView themesList = (ExpandableListView) findViewById(R.id.themesELV);
@@ -39,12 +40,7 @@ public class ThemesActivity extends Activity {
                 intent.getStringExtra(getString(R.string.native_lang)));
         cursor = dbConnector.getAllThemes();
         cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-                  getInf();
-        }
-        while (cursor.moveToNext()) {
-            getInf();
-        }
+        getAllWords();
 
         List<Map<String, String>> groupData = new ArrayList<>();
         List<List<Map<String, String>>> childData = new ArrayList<>();
@@ -76,10 +72,37 @@ public class ThemesActivity extends Activity {
                 new int[] { android.R.id.text1, android.R.id.text2 }
         );
         themesList.setAdapter(mAdapter);
+        themesList.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
+            intentWordWatcher.putExtra(getString(R.string.word_index), position);
+            intentWordWatcher.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+            intentWordWatcher.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
+            startActivityForResult(intentWordWatcher, 1);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            finish();
+            startActivity(intent);
+        }
+    }
+
+    private void getAllWords(){
+        if (cursor.getCount() > 0) {
+            getInf();
+        }
+        while (cursor.moveToNext()) {
+            getInf();
+        }
     }
 
     private void getInf() {
         String lastTheme = cursor.getString(DBConnector.NUM_THEME_TITLE);
+        if (themes.contains(lastTheme)) {
+            return;
+        }
         themes.add(lastTheme);
         Cursor cursorWords = dbConnector.getWordsByTheme(lastTheme);
         ArrayList<String> wordsOfThisTheme = new ArrayList<>();
@@ -100,70 +123,4 @@ public class ThemesActivity extends Activity {
         translations.add(transWordsOfThisTheme);
         ids.add(idsWordsOfThisTheme);
     }
-/*
-        ThemesActivity.ThemeListAdapterHelper adapterHelper = new ThemesActivity.ThemeListAdapterHelper();
-        themesList.setAdapter(adapterHelper.getAdapter(
-                intent.getStringExtra(getString(R.string.dict_lang)),
-                intent.getStringExtra(getString(R.string.native_lang))));
-        themesList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            Intent intentWordWatcher = new Intent(ThemesActivity.this, PopUpShowPhrase.class);
-            intentWordWatcher.putExtra(getString(R.string.phrase), adapterHelper.getChildPhrase(groupPosition, childPosition));
-            intentWordWatcher.putExtra(getString(R.string.translation), adapterHelper.getChildTrans(groupPosition, childPosition));
-            startActivity(intentWordWatcher);
-            return false;
-        });
-    }
-
-    private class ThemeListAdapterHelper{
-        private SimpleExpandableListAdapter adapter;
-        SimpleExpandableListAdapter getAdapter(String dictLang, String nativeLang) {
-
-            ArrayList<Map<String, String>> themeData = new ArrayList<>();
-            Map<String, String> m;
-            for (String group : themes) {
-                m = new HashMap<>();
-                m.put(getString(R.string.theme), group);
-                themeData.add(m);
-            }
-
-            String groupFrom[] = new String[]{getString(R.string.theme)};
-            int groupTo[] = new int[]{android.R.id.text1};
-
-            ArrayList<ArrayList<Map<String, String>>> childData = new ArrayList<>();
-
-            for (int i = 0; i < words.size(); i++) {
-                ArrayList<Map<String, String>> childDataItem = new ArrayList<>();
-                for (int j = 0; j < words.get(i).size(); j++) {
-                    m = new HashMap<>();
-                    m.put(getString(R.string.phrase), words.get(i).get(j));
-                    m.put(getString(R.string.translation), translations.get(i).get(j));
-                    childDataItem.add(m);
-                }
-                childData.add(childDataItem);
-            }
-
-            String childFrom[] = new String[]{getString(R.string.phrase), getString(R.string.translation)};
-            int childTo[] = new int[]{R.id.stringTVList, R.id.translationTVList};
-
-            adapter = new SimpleExpandableListAdapter(
-                    ThemesActivity.this,
-                    themeData,
-                    android.R.layout.simple_expandable_list_item_1,
-                    groupFrom,
-                    groupTo,
-                    childData,
-                    R.layout.wordlistitem,
-                    childFrom,
-                    childTo);
-            return adapter;
-        }
-
-        String getChildPhrase(int groupPos, int childPos) {
-            return ((Map<String,String>)(adapter.getChild(groupPos, childPos))).get(getString(R.string.phrase));
-        }
-
-        String getChildTrans(int groupPos, int childPos) {
-            return ((Map<String,String>)(adapter.getChild(groupPos, childPos))).get(getString(R.string.translation));
-        }
-    }*/
 }

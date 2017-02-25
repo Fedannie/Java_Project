@@ -87,13 +87,18 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         if (data == null) {return;}
         String addedTheme = data.getStringExtra(getString(R.string.theme));
         if (!addedTheme.equals("")){
+            themes.append(", ");
             themes.append(addedTheme);
-            TextView newTheme = new TextView(this);
-            newTheme.setText(addedTheme);
-            AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            newTheme.setLayoutParams(params);
-            mainLayout.addView(newTheme);
+            addThemeView(addedTheme);
         }
+    }
+
+    private void addThemeView(String theme) {
+        TextView newTheme = new TextView(this);
+        newTheme.setText(theme);
+        AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        newTheme.setLayoutParams(params);
+        mainLayout.addView(newTheme);
     }
 
     private void saveNewWord() {
@@ -246,6 +251,9 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
             mainTranslationTIL.getEditText().setText(word.getMainTranslation());
             translationTIL.getEditText().setText(readWriteManager.convertSetToString(word.getTranslations()));
             examplesTIL.getEditText().setText(readWriteManager.convertSetToString(word.getExamples()));
+            for (String theme : word.getThemes()) {
+                addThemeView(theme);
+            }
         } catch (Exception e) {}
     }
 

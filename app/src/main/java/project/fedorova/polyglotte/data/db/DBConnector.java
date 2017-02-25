@@ -141,14 +141,18 @@ public class DBConnector {
         }
     }
 
-    public int deleteAll() {
+    public void deleteAll() {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-        return database.delete(PHRASE_THEMES_TABLE_NAME, null, null);
+        database.delete(WORDS_TABLE_NAME, null, null);
+        database.delete(THEMES_TABLE_NAME, null, null);
+        database.delete(PHRASE_THEMES_TABLE_NAME, null, null);
     }
 
     public void delete(UUID id) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         database.delete(WORDS_TABLE_NAME, WORD_ID + " = ?", new String[] {String.valueOf(id)});
+        database.delete(THEMES_TABLE_NAME, THEME_ID + " = ?", new String[] {String.valueOf(id)});
+
     }
 
     public Word getWord(UUID id) {
