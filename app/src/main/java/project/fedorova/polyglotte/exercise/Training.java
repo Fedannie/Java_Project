@@ -19,7 +19,7 @@ public abstract class Training {
     private List<Word> wordList = new ArrayList<>();
     private int correct_cnt = 0;
     private int position = 0;
-    DBConnector dbConnector;
+    private DBConnector dbConnector;
     public abstract boolean getTraining() throws Exception;
 
     protected void setWord(Word newWord) {

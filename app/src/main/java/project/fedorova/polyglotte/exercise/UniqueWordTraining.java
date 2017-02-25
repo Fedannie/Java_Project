@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import project.fedorova.polyglotte.data.Word;
 import project.fedorova.polyglotte.data.language.Alphabet;
 import project.fedorova.polyglotte.data.language.Language;
 

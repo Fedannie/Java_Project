@@ -140,6 +140,12 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 Intent intentAD = new Intent(this, PopUpAddDict.class);
                 startActivityForResult(intentAD, 2);
                 break;
+            case (R.id.themes_btn):
+                Intent intentTh = new Intent(this, ThemesActivity.class);
+                intentTh.putExtra(getString(R.string.dict_lang), dictLanguage);
+                intentTh.putExtra(getString(R.string.native_lang), nativeLanguage);
+                startActivity(intentTh);
+                break;
             default:
                 break;
         }
@@ -241,6 +247,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         Button btnTrans;
         Button addDictBtn;
         Button deleteDictBtn;
+        Button themes;
         Button clearPrefBtn;
 
         btnExercise = (Button) findViewById(R.id.exerciseButton);
@@ -269,5 +276,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
         selectDict = (Spinner) findViewById(R.id.dictSpinner);
         selectDict.setPrompt(getString(R.string.your_dictionaries));
+
+        themes = (Button) findViewById(R.id.themes_btn);
+        themes.setOnClickListener(this);
     }
 }

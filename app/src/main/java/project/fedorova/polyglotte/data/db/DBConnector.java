@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +18,8 @@ import project.fedorova.polyglotte.data.Word;
 
 public class DBConnector {
 
-    private static final String DATABASE_NAME = "polyglotte_words_and__phrases_database_with_knowledge";
+    private static final String DATABASE_NAME = "polyglotte_words_" +
+            "phrases_database_with_knowledge_index";
     private static final int DATABASE_VERSION = 1;
     
     private static final String WORDS_TABLE_NAME = "words";
@@ -28,6 +31,7 @@ public class DBConnector {
     private static final String WORD_THEMES = "theme";
     private static final String WORD_EXAMPLES = "examples";
     private static final String WORD_KNOWLEDGE = "knowledge";
+    private static final String WORD_SECOND_ID = "_id";
 
     public static final int NUM_WORD_ID = 0;
     public static final int NUM_WORD_TITLE = 1;
@@ -36,16 +40,19 @@ public class DBConnector {
     public static final int NUM_WORD_THEMES = 4;
     public static final int NUM_WORD_EXAMPLES = 5;
     public static final int NUM_WORD_KNOWLEDGE = 6;
+    public static final int NUM_WORD_SECOND_ID = 7;
 
-    private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_TITLE, WORD_MAIN_TRANSLATION, WORD_TRANSLATIONS, WORD_THEMES, WORD_EXAMPLES, WORD_KNOWLEDGE};
+    private static final String[] WORDS_COLUMNS = new String[] {WORD_ID, WORD_TITLE, WORD_MAIN_TRANSLATION, WORD_TRANSLATIONS, WORD_THEMES, WORD_EXAMPLES, WORD_KNOWLEDGE, WORD_SECOND_ID};
 
     private static final String THEMES_TABLE_NAME = "themes";
 
-    private static final String THEME_ID = "_id";
+    private static final String THEME_ID = "iid";
     private static final String THEME_TITLE = "title";
 
     public static final int NUM_THEME_ID = 0;
     public static final int NUM_THEME_TITLE = 1;
+
+    private static final String[] THEMES_COLUMNS = new String[] {THEME_ID, THEME_TITLE};
 
     private static final String PHRASE_THEMES_TABLE_NAME = "all_themes_of_phrases";
 
@@ -72,6 +79,7 @@ public class DBConnector {
             ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
             ContentValues cv = new ContentValues();
             cv.put(WORD_ID, word.getID().toString());
+            cv.put(WORD_SECOND_ID, word.getID().toString());
             cv.put(WORD_TITLE, word.getWord());
             cv.put(WORD_MAIN_TRANSLATION, word.getMainTranslation());
             if (word.getTranslations() != null) {
@@ -148,10 +156,7 @@ public class DBConnector {
         Cursor cursor = database.rawQuery( "SELECT * FROM " + WORDS_TABLE_NAME + " WHERE " +
                 WORD_ID + " = ?", new String[] {String.valueOf(id)});
 
-        //String selectQuery = "SELECT * FROM " + WORDS_TABLE_NAME + " WHERE " + WORD_ID + " = " + id.toString();
-        //Cursor cursor = database.rawQuery(selectQuery, null);
-        //  Cursor cursor = database.query(WORDS_TABLE_NAME, WORDS_COLUMNS, WORD_ID + " = ?", new String[] {String.valueOf(id)}, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
+           if (cursor != null && cursor.moveToFirst()) {
                 ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
                 String word = cursor.getString(NUM_WORD_TITLE);
                 String mainTranslation = cursor.getString(NUM_WORD_MAIN_TRANSLATION);
@@ -182,6 +187,19 @@ public class DBConnector {
         }
     }
 
+    public Cursor getAllThemes() {
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        database.beginTransaction();
+        try {
+            return database.query(THEMES_TABLE_NAME, THEMES_COLUMNS, null, null, null, null, THEME_TITLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            database.endTransaction();
+        }
+    }
+
     public void insertPhraseTheme(Theme theme) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         try {
@@ -200,7 +218,7 @@ public class DBConnector {
 
     public Cursor getWordsByTheme(Set<String> themes) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
-        StringBuilder selectionBuilder = null;
+        StringBuilder selectionBuilder = new StringBuilder();
         String[] selectionArgs = themes.toArray(new String[]{});
         if (themes.size() > 0) {
             for (int i = 0; i < themes.size(); i++) {
@@ -208,14 +226,25 @@ public class DBConnector {
             }
             selectionBuilder.append(THEMES_TABLE_NAME + "." + THEME_TITLE + " = ?");
         }
-        String selection = selectionBuilder == null ? null : selectionBuilder.toString();
-        return database.query(WORDS_TABLE_NAME + "inner join " +
-                                       THEMES_TABLE_NAME + " on " +
-                                       WORDS_TABLE_NAME + "." + " = " +
-                                       THEMES_TABLE_NAME + "." + THEME_ID,
-                                       WORDS_COLUMNS, selection, selectionArgs, WORD_ID,
-                                       "count(" + THEMES_TABLE_NAME + "." + THEME_TITLE + ") = " +
-                                        String.valueOf(themes.size()), null);
+        String selection = selectionBuilder.toString();
+        List<String> wordsColumnsFull = new ArrayList<>();
+        for (String s : WORDS_COLUMNS){
+            wordsColumnsFull.add(WORDS_TABLE_NAME + "." + s);
+        }
+        return database.query(WORDS_TABLE_NAME + " inner join " +
+                THEMES_TABLE_NAME + " on " +
+                WORDS_TABLE_NAME + "." + WORD_ID + " = " +
+                THEMES_TABLE_NAME + "." + THEME_ID,
+                wordsColumnsFull.toArray(new String[wordsColumnsFull.size()]), selection, selectionArgs, WORDS_TABLE_NAME + "." + WORD_SECOND_ID,
+                "count(" + THEMES_TABLE_NAME + "." + THEME_TITLE + ") = " +
+                String.valueOf(themes.size()), null);
+    }
+
+
+    public Cursor getWordsByTheme(String theme) {
+        Set<String> tmp = new HashSet<>();
+        tmp.add(theme);
+        return getWordsByTheme(tmp);
     }
 
     public Cursor getAllPhraseThemes() {

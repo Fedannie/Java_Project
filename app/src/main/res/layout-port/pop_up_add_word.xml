@@ -47,7 +47,6 @@
         android:layout_below="@+id/extratranslationsinput"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/addThemeToWord"
         android:visibility="invisible">
 
         <EditText
@@ -135,5 +134,19 @@
         android:layout_alignLeft="@+id/plusExtraTranslations"
         android:layout_alignStart="@+id/plusExtraTranslations"
         android:autoLink="all"/>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/addThemeToWord"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/examplesLIT">
+
+        <LinearLayout
+            android:id="@+id/scroll_themes"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
 </RelativeLayout>

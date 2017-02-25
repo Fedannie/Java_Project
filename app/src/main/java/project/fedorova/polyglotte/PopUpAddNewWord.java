@@ -3,11 +3,14 @@ package project.fedorova.polyglotte;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +31,15 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private TextInputLayout examplesTIL;
     private TextView plusExtraTrans;
     private TextView plusExamples;
+    private StringBuilder themes;
     private UUID wordID = null;
-    Intent intent;
+    private LinearLayout mainLayout;
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_add_word);
+        themes = new StringBuilder();
         intent = getIntent();
         init();
         if (intent.getStringExtra(getString(R.string.if_edit)).equals(getString(R.string.yes))) {
@@ -45,6 +51,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()) {
             case (R.id.addThemeToWord):
+                Intent intentT = new Intent(this, PopUpAddTheme.class);
+                startActivityForResult(intentT, 1);
                 break;
             case (R.id.saveWord):
                 if (!readyToSave()) {
@@ -55,7 +63,7 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
                     wordBase.delete(wordID);
                 }
                 saveNewWord();
-                setResult(RESULT_OK, getIntent());
+                setResult(RESULT_OK, intent);
                 finish();
                 break;
             case (R.id.backBtn):
@@ -74,24 +82,42 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {return;}
+        String addedTheme = data.getStringExtra(getString(R.string.theme));
+        if (!addedTheme.equals("")){
+            themes.append(addedTheme);
+            TextView newTheme = new TextView(this);
+            newTheme.setText(addedTheme);
+            AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            newTheme.setLayoutParams(params);
+            mainLayout.addView(newTheme);
+        }
+    }
+
     private void saveNewWord() {
         ReadWriteManager readWriteManager = ReadWriteManager.getInstance();
         String title = "";
         String mainTrans = "";
         String extraTrans = "";
         String examples = "";
+        String theme = themes.toString();
         try {
             title = wordTIL.getEditText().getText().toString();
             mainTrans = mainTranslationTIL.getEditText().getText().toString();
             extraTrans = translationTIL.getEditText().getText().toString();
             examples = examplesTIL.getEditText().getText().toString();
+            if (theme.equals("")){
+                theme = getString(R.string.no_theme);
+            }
         } catch (Exception e) {
             Toast.makeText(this, "Oops. Something went wrong with saving.", Toast.LENGTH_SHORT).show();
         }
         wordBase.insertWord(new Word(UUID.randomUUID(), title,
                 mainTrans,
                 readWriteManager.convertStringToSet(extraTrans),
-                null,
+                readWriteManager.convertStringToSet(theme),
                 readWriteManager.convertStringToSet(examples), 0));
     }
 
@@ -108,6 +134,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
 
         Button backBtn = (Button) findViewById(R.id.backBtn);
         backBtn.setOnClickListener(this);
+
+        mainLayout = (LinearLayout) findViewById(R.id.scroll_themes);
 
         wordTIL = (TextInputLayout) findViewById(R.id.wordinput);
         wordTIL.getEditText().addTextChangedListener(new TextWatcher() {

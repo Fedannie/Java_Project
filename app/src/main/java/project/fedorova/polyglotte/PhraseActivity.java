@@ -39,9 +39,6 @@ public class PhraseActivity extends Activity {
     }
 
     private class PhraseListAdapterHelper{
-        //private static final String TRANSLATION = "translation";
-        //private static final String THEME = "theme";
-        //private static final String PHRASE = "phrase";
         private PhraseList phraseList;
         private ArrayList<String> themes;
         private ArrayList<ArrayList<String>> phrases;

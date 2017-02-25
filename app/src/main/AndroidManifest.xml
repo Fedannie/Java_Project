@@ -120,6 +120,20 @@
             android:name=".ExerciseConnect">
         </activity>
 
+        <activity
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:screenOrientation="sensor"
+            android:label=""
+            android:name=".ThemesActivity">
+        </activity>
+
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.Dialog"
+            android:name=".PopUpAddTheme">
+        </activity>
+
     </application>
 
 </manifest>

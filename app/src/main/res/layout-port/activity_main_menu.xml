@@ -6,9 +6,6 @@
     android:background="#0099cc"
     tools:context="project.fedorova.polyglotte.MainMenuActivity">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
     <TextView
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
@@ -19,8 +16,6 @@
         android:textSize="50sp"
         android:textStyle="bold" />
 
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,6 +57,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/dictionaryButton" />
+
+            <Button
+                android:text="themes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/themes_btn" />
         </TableRow>
 
         <TableRow
