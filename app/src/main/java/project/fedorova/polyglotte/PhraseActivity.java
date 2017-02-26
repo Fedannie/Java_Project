@@ -83,7 +83,7 @@ public class PhraseActivity extends Activity {
                     groupFrom,
                     groupTo,
                     childData,
-                    R.layout.wordlistitem,
+                    R.layout.phraselistitem,
                     childFrom,
                     childTo);
             return adapter;

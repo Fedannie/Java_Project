@@ -83,10 +83,6 @@ public class ExerciseActivity extends Activity implements View.OnClickListener{
         Button chooseWordByTrans = (Button) findViewById(R.id.chooseWordByTrans);
         chooseWordByTrans.setOnClickListener(this);
 
-
-        Button wholeExercise = (Button) findViewById(R.id.wholeExercise);
-        wholeExercise.setOnClickListener(this);
-
         Button connect = (Button) findViewById(R.id.connect);
         connect.setOnClickListener(this);
 

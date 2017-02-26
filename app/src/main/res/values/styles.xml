@@ -29,4 +29,24 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsFloating">false</item>
     </style>
+
+    <style name="Theme.SheepApplication" parent="Theme.AppCompat">
+        <item name="android:windowBackground">@drawable/sheep_on_field</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:buttonStyle">@style/SheepButtonGreen</item>
+    </style>
+
+    <style name="SheepButtonGreen" parent="android:Widget.Button">
+        <item name="android:background">@drawable/sheep_green_button</item>
+        <item name="android:shadowColor">#A8A8A8</item>
+        <item name="android:shadowRadius">5</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="AutoCompleteTextViewAppTheme" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:textColor">#ffffffff</item>
+        <item name ="android:background">@drawable/line_background</item>
+    </style>
 </resources>

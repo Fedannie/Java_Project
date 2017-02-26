@@ -13,7 +13,8 @@
         android:id="@+id/textView5"
         android:textSize="24sp"
         android:fontFamily="sans-serif-smallcaps"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:background="@color/ELVBackground" />
 
     <TextView
         android:text="LANGUAGE"
@@ -22,95 +23,145 @@
         android:id="@+id/dictExercise"
         android:layout_weight="0.03" />
 
-    <Button
-        android:text="Whole"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/wholeExercise"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="120dp" />
-
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300sp"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/textView5"
+        android:weightSum="3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="9">
 
             <Button
-                android:text="Translation by Word"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/transByWord" />
+                android:visibility="invisible"
+                android:layout_weight="1" />
 
             <Button
-                android:text="Word by translation"
-                android:layout_width="wrap_content"
+                android:text="Write translation"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:id="@+id/transByWord"
+                android:layout_height="50sp"
+                android:textStyle="normal|bold"
+                android:textSize="20sp" />
+
+            <Button
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/wordByTrans" />
+                android:visibility="invisible"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Write word"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="50sp"
+                android:id="@+id/wordByTrans"
+                android:textStyle="normal|bold"
+                android:textSize="20sp" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1" />
+
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="9">
 
             <Button
-                android:text="Choose translation by word"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Choose translation"
+                android:layout_width="0dp"
+                android:layout_height="50sp"
+                android:layout_weight="3"
                 android:id="@+id/chooseTransByWord"
-                android:textSize="11sp" />
+                android:textSize="20sp"
+                android:textStyle="normal|bold" />
 
             <Button
-                android:text="choose word by translation"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Choose word"
+                android:layout_width="0dp"
+                android:layout_height="50sp"
+                android:layout_weight="3"
                 android:id="@+id/chooseWordByTrans"
-                android:textSize="11sp" />
+                android:textSize="20sp"
+                android:textStyle="normal|bold" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="9">
 
             <Button
-                android:text="Choose picture"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/choosePic"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:layout_weight="1" />
 
             <Button
-                android:text="Translation by picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/transByPicture"
-                android:visibility="invisible" />
-        </TableRow>
+                android:text="Correct mistake"
+                android:layout_width="0dp"
+                android:layout_height="50sp"
+                android:layout_weight="3"
+                android:id="@+id/correctTheMistake"
+                android:textSize="20sp"
+                android:textStyle="normal|bold" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1" />
 
             <Button
                 android:text="Connect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/connect" />
+                android:layout_width="0dp"
+                android:layout_height="50sp"
+                android:layout_weight="3"
+                android:id="@+id/connect"
+                android:textSize="20sp"
+                android:textStyle="normal|bold" />
 
             <Button
-                android:text="correct the mistake"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/correctTheMistake" />
+                android:visibility="invisible"
+                android:layout_weight="1" />
+
         </TableRow>
     </TableLayout>
 

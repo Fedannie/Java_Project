@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@color/ELVBackground">
 
     <TextView
         android:text="DICTIONARY"
@@ -19,47 +20,45 @@
         android:layout_height="wrap_content"
         android:id="@+id/dictDictionary" />
 
-    <ScrollView
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="412dp"
-        android:id="@+id/scrollView"
-        android:layout_below="@+id/textView4"
+        android:layout_height="wrap_content"
+        android:weightSum="10"
+        android:layout_below="@id/textView4"
+        android:id="@+id/tr">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_weight="3" />
+
+        <Button
+            android:text="Repeat"
+            android:layout_width="0dp"
+            android:layout_height="30sp"
+            android:id="@+id/repeatButton"
+            android:textSize="20sp"
+            android:layout_weight="4"
+            android:textStyle="normal|bold" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_weight="3" />
+    </TableRow>
+
+    <ListView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="482dp">
-
-            <Button
-                android:text="Repeat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/repeatButton"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <Button
-                android:text="Filter Themes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/filterButton"
-                android:layout_below="@+id/repeatButton"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <ListView
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_below="@+id/filterButton"
-                android:layout_height="386dp"
-                android:id="@+id/wordList">
-            </ListView>
-
-        </RelativeLayout>
-    </ScrollView>
+        android:layout_alignParentBottom="true"
+        android:id="@+id/wordList"
+        android:layout_below="@+id/tr">
+    </ListView>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"

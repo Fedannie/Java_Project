@@ -5,14 +5,15 @@
     android:layout_height="match_parent"
     tools:context="project.fedorova.polyglotte.MainMenuActivity">
 
-    <Button
-        android:text="clear Preferences"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/clearPreferences" />
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:textColor="#33b5e5"
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -58,11 +59,12 @@
                 android:textAlignment="center" />
         </TableRow>
 
+
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:weightSum="10">
+            android:layout_height="wrap_content"
+            android:weightSum="13">
 
             <Button
                 android:layout_width="0dp"
@@ -73,9 +75,9 @@
             <Button
                 android:text="Dictionary"
                 android:layout_width="0dp"
-                android:layout_height="40sp"
+                android:layout_height="45sp"
                 android:id="@+id/dictionaryButton"
-                android:layout_weight="6"
+                android:layout_weight="4"
                 android:textStyle="normal|bold"
                 android:textSize="20sp" />
 
@@ -83,29 +85,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
-                android:layout_weight="2" />
-
-        </TableRow>
-
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:weightSum="10">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:layout_weight="2" />
+                android:layout_weight="1" />
 
             <Button
                 android:text="Theme"
                 android:layout_width="0dp"
-                android:layout_height="40sp"
+                android:layout_height="45sp"
                 android:id="@+id/themes_btn"
-                android:layout_weight="6"
+                android:layout_weight="4"
                 android:textStyle="normal|bold"
                 android:textSize="20sp" />
 
@@ -132,7 +119,7 @@
             <Button
                 android:text="Exercise"
                 android:layout_width="0dp"
-                android:layout_height="40sp"
+                android:layout_height="45sp"
                 android:id="@+id/exerciseButton"
                 android:layout_weight="6"
                 android:textStyle="normal|bold"
@@ -147,11 +134,10 @@
         </TableRow>
 
         <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:baselineAligned="false"
-            android:weightSum="10">
+            android:weightSum="13">
 
             <Button
                 android:layout_width="0dp"
@@ -162,9 +148,9 @@
             <Button
                 android:text="Phrasebook"
                 android:layout_width="0dp"
-                android:layout_height="40sp"
+                android:layout_height="45sp"
                 android:id="@+id/phrasebookButton"
-                android:layout_weight="6"
+                android:layout_weight="4"
                 android:textStyle="normal|bold"
                 android:textSize="20sp" />
 
@@ -172,27 +158,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
-                android:layout_weight="2" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:weightSum="10">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:layout_weight="2" />
+                android:layout_weight="1" />
 
             <Button
                 android:text="Translator"
                 android:layout_width="0dp"
-                android:layout_height="40sp"
+                android:layout_height="45sp"
                 android:id="@+id/translatorButton"
-                android:layout_weight="6"
+                android:layout_weight="4"
                 android:textStyle="normal|bold"
                 android:textSize="20sp" />
 
@@ -234,5 +207,13 @@
 
     </TableLayout>
 
+    <Button
+        android:text="clear Preferences"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/clearPreferences" />
 
 </RelativeLayout>

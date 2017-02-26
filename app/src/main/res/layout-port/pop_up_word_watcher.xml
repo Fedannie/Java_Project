@@ -12,9 +12,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textAlignment="center" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,13 +42,16 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50sp"
         android:id="@+id/backBtnWatcher"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="back" />
+        android:text="back"
+        android:layout_width="100sp"
+        android:textStyle="normal|bold"
+        android:textAlignment="center"
+        android:textSize="20sp" />
 
     <ImageButton
         android:layout_width="60dp"

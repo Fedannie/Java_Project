@@ -77,12 +77,6 @@ public class DictActivity extends Activity implements View.OnClickListener {
                 intentAWA.putExtra(getString(R.string.if_edit), getString(R.string.no));
                 startActivityForResult(intentAWA, REQUEST_TO_REFRESH);
                 break;
-            case (R.id.filterButton):
-                Intent intentFT = new Intent(this, PopUpFilterThemes.class);
-                intentFT.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
-                intentFT.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
-                startActivity(intentFT);
-                break;
             case (R.id.repeatButton):
                 if (wordManager.getAllWords().getCount() == 0) {
                     Toast.makeText(this, getString(R.string.msg_no_words), Toast.LENGTH_SHORT).show();
@@ -121,9 +115,6 @@ public class DictActivity extends Activity implements View.OnClickListener {
         Intent intent = getIntent();
         FloatingActionButton addWordBtn = (FloatingActionButton) findViewById(R.id.addWordFAB);
         addWordBtn.setOnClickListener(this);
-
-        Button filterBtn = (Button) findViewById(R.id.filterButton);
-        filterBtn.setOnClickListener(this);
 
         Button repeatAllBtn = (Button) findViewById(R.id.repeatButton);
         repeatAllBtn.setOnClickListener(this);
