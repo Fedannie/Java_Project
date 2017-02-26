@@ -2,8 +2,8 @@
     <string name="app_name">Polyglotte</string>
     <string name="native_lang">NATIVE_LANG</string>
     <string name="dict_lang">DICT_LANG</string>
-    <string name="no_theme">no theme</string>
     <string name="default_language">English</string>
+    <string name="no_theme">no theme</string>
     <string name="language">language</string>
     <string name="dictionary">dictionary</string>
     <string name="first_time">first time</string>

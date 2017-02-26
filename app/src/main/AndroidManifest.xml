@@ -130,7 +130,7 @@
         <activity
             android:configChanges="orientation|screenSize"
             android:screenOrientation="sensor"
-            android:theme="@android:style/Theme.Dialog"
+            android:theme="@style/SheepDialog"
             android:name=".PopUpAddTheme">
         </activity>
 

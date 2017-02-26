@@ -14,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import project.fedorova.polyglotte.data.db.DBConnector;
@@ -31,20 +34,20 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     private TextInputLayout examplesTIL;
     private TextView plusExtraTrans;
     private TextView plusExamples;
-    private StringBuilder themes;
     private UUID wordID = null;
     private LinearLayout mainLayout;
     private Intent intent;
+    private List<String> themeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_add_word);
-        themes = new StringBuilder();
         intent = getIntent();
         init();
         if (intent.getStringExtra(getString(R.string.if_edit)).equals(getString(R.string.yes))) {
             setDataToEdit();
         }
+        themeList = new ArrayList<>();
     }
 
     @Override
@@ -52,6 +55,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         switch (view.getId()) {
             case (R.id.addThemeToWord):
                 Intent intentT = new Intent(this, PopUpAddTheme.class);
+                intentT.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
+                intentT.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
                 startActivityForResult(intentT, 1);
                 break;
             case (R.id.saveWord):
@@ -86,9 +91,8 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
         String addedTheme = data.getStringExtra(getString(R.string.theme));
-        if (!addedTheme.equals("")){
-            themes.append(", ");
-            themes.append(addedTheme);
+        if (!addedTheme.equals("") && !themeList.contains(addedTheme)){
+            themeList.add(addedTheme);
             addThemeView(addedTheme);
         }
     }
@@ -97,8 +101,17 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         TextView newTheme = new TextView(this);
         newTheme.setText(theme);
         AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = 20;
         newTheme.setLayoutParams(params);
+        newTheme.setTextSize(15f);
         mainLayout.addView(newTheme);
+        newTheme.setOnClickListener(v -> {
+            themeList.remove(theme);
+            mainLayout.removeAllViews();
+            for (String s : themeList) {
+                addThemeView(s);
+            }
+        });
     }
 
     private void saveNewWord() {
@@ -107,22 +120,22 @@ public class PopUpAddNewWord extends Activity implements View.OnClickListener{
         String mainTrans = "";
         String extraTrans = "";
         String examples = "";
-        String theme = themes.toString();
         try {
             title = wordTIL.getEditText().getText().toString();
             mainTrans = mainTranslationTIL.getEditText().getText().toString();
             extraTrans = translationTIL.getEditText().getText().toString();
             examples = examplesTIL.getEditText().getText().toString();
-            if (theme.equals("")){
-                theme = getString(R.string.no_theme);
-            }
         } catch (Exception e) {
             Toast.makeText(this, "Oops. Something went wrong with saving.", Toast.LENGTH_SHORT).show();
         }
+        if (themeList.size() == 0) {
+            themeList.add(getString(R.string.no_theme));
+        }
+
         wordBase.insertWord(new Word(UUID.randomUUID(), title,
                 mainTrans,
                 readWriteManager.convertStringToSet(extraTrans),
-                readWriteManager.convertStringToSet(theme),
+                new HashSet<>(themeList),
                 readWriteManager.convertStringToSet(examples), 0));
     }
 

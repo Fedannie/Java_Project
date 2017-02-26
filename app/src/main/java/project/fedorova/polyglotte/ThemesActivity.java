@@ -24,7 +24,11 @@ public class ThemesActivity extends Activity {
     private ArrayList<ArrayList<UUID>> ids = new ArrayList<>();
     private DBConnector dbConnector;
     private Cursor cursor;
+    private Cursor cursorWords;
     private Intent intent;
+    private ArrayList<String> wordsOfThisTheme;
+    private ArrayList<String> transWordsOfThisTheme;
+    private ArrayList<UUID> idsWordsOfThisTheme;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +76,6 @@ public class ThemesActivity extends Activity {
                 new int[] { android.R.id.text1, android.R.id.text2 }
         );
         themesList.setAdapter(mAdapter);
-        themesList.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intentWordWatcher = new Intent(this, PopUpWordWatcher.class);
-            intentWordWatcher.putExtra(getString(R.string.word_index), position);
-            intentWordWatcher.putExtra(getString(R.string.dict_lang), intent.getStringExtra(getString(R.string.dict_lang)));
-            intentWordWatcher.putExtra(getString(R.string.native_lang), intent.getStringExtra(getString(R.string.native_lang)));
-            startActivityForResult(intentWordWatcher, 1);
-        });
     }
 
     @Override
@@ -104,23 +101,30 @@ public class ThemesActivity extends Activity {
             return;
         }
         themes.add(lastTheme);
-        Cursor cursorWords = dbConnector.getWordsByTheme(lastTheme);
-        ArrayList<String> wordsOfThisTheme = new ArrayList<>();
-        ArrayList<String> transWordsOfThisTheme = new ArrayList<>();
-        ArrayList<UUID> idsWordsOfThisTheme = new ArrayList<>();
-        cursorWords.moveToFirst();
-        if (cursorWords.getCount() > 0) {
-            wordsOfThisTheme.add(cursorWords.getString(DBConnector.NUM_WORD_TITLE));
-            transWordsOfThisTheme.add(cursorWords.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION));
-            idsWordsOfThisTheme.add(UUID.fromString(cursorWords.getString(DBConnector.NUM_WORD_ID)));
-        }
-        while (cursorWords.moveToNext()) {
-            wordsOfThisTheme.add(cursorWords.getString(DBConnector.NUM_WORD_TITLE));
-            transWordsOfThisTheme.add(cursorWords.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION));
-            idsWordsOfThisTheme.add(UUID.fromString(cursorWords.getString(DBConnector.NUM_WORD_ID)));
-        }
+        cursorWords = dbConnector.getWordsByTheme(lastTheme);
+        wordsOfThisTheme = new ArrayList<>();
+        transWordsOfThisTheme = new ArrayList<>();
+        idsWordsOfThisTheme = new ArrayList<>();
+        getWordsFromCursor();
         words.add(wordsOfThisTheme);
         translations.add(transWordsOfThisTheme);
         ids.add(idsWordsOfThisTheme);
+    }
+
+    private void getWordsFromCursor() {
+        cursorWords.moveToFirst();
+        if (cursorWords.getCount() > 0) {
+            setInf();
+        }
+        while (cursorWords.moveToNext()) {
+            setInf();
+        }
+    }
+
+    private void setInf() {
+        wordsOfThisTheme.add(cursorWords.getString(DBConnector.NUM_WORD_TITLE));
+        transWordsOfThisTheme.add(cursorWords.getString(DBConnector.NUM_WORD_MAIN_TRANSLATION));
+        idsWordsOfThisTheme.add(UUID.fromString(cursorWords.getString(DBConnector.NUM_WORD_ID)));
+
     }
 }

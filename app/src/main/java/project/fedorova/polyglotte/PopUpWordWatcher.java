@@ -22,6 +22,7 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
     private TextView mainTransTV;
     private TextView extraTransTV;
     private TextView examplesTV;
+    private TextView tagsTV;
     private int wordPos;
     private String wordID;
     @Override
@@ -98,6 +99,8 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
         extraTransTV.setText(cursor.getString(DBConnector.NUM_WORD_TRANSLATIONS));
 
         examplesTV.setText(cursor.getString(DBConnector.NUM_WORD_EXAMPLES).replace(",","\n"));
+
+        tagsTV.setText("TAGS: " + cursor.getString(DBConnector.NUM_WORD_THEMES));
     }
 
     private void init() {
@@ -117,6 +120,8 @@ public class PopUpWordWatcher extends Activity implements View.OnClickListener {
         extraTransTV = (TextView) findViewById(R.id.extraTranslationsTVWatcher);
 
         examplesTV = (TextView) findViewById(R.id.examplesTVWatcher);
+
+        tagsTV = (TextView) findViewById(R.id.tags);
 
         Button backBtn = (Button) findViewById(R.id.backBtnWatcher);
         backBtn.setOnClickListener(this);
